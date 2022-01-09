@@ -1,0 +1,120 @@
+.list-table-header {
+    padding: 1.25rem;
+    background-color: #f6f7f9;
+}
+
+.list-table {
+    border-radius: 0.3rem;
+    background-color: white;
+    box-shadow: 0 1px 2px #d6dbe280, 0 1px 2px #d6dbe280;
+    overflow: hidden;
+}
+
+.list-table-content {
+    padding: 1.25rem;
+}
+
+.search-group {
+    max-width: 540px;
+    border-radius: .3rem;
+    overflow: hidden;
+}
+
+.search-group-input {
+    border-color: #ebeef2;
+    background-color: #ebeef2;
+    border: 0 !important;
+}
+
+.search-group-input:focus {
+    box-shadow: none;
+    border: 0;
+    background-color: #ebeef2;
+}
+
+.search-group-append {
+    width: 40px;
+    border-color: #ebeef2;
+    background-color: #ebeef2;
+}
+
+.search-group-append i {
+    color: black;
+}
+
+.btn-block-option-filter {
+    color: #6c757d;
+    background-color: #f6f7f9;
+    border: 0;
+    z-index: 0;
+}
+
+.btn-block-option-filter i {
+    color: #6c757d;
+
+}
+
+.hide-opacity {
+    opacity: 0;
+}
+
+.btn-alt-secondary {
+    color: #2f3c4e;
+    background-color: #cacfd7;
+    border-color: #cacfd7;
+}
+
+.btn-alt-secondary i {
+    color: black;
+}
+
+.btn-alt-secondary:hover {
+    color: #283342;
+    background-color: #a5a9b3;
+    border-color: #a5a9b3;
+}
+
+.btn-alt-danger {
+    color: #841717;
+    background-color: #f6c9c9;
+    border-color: #f6c9c9;
+}
+
+.btn-alt-danger:hover {
+    color: #580f0f;
+    background-color: #ee9393;
+    border-color: #ee9393;
+}
+
+.table thead th {
+    font-size: .875rem;
+    text-transform: uppercase;
+    letter-spacing: .0625em;
+    text-align: center;
+    vertical-align: center;
+}
+.table td {
+    vertical-align: center;
+    text-align: center;
+}
+
+.table>:not(:last-child)>:last-child>* {
+    border-bottom-color: #ebeef2;
+}
+
+.table-vcenter th {
+    vertical-align: middle;
+}
+.table-borderless>:not(caption)>*>* {
+    border-bottom-width: 0;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0.75rem 0.75rem;
+
+}
+.table-striped>tbody>tr:nth-of-type(odd) {
+    --bs-table-accent-bg: white;
+    color: #334155;
+}
+

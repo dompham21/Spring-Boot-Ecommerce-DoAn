@@ -1,0 +1,100 @@
+.aside {
+    width: 265px;
+    background-color: #1e1e2d;
+    height: 100vh;
+}
+
+.flex-row-auto {
+    flex: 0 0 auto;
+}
+
+.brand {
+    padding: 0 25px;
+    height: 65px;
+}
+
+.menu-link .svg-icon svg g [fill] ,.btn .svg-icon svg g [fill]  {
+    transition: fill .3s ease;
+    fill: #494b74;
+}
+.menu-active .menu-text, .menu-active i, .menu-link:hover i, .menu-link:hover .menu-text {
+    color: white !important;
+}
+
+.menu-link:hover .svg-icon svg g [fill],.btn:hover .svg-icon svg g [fill],
+.menu-active .svg-icon svg g [fill]{
+    fill: #3699ff;
+}
+
+
+.menu-item i {
+    color: #a2a3b7;
+}
+
+.aside-menu .menu-nav {
+    margin: 0;
+    list-style: none;
+    padding: 15px 0;
+}
+.aside-menu .menu-nav .menu-item {
+    display: flex;
+    flex-grow: 1;
+
+}
+.aside-menu .menu-nav .menu-item:hover {
+    color: white;
+}
+
+.aside-menu .menu-nav .menu-item .menu-link {
+    padding: 9px 25px;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+
+}
+
+.aside-menu .menu-nav .menu-item .menu-link .menu-icon {
+    flex: 0 0 35px;
+}
+
+.aside-menu .menu-nav .menu-item .menu-link .menu-text {
+    color: #a2a3b7;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.aside-menu .menu-nav .menu-section {
+    height: 40px;
+    margin-top: 20px;
+    padding: 0 25px;
+}
+
+.aside-menu .menu-nav .menu-section .menu-text{
+    color: #4c4e6f;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: .9rem;
+}
+
+.aside-menu .menu-nav .menu-item .collapse:not(.show) {
+    display: none !important;
+}
+
+.menu-item-sub {
+    width: 100%;
+    height: 30px;
+}
+
+.aside-menu .menu-nav .menu-item .menu-link i{
+    margin-left: 8px;
+    margin-top: 1px;
+    font-size: 12px;
+}
+
+.collapsing {
+    transition-duration: 0.1s;
+}
+
+a[aria-expanded="true"].menu-link.menu-toggle.align-items-center i:before{
+    content: "\f078";
+}

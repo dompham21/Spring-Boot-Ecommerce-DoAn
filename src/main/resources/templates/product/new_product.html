@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Product - Music Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add_form.css}"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="page-container" class="d-flex flex-column flex-root">
+        <div class="d-flex flex-row flex-column-fluid page">
+            <div th:replace="${isEdit} ? ~{fragments/sidebar_fragment :: sidebar('product','product_all')} : ~{fragments/sidebar_fragment :: sidebar('product','product_new')}"></div>
+
+            <div class="d-flex flex-column wrapper">
+                <div th:replace="fragments/header_fragment :: header"></div>
+                <div class="content">
+
+                    <section class="form-container">
+                        <div class="form-container-header d-flex align-items-center justify-content-between">
+                            <h1 class="title" th:text="${isEdit} ? 'Sua Thong Tin San Pham': 'Thêm Sản Phẩm Mới'"></h1>
+                        </div>
+                        <div class="form-container-content">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 col-lg-8">
+                                    <form th:action="${isEdit} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${product}" method="post" id="form-product">
+                                        <div class="mb-4">
+                                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
+                                            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
+                                            <span th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}"  class="form-valid-feedback"></span>
+                                            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"  class="form-valid-feedback"></span>
+                                            <span th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"  class="form-valid-feedback"></span>
+                                            <span th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"  class="form-valid-feedback"></span>
+                                            <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"  class="form-valid-feedback"></span>
+                                        </div>
+                                        <input type="hidden" th:field="*{id}" />
+                                        <div class="mb-4">
+                                            <label class="form-label" for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" th:field="*{name}"  required/>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label" for="description">Description</label>
+                                            <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label" for="shortDescription">Sort Description</label>
+                                            <textarea class="form-control" id="shortDescription"  th:field="*{shortDescription}"  rows="4" required></textarea>
+                                        </div>
+                                        <div class="mb-4 d-flex flex-column justify-content-center">
+                                            <label class="form-label" for="category">Category</label>
+                                            <select class="custom-select" required id="category" name="category">
+                                                <option value="">Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-4 d-flex flex-column justify-content-center">
+                                            <label class="form-label" for="brand">Brand</label>
+                                            <select class="custom-select" required id="brand" name="brand">
+                                                <option value="">Open this select menu</option>
+                                                <option value="1">One</option>
+                                                <option value="2">Two</option>
+                                                <option value="3">Three</option>
+                                            </select>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="price">Price</label>
+                                                <div class="input-group">
+                                                    <input type="text"  class="form-control" id="price" th:field="*{price}" required pattern="^([.]?[0-9])+$" value="0">
+                                                    <span class="input-group-text">VNĐ</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="inStock">In Stock</label>
+                                                <input type="text" class="form-control" id="inStock" th:field="*{inStock}" required  pattern="^([.]?[0-9])+$" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <label class="form-label" for="discount">Discount</label>
+                                                <div class="input-group">
+                                                    <input type="number" min="0" max="100" class="form-control input-number-discount" id="discount" th:field="*{discount}" >
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4" style="padding:0 15px">
+                                            <div class="upload-zone d-flex justify-content-center align-items-center">
+                                                <input type="file"  accept="image/*" class="upload-zone-input" onchange="loadFile(event)" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
+                                                <input type="text" id="image" th:field="*{image}" style="display: none; opacity: 0"/>
+                                                <img id="image-output"/>
+                                                <div class="upload-zone-content">
+                                                    <div class="upload-zone-title">Select file</div>
+                                                    <div class="upload-zone-desc">Click browse thorough your machine</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input" id="isActive" th:field="*{isActive}">
+                                                    <label class="custom-control-label" for="isActive">Publish?</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="mb-4 d-flex align-items-center justify-content-end">
+                                            <button type="submit" class="btn btn-danger auth-btn">Luu lai</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+
+        if($("#image").val() != '' && $("#image").val() != null) {
+            let image_output = document.getElementById('image-output');
+            $('#image-output').css('display', 'block')
+            image_output.src = $("#image").val();
+            $('.upload-zone-content').css('display', 'none');
+        }
+
+        if($('#price').val() != '' && $('#price').val() != null) {
+            $('#price').val(formatPrice($('#price').val()));
+        }
+        if($('#inStock').val() != '' && $('#inStock').val() != null) {
+            $('#inStock').val(formatPrice($('#inStock').val()));
+        }
+
+        $('#description').summernote({
+            height: 400,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+
+                ['fontsize', ['fontsize']],
+                ['color', ['forecolor']],
+                ['table', ['table']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen', 'codeview']]
+            ],
+            callbacks : {
+                onImageUpload: function(image) {
+                    uploadImage(image[0]);
+                }
+            },
+            tooltip: false,
+            dialogsInBody: true
+
+        });
+        let buttonClose = $('<button type="button" class="close-summernote-dialog" aria-hidden="true" tabindex="-1">&times;</button>')
+        $(".note-modal-content").append(buttonClose);
+
+        $('button.close-summernote-dialog').click(function(){
+            $('.note-modal').removeClass('open');
+            $('.note-modal-backdrop').css('display', 'none');
+        })
+
+
+
+    })
+
+</script>
+
+<script>
+    $('#price').keyup(function(event) {
+        formatNumber(event, $(this))
+    })
+
+    $('#inStock').keyup(function(event) {
+        formatNumber(event, $(this))
+    })
+
+</script>
+<script>
+    $('#form-product').on("submit", function (e) {
+        e.preventDefault();//stop submit event
+        $('#price').val(parseInt($('#price').val().split('.').join(""))) //remove dots
+        $('#inStock').val(parseInt($('#inStock').val().split('.').join(""))) //remove dots
+        let output = document.getElementById('image-output');
+
+        $('#image').val(output.src)
+
+        $(this).off("submit");//need form submit event off.
+        $(this).submit();//submit form
+    });
+</script>
+</html>

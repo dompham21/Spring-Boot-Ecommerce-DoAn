@@ -1,0 +1,36 @@
+a:hover {
+    color: unset;
+    text-decoration: none;
+}
+
+a {
+    color: unset;
+    text-decoration: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+i {
+    color: white;
+}
+
+.form-valid-feedback {
+    color: #dc3545;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.badge {
+    color: white;
+    padding: 5px;
+}
+
+body::-webkit-scrollbar {
+    width: 1px;
+}

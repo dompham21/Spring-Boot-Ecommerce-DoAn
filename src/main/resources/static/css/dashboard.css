@@ -1,0 +1,75 @@
+.wrapper {
+    height: 100vh;
+}
+
+.content {
+    padding: 30px 30px 150px 30px;
+    background-color: #ebeef2;
+    overflow-y: scroll;
+    min-height: calc(100vh - 65px);
+}
+
+h1.title {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+h2.sub-title {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.statistical {
+    margin: 30px 0;
+    gap: 30px;
+}
+
+.statistical-item {
+    padding: 30px 20px;
+    border-radius: .25rem;
+    background-color: white;
+}
+
+.statistical-item .number {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.statistical-item .text-description {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: .875rem;
+}
+
+.statistical-item .statistical-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 1.5rem;
+    background-color: #f6f7f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bar-chart {
+    gap: 30px
+}
+
+.statistical-item-col {
+    padding: 45px 20px;
+}
+
+#chart {
+    width: 700px;
+    height: 520px;
+}
+
+.statistical-col {
+    gap: 30px;
+}
+
+.icon-caret-up-down i {
+    font-size: 24px;
+}

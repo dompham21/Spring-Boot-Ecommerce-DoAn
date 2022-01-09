@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Login - Music Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+</head>
+<body>
+<div id="page-container" class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div th:replace="fragments/sidebar_fragment :: sidebar('dashboard','')"></div>
+        <div class="d-flex flex-column wrapper">
+            <div th:replace="fragments/header_fragment :: header"></div>
+            <div class="content">
+                <h1 class="title">Dashboard</h1>
+                <h2 class="sub-title">Welcome <span style="color: #4c78dd;">Dom</span>, everything looks great.</h2>
+                <section class="statistical row">
+                    <div class="col statistical-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="number">32</div>
+                            <div class="text-description">Pedding Orders</div>
+                        </div>
+                        <div class="statistical-icon">
+                            <i class="far fa-gem fs-3 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="col statistical-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="number">128</div>
+                            <div class="text-description">New Customers</div>
+                        </div>
+                        <div class="statistical-icon">
+                            <i class="far fa-user-circle fs-3 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="col statistical-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="number">120</div>
+                            <div class="text-description">Comments</div>
+                        </div>
+                        <div class="statistical-icon">
+                            <i class="far fa-paper-plane fs-3 text-primary"></i>
+                        </div>
+                    </div>
+                    <div class="col statistical-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="number">40.5%</div>
+                            <div class="text-description">Buy Rate</div>
+                        </div>
+                        <div class="statistical-icon">
+                            <i class="fa fa-chart-bar fs-3 text-primary"></i>
+                        </div>
+                    </div>
+                </section>
+                <section class="bar-chart d-flex align-items-center">
+                    <div>
+                        <div id="chart"></div>
+                    </div>
+
+                    <div class="statistical-col row row-cols-1">
+                        <div class="col statistical-item d-flex justify-content-between align-items-center statistical-item-col">
+                            <div class="d-flex flex-column justify-content-center">
+                                <div class="number">2.5%</div>
+                                <div class="text-description">Customer Growth</div>
+                            </div>
+                            <div class="statistical-icon icon-caret-up-down">
+                                <i class="fa fa-caret-up fs-base text-success"></i>
+                            </div>
+                        </div>
+                        <div class="col statistical-item d-flex justify-content-between align-items-center statistical-item-col">
+                            <div class="d-flex flex-column justify-content-center">
+                                <div class="number">3.8%</div>
+                                <div class="text-description">Page Views</div>
+                            </div>
+                            <div class="statistical-icon icon-caret-up-down">
+                                <i class="fa fa-caret-down fs-base text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="col statistical-item d-flex justify-content-between align-items-center statistical-item-col">
+                            <div class="d-flex flex-column justify-content-center ">
+                                <div class="number">1.7%</div>
+                                <div class="text-description">New Products</div>
+                            </div>
+                            <div class="statistical-icon icon-caret-up-down">
+                                <i class="fa fa-caret-down fs-base text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
+
+<script th:inline="javascript">
+    $(function(){
+        Highcharts.chart('chart', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'EARNINGS SUMMARY'
+            },
+            xAxis: {
+                categories: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} $</b></td></tr>',
+                footerFormat: '</table>',
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [
+                {
+                    name: 'This week',
+                    data: [716, 628, 1050, 560, 956, 890, 790]
+                },
+                {
+                    name: 'Last week',
+                    data: [1160, 923, 1052, 1300, 880, 926, 963]
+                }
+            ]
+        });
+    });
+</script>
+</html>
