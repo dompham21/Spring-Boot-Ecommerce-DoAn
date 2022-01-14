@@ -1,0 +1,84 @@
+.navbar {
+    height: 65px;
+    padding: 0 70px;
+    position: fixed;
+    z-index: 999;
+    width: 100vw;
+    box-shadow: 0 25px 20px -20px #0000001a, 0 0 15px #0000000f;
+    background-color: #1e1e2d;
+
+}
+
+.navbar-left {
+    margin-right: 20px;
+}
+
+.navbar-logo {
+    margin-right: 20px;
+}
+
+.navbar-search {
+    max-width: 700px;
+    padding: 0;
+    height: 40px;
+
+}
+
+.navbar-search-text {
+    background-color: #12142b;
+    color: rgba(244, 244, 245, 0.9);
+    border: 0;
+    outline: none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.navbar-search-text i {
+    font-size: 14px;
+}
+
+.navbar-search-input {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: #12142b;
+    color: rgba(244, 244, 245, 0.9);
+    padding: 0;
+    border: 0;
+    outline: none;
+}
+
+.navbar-search-input:focus {
+    background-color: #12142b;
+    color: rgba(244, 244, 245, 0.9);
+    border: 0;
+    box-shadow: none;
+
+}
+
+.navbar-auth {
+    margin-right: 30px;
+}
+
+.navbar-auth span {
+    color: rgba(244, 244, 245, 0.9);
+}
+
+.navbar-auth a:not(:last-child) {
+    margin-right: 10px;
+}
+
+.navbar-divine {
+    width: 1px;
+    background: #c1c3cf;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.navbar-tool {
+    gap: 10px;
+}
+
+.navbar-tool i {
+    color: #3699ff;
+    font-size: 24px;
+}

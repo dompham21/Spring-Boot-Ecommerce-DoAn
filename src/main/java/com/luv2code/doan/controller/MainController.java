@@ -17,8 +17,13 @@ public class MainController {
     private UserService userService;
 
 
+    @GetMapping("/admin")
+    public String adminDashboard(Model model) {
+        return "admin";
+    }
+
     @GetMapping("/")
-    public String test(Model model) {
+    public String index() {
         return "index";
     }
 

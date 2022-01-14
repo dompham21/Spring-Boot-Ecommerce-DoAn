@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<nav th:fragment="navbar"  class="navbar">
+    <div class="navbar-left d-flex align-items-center flex-grow-1 justify-content-start">
+        <a href="/">
+            <img th:src="@{images/logo-white.png}" alt="logo" class="navbar-logo"/>
+        </a>
+
+        <div class="input-group navbar-search">
+            <span class="input-group-text navbar-search-text">
+                <i class="fas fa-search"></i>
+            </span>
+            <input type="text" class="form-control navbar-search-input" placeholder="Nhập tên sản phẩm, danh mục hoặc thương hiệu...">
+        </div>
+    </div>
+    <div class="navbar-right d-flex align-items-center justify-content-end">
+        <div class="navbar-auth d-flex align-items-center">
+            <a href="/login">
+                <span>Dang nhap</span>
+            </a>
+            <div class="navbar-divine"></div>
+            <a href="/signup">
+                <span>Dang ky</span>
+            </a>
+        </div>
+        <div class="navbar-tool d-flex align-items-center ">
+            <a href="/wishlist" class="d-flex align-items-center">
+                <i class="far fa-heart"></i>
+            </a>
+            <a href="/cart" class="d-flex align-items-center">
+                <i class="fas fa-shopping-basket"></i>
+            </a>
+        </div>
+    </div>
+</nav>

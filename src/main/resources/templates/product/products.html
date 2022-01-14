@@ -77,15 +77,17 @@
                                             <td class="d-none d-md-table-cell fs-sm">
                                                 <strong>[[${product.name}]]</strong>
                                             </td>
-                                            <td class="d-none d-sm-table-cell text-center fs-sm format-date">[[${product.registrationDate}]]</td>
+                                            <td class="d-none d-sm-table-cell text-center fs-sm format-date">
+                                                <div  th:replace="fragments :: format_time(${product.registrationDate})"></div>
+                                            </td>
                                             <td class="d-none d-md-table-cell fs-sm">
-                                                [[${product.inStock}]]
+                                                <div  th:replace="fragments :: format_currency(${product.inStock})"></div>
                                             </td>
                                             <td class="d-none d-md-table-cell fs-sm">
                                                [[${product.soldQuantity}]]
                                             </td>
                                             <td class="text-end d-none d-sm-table-cell fs-sm">
-                                                <strong class="format-price" >[[${product.price}]]</strong><strong>₫</strong>
+                                                <div  th:replace="fragments :: format_currency(${product.price})"><strong>₫</strong></div>
                                             </td>
                                             <td>
                                                 <span th:if="${product.isActive == true}" class="badge bg-success">Available</span>
@@ -142,8 +144,7 @@
         }
 
 
-        $('.format-price').text(formatPrice($('.format-price').text()))
-        $('.format-date').text(formatDate($('.format-date').text()))
+        // $('.format-price').text(formatPrice($('.format-price').text()))
 
         $(".link-delete").on("click", function(e) {
             e.preventDefault();
