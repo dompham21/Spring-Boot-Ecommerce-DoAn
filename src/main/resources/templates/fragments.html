@@ -177,5 +177,18 @@
         </form>
     </div>
     <!-- SEARCH FORM END-->
+
+
+    <!-- FORMAT TIME -->
+    <div th:fragment="format_time(dateTime)">
+        <span th:text="${#dates.format(dateTime, 'dd/MM/yyyy')}"></span>
+    </div>
+    <!-- FORMAT TIME END -->
+
+    <!-- FORMAT CURRENCY -->
+    <div th:fragment="format_currency(amount)">
+        <strong th:text="${#numbers.formatDecimal(amount, 0, 'COMMA', 0, 'POINT')}"></strong>
+    </div>
+    <!-- FORMAT CURRENCY END-->
 </body>
 </html>

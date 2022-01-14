@@ -1,0 +1,225 @@
+.main-content {
+    background: radial-gradient(farthest-side ellipse at 10% 0, #333867 20%, #17193b);
+    width: 100%;
+    padding-top: 65px;
+}
+
+body::-webkit-scrollbar { width: 8px; height: 3px;}
+body::-webkit-scrollbar-button {  background-color: #666; }
+body::-webkit-scrollbar-track {  background-color: #646464;}
+body::-webkit-scrollbar-track-piece { background-color: #000;}
+body::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+body::-webkit-scrollbar-corner { background-color: #646464;}
+body::-webkit-resizer { background-color: #666;}
+
+
+.gallery {
+    padding: 95px 70px 30px 70px;
+    gap: 30px;
+}
+
+.swiper {
+    height: 500px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.gallery span.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    width: 45px;
+}
+
+.swiper-slide-active .gallery-item-title {
+    animation: slideInLeft 1s linear
+}
+.swiper-slide-active .gallery-item-subtitle {
+    animation: textIn 1s linear;
+}
+
+.swiper-slide-active .gallery-item-description {
+    animation: slideInRight 1s linear;
+}
+
+.swiper-slide-active .gallery-item-divine {
+    animation: divineDown 1s linear;
+}
+
+
+
+.gallery span.swiper-pagination-bullet {
+    background-color: #daff0f;
+    cursor: pointer;
+    width: 13px;
+    height: 13px;
+    transition: 0.5s;
+    border-radius: 15px;
+}
+
+.sub-gallery {
+    gap: 30px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.gallery-item-content {
+    position: absolute;
+    max-width: 400px;
+    left: 10%;
+    top: 20%;
+}
+
+.gallery-item-title {
+    width: fit-content;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #ffffff80;
+}
+
+.gallery-item-wrapper {
+    gap: 15px;
+    max-width: 215px;
+    margin-bottom: 7px;
+    overflow: hidden;
+}
+
+.gallery-item-divine {
+    margin-top: 10px;
+    width: 4px;
+    height: 60px;
+    background-color: red;
+    overflow: hidden;
+}
+
+.gallery-item-subtitle {
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+}
+
+.gallery-item-description {
+    color: #ffffff80;
+    font-size: 14px;
+    margin-bottom: 35px;
+}
+.gallery-item-btn {
+    background: #ff214f;
+    padding: 3px 29px;
+    outline: none;
+    border: 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: rgba(244, 244, 245, 0.9);
+    border-radius: 6px;
+    height: 32px;
+
+}
+.sub-gallery img {
+    height: 235px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.section-policy {
+    display: grid;
+    width: 100%;
+    padding: 30px 70px;
+    grid-gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.section-policy-item {
+    cursor: pointer;
+}
+
+.section-policy-item:hover img {
+    animation: elementor 1s ease;
+}
+
+.section-policy-item img {
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.section-policy-title {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: 500;
+}
+
+.section-policy-description {
+    color: #ffffff80;
+    font-size: 14px;
+}
+
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(calc(-100% + 10px))
+    }
+
+    100% {
+        transform: translateX(0)
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100%)
+    }
+
+    100% {
+        transform: translateX(0)
+    }
+}
+
+@keyframes textIn {
+    0% {
+        opacity: 0;
+        transform: translateY(100%)
+    }
+
+    100% {
+        transform: translateY(0%)
+    }
+}
+
+@keyframes divineDown {
+    0% {
+        transform: translateY(-100%)
+    }
+
+    100% {
+        transform: translateY(0%)
+    }
+}
+
+@keyframes elementor {
+    16.65% {
+        transform:translateX(10px);
+
+    }
+    33.33% {
+        transform:translateX(-8px);
+
+    }
+    49.95% {
+        transform:translateX(6px);
+
+    }
+    66.6% {
+        transform:translateX(-4px)}
+
+    83.25%{
+        transform:translateX(3px);
+
+    }
+    to {
+        transform:translateX(0);
+    }
+}
