@@ -105,6 +105,7 @@ body::-webkit-resizer { background-color: #666;}
     font-size: 14px;
     margin-bottom: 35px;
 }
+
 .gallery-item-btn {
     background: #ff214f;
     padding: 3px 29px;
@@ -115,8 +116,8 @@ body::-webkit-resizer { background-color: #666;}
     color: rgba(244, 244, 245, 0.9);
     border-radius: 6px;
     height: 32px;
-
 }
+
 .sub-gallery img {
     height: 235px;
     border-radius: 6px;
@@ -155,6 +156,179 @@ body::-webkit-resizer { background-color: #666;}
     color: #ffffff80;
     font-size: 14px;
 }
+
+.list-product {
+    padding: 30px 70px;
+}
+
+.list-product-title {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.list-product-title::before {
+    position: absolute;
+    bottom: -1px;
+    width: 70px;
+    height: 3px;
+    background: #ed1d24;
+    content: "";
+    left: 0;
+}
+
+.list-product-title h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: rgba(244, 244, 245, 0.9);
+}
+
+
+.list-product-carousel {
+    margin-top: 20px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-gap: 30px;
+    gap: 30px;
+}
+
+.list-product-item {
+    background: transparent;
+    border-radius: 25px;
+    box-shadow: 0 5px 10px #00000033;
+    padding: 5px 10px;
+}
+
+.list-product-item:hover .card-container img {
+    transform: scale(1.1) translateZ(0);
+}
+
+.list-product-item:hover .card-action {
+    opacity: 1;
+    visibility: visible;
+}
+.list-product-card .card-wrapper{
+    padding: 15px 20px;
+}
+
+.list-product-card .card-action {
+    top:0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.list-product-card .card-action-item {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e8f6ea;
+    border: 1px solid #cce7d0;
+    margin-right: 5px;
+    transition: all 0.25s cubic-bezier(0.02, 0.01, 0.47, 1);
+}
+
+.list-product-card .card-action-item::before {
+    content: '';
+    position: absolute;
+    left: calc(50% - 7px);
+    bottom: 100%;
+    border: 7px solid transparent;
+    border-top-color: #088178;
+    z-index: 9;
+    margin-bottom: -3px;
+    transition-delay: .1s;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.list-product-card .card-action-item::after {
+    white-space: nowrap;
+    font-size: 11px;
+    bottom: 100%;
+    position: absolute;
+    border-radius: 5px;
+    padding: 7px 10px;
+    background-color: #088178;
+    color: #ffffff;
+    content: attr(aria-label);
+    transition-delay: .1s;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 11px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.list-product-card .card-action-item:hover {
+    transform: translateY(-5px);
+    background-color: #088178;
+    border: 1px solid transparent;
+}
+
+.list-product-card .card-action-item:hover::after,.list-product-card .card-action-item:hover::before  {
+    opacity: 1;
+    visibility: visible;
+}
+.list-product-card .card-action-item i {
+    font-size: 20px;
+    color: #088178;
+}
+
+.list-product-card .card-action-item:hover i {
+    color: white;
+}
+
+
+.list-product-card .card-container {
+    border-radius: 20px;
+
+}
+.list-product-card .card-container img {
+    width: 100%;
+    position: relative;
+    object-fit: contain;
+    transition: transform 1.2s cubic-bezier(0, 0, 0.2, 1);
+    height: 244px;
+}
+
+.list-product-card .card-content {
+    padding-bottom: 20px;
+}
+
+.list-product-card .card-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    transition: all 0.5s ease;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.list-product-card .card-name:hover {
+    color: #ff214f;
+}
+
+.list-product-card .card-description {
+    font-size: 12px;
+    font-weight: 400;
+    color: #9da0ad;
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 6px;
+}
+
+.list-product-card .card-price {
+    color: white;
+    font-size: 18px;
+}
+
 
 @keyframes slideInLeft {
     0% {
