@@ -179,4 +179,18 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/product/detail/{id}")
+    public String detailProduct(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model) {
+        try {
+            Product product = productService.getProductById(id);
+            model.addAttribute("product", product);
+            return "product/detail_product";
+        }
+        catch (ProductNotFoundException e) {
+            redirectAttributes.addFlashAttribute("messageError", e.getMessage());
+            return "product/detail_product";
+
+        }
+    }
+
 }
