@@ -99,3 +99,4 @@ function uploadImage(image) {
 function clearFilter(entityName) {
     window.location = `/admin/${entityName}/page/1`;
 }
+
