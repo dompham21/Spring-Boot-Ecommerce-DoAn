@@ -35,7 +35,11 @@ body::-webkit-scrollbar {
     width: 1px;
 }
 
-
+.main-content {
+    background: radial-gradient(farthest-side ellipse at 10% 0, #333867 20%, #17193b);
+    width: 100%;
+    padding-top: 65px;
+}
 
 
 

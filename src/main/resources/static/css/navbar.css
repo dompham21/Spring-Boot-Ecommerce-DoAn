@@ -74,9 +74,6 @@
     margin-right: 10px;
 }
 
-.navbar-tool {
-    gap: 10px;
-}
 
 .navbar-tool i {
     color: #3699ff;
@@ -268,4 +265,44 @@
     font-weight: 700;
     color: #333;
     font-size: 15px;
+}
+
+.navbar-user {
+    color: white;
+    margin-left: 30px;
+}
+
+#dropdownUser::after {
+    color: white;
+}
+
+.dropdown-user-menu {
+    width: 200px;
+    left: unset;
+    right: -12px;
+    top: 30px;
+}
+
+
+
+.dropdown-user-menu  .user-menu-item {
+    height: 48px;
+    padding: 0 8px;
+}
+.dropdown-user-menu  .user-menu-item:hover {
+    background-color: #f6f6f6;
+}
+
+.dropdown-user-menu  .user-menu-item i {
+    color: rgba(0,0,0,.54);
+    margin-right: 12px;
+    font-size: 18px;
+    width: 13.5px;
+}
+
+.dropdown-user-menu .user-menu-item span {
+    color: rgba(0,0,0,.87);
+    font-size: 16px;
+    font-weight: 300;
+
 }

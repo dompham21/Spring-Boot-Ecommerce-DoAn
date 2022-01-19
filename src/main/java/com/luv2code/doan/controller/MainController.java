@@ -31,4 +31,9 @@ public class MainController {
     public String checkout() {
         return "checkout";
     }
+
+    @GetMapping("/profile/info")
+    public String profileInfo() {
+        return "profile";
+    }
 }
