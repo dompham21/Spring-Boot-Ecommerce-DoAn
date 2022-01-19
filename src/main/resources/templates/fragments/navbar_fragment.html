@@ -14,13 +14,13 @@
         </div>
     </div>
     <div class="navbar-right d-flex align-items-center justify-content-end">
-        <div class="navbar-auth d-flex align-items-center">
+        <div class="navbar-auth d-flex align-items-center" style="display: none !important;">
             <a href="/login">
-                <span>Dang nhap</span>
+                <span>Đăng nhập</span>
             </a>
             <div class="navbar-divine"></div>
             <a href="/signup">
-                <span>Dang ky</span>
+                <span>Đăng ký</span>
             </a>
         </div>
         <div class="navbar-tool d-flex align-items-center ">
@@ -72,6 +72,22 @@
                 </div>
             </div>
 
+        </div>
+        <div class="navbar-user d-flex align-items-center">
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-center" role="button" id="dropdownUser" data-toggle="dropdown" aria-expanded="false">
+                    <span>Dom Pham</span>
+                </a>
+                <div class="dropdown-menu dropdown-user-menu" aria-labelledby="dropdownUser">
+                    <div class="user-menu-wrapper d-flex flex-column">
+                        <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-user"></i><span>Thông tin tài khoản</span></a>
+                        <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-clipboard"></i><span>Danh sách đơn hàng</span></a>
+                        <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a>
+
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </nav>

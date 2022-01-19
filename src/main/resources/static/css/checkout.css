@@ -1,9 +1,3 @@
-.main-content {
-    background: radial-gradient(farthest-side ellipse at 10% 0, #333867 20%, #17193b);
-    width: 100%;
-    padding-top: 65px;
-}
-
 .checkout-main {
     padding: 70px 70px 30px 70px;
     gap: 24px;
