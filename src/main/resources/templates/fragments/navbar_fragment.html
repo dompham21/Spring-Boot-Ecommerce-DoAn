@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <nav th:fragment="navbar"  class="navbar">
     <div class="navbar-left d-flex align-items-center flex-grow-1 justify-content-start">
-        <a href="/">
+        <a href="/" style="outline: none !important;box-shadow: none !important;">
             <img th:src="@{/images/logo-white.png}" alt="logo" class="navbar-logo"/>
         </a>
 
@@ -24,12 +24,54 @@
             </a>
         </div>
         <div class="navbar-tool d-flex align-items-center ">
-            <a href="/wishlist" class="d-flex align-items-center">
+            <a href="/wishlist" class="btn-wishlist d-flex align-items-center justify-content-center">
                 <i class="far fa-heart"></i>
             </a>
-            <a href="/cart" class="d-flex align-items-center">
-                <i class="fas fa-shopping-basket"></i>
-            </a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-center" role="button" id="dropdownCart" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-shopping-basket"></i>
+                </a>
+                <div class="dropdown-menu dropdown-cart-menu" aria-labelledby="dropdownCart">
+                    <div class="d-flex flex-column">
+                        <div class="cart-body d-flex flex-column">
+                            <div class="cart-item d-flex">
+                                <div class="cart-img">
+                                    <img th:src="@{/images/product1.png}"/>
+                                </div>
+                                <div class="cart-item-main">
+                                    <div class="cart-item-name">Mouse Logitech</div>
+                                    <div class="cart-item-price">20.000đ x 1</div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-qlt d-flex">
+                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" > - </button>
+                                            <input type="number" min="1"  class="detail-summary-qlt" value="1"/>
+                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"> + </button>
+                                        </div>
+                                        <div class="cart-item-sum d-flex">20.000đ</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart-divine"></div>
+                        <div class="cart-footer d-flex flex-column align-items-stretch">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="cart-sum-text">
+                                    <strong>Tong cong:</strong>
+                                </div>
+                                <div class="cart-sum-number text-right">
+                                    <strong>20.000</strong>
+                                </div>
+                            </div>
+                            <div class="cart-btn d-flex align-items-center justify-content-center">
+                                <a href="/checkout">
+                                    <span>Xem gio hang</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </nav>

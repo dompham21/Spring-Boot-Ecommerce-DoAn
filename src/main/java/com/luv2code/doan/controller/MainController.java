@@ -27,4 +27,8 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/checkout")
+    public String checkout() {
+        return "checkout";
+    }
 }
