@@ -89,7 +89,7 @@
 }
 
 .profile-tab-item {
-    padding: 16px;
+    padding: 30px 16px 70px 16px;
     font-size: 15px;
 }
 
@@ -113,7 +113,6 @@
 }
 
 .profile-form-btn {
-    height: 36px;
     background-color: #ec4c4d;
     color: white;
     box-shadow: 0 3px 1px -2px #00000033, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
@@ -124,7 +123,7 @@
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: .0892857143em;
-    padding: 0 24px;
+    padding: 8px 24px;
 }
 
 .profile-form-btn:hover {
@@ -153,4 +152,42 @@
 
 #form-change-password .user-info-field:not(:last-child), #form-change-user-info .user-info-field:not(:last-child){
     margin-top: 24px;
+}
+
+.input-date-picker {
+    width: 344px;
+    position: relative;
+}
+
+.input-date-picker input {
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+    color: white !important;
+}
+
+.icon-input-date {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.profile-order-header {
+
+}
+
+.profile-order-filter-item {
+
+}
+
+.profile-order-input {
+    width: 142px;
+    background-color: transparent;
+    color: white;
+}
+
+.profile-order-input:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    color: white;
 }

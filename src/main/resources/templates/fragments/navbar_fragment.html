@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      >
 <nav th:fragment="navbar"  class="navbar">
     <div class="navbar-left d-flex align-items-center flex-grow-1 justify-content-start">
         <a href="/" style="outline: none !important;box-shadow: none !important;">
@@ -13,16 +14,19 @@
             <input type="text" class="form-control navbar-search-input" placeholder="Nhập tên sản phẩm, danh mục hoặc thương hiệu...">
         </div>
     </div>
+
     <div class="navbar-right d-flex align-items-center justify-content-end">
-        <div class="navbar-auth d-flex align-items-center" style="display: none !important;">
-            <a href="/login">
-                <span>Đăng nhập</span>
-            </a>
-            <div class="navbar-divine"></div>
-            <a href="/signup">
-                <span>Đăng ký</span>
-            </a>
-        </div>
+        <th:block sec:authorize="isAnonymous()" >
+            <div class="navbar-auth d-flex align-items-center" >
+                <a href="/login">
+                    <span>Đăng nhập</span>
+                </a>
+                <div class="navbar-divine"></div>
+                <a href="/signup">
+                    <span>Đăng ký</span>
+                </a>
+            </div>
+        </th:block>
         <div class="navbar-tool d-flex align-items-center ">
             <a href="/wishlist" class="btn-wishlist d-flex align-items-center justify-content-center">
                 <i class="far fa-heart"></i>
@@ -73,21 +77,24 @@
             </div>
 
         </div>
-        <div class="navbar-user d-flex align-items-center">
-            <div class="dropdown">
-                <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-center" role="button" id="dropdownUser" data-toggle="dropdown" aria-expanded="false">
-                    <span>Dom Pham</span>
-                </a>
-                <div class="dropdown-menu dropdown-user-menu" aria-labelledby="dropdownUser">
-                    <div class="user-menu-wrapper d-flex flex-column">
-                        <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-user"></i><span>Thông tin tài khoản</span></a>
-                        <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-clipboard"></i><span>Danh sách đơn hàng</span></a>
-                        <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a>
+        <th:block sec:authorize="isAuthenticated()" >
+            <div class="navbar-user d-flex align-items-center">
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-center" role="button" id="dropdownUser" data-toggle="dropdown" aria-expanded="false">
+                        <span th:text="${#authentication.getPrincipal().getFullname()}" style="text-transform: capitalize"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-user-menu" aria-labelledby="dropdownUser">
+                        <div class="user-menu-wrapper d-flex flex-column">
+                            <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-user"></i><span>Thông tin tài khoản</span></a>
+                            <a href="/profile/order/info" class="user-menu-item d-flex align-items-center"><i class="far fa-clipboard"></i><span>Danh sách đơn hàng</span></a>
+                            <a href="/logout" class="user-menu-item d-flex align-items-center"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a>
+
+                        </div>
 
                     </div>
-
                 </div>
             </div>
-        </div>
+        </th:block>
+
     </div>
 </nav>

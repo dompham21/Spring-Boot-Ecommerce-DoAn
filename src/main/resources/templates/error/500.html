@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: page_head('Login - Music Website', 'none')" />
+<head th:replace="fragments :: page_head('Shopwise Website', 'none')" />
 <body>
-<div class="container-fluid d-flex justify-content-center align-items-center">
-    <div class="m-3">
-        <h2>Sorry, the server has encountered an error while processing your request</h2>
-    </div>
+<div id="page-container">
+    <main id="main-container">
+        <div class="hero">
+            <div class="hero-inner text-center">
+                <div class="bg-body-extra-light">
+                    <div class="content content-full overflow-hidden mt-5">
+                        <div class="py-4">
+                            <h1 style="color: #0c91cf; font-size: 5rem" class="font-weight-bold mb-4">
+                                500
+                            </h1>
+                            <h2 class="h4 text-muted mb-5">
+                                We are sorry but our server encountered an internal error..
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="content content-full text-muted fs-sm fw-medium">
+                    <p class="mb-1">
+                        Would you like to let us know about it?
+                    </p>
+                    <a class="link-fx" href="/">Go Back to HomePage</a>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
 </body>
 </html>
