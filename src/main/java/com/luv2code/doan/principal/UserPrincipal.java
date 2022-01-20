@@ -27,7 +27,7 @@ public class UserPrincipal implements UserDetails {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for(Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_".concat(role.getName())));
+            authorities.add(new SimpleGrantedAuthority("ROLE_".concat(role.getName().toUpperCase())));
         }
 
         return authorities;
@@ -47,6 +47,7 @@ public class UserPrincipal implements UserDetails {
     public String getUsername() {
         return user.getEmail();
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -85,4 +86,10 @@ public class UserPrincipal implements UserDetails {
 
         return Objects.hash(user.getId());
     }
+
+    public String getFullname() {
+        return this.user.getFirstName() + " " + this.user.getLastName();
+    }
+
+
 }

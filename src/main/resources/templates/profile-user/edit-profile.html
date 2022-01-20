@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Home - Shopwise Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
+    <link rel="stylesheet prefetch" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css">
+</head>
+<body>
+<div th:replace="fragments/navbar_fragment :: navbar"></div>
+<div class="main-content">
+    <div class="profile-main">
+        <div class="profile-header d-flex align-items-center">
+            <div class="profile-author d-flex align-items-center">
+                <div class="profile-author-img"><img th:src="@{/images/car.png}"/></div>
+                <div class="profile-author-content d-flex flex-column flex-wrap">
+                    <div class="profile-author-name" style="text-transform: capitalize" th:text="${user.firstName + ' ' + user.lastName}"></div>
+                    <th:block th:if="${user.phone}">
+                        <div class="profile-author-phone" th:text="${user.phone}"></div>
+                    </th:block>
+                    <th:block th:unless="${user.phone}">
+                        <div class="profile-author-phone">Chưa cập nhật</div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="profile-title">Thông tin tài khoản</div>
+        </div>
+        <div class="profile-content d-flex">
+            <div class="profile-tab d-flex flex-column">
+                <a class="profile-tabs-button tab-active d-flex align-items-center" href="/profile/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/change-password">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <span>Đổi mật khẩu</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/order/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-clipboard"></i>
+                    </div>
+                    <span>Danh sách đơn hàng</span>
+                </a>
+            </div>
+            <div class="profile-content-body">
+                <div id="form-change-user-info" class="profile-tab-item">
+                    <form th:action="@{'/profile/edit'}" th:object="${user}" method="post" id="form-user">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center">
+                                <div class="font-weight-bold user-info-title"></div>
+                                <div class="user-info-item">
+                                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="font-weight-bold user-info-title"></div>
+                                <div class="user-info-item">
+                                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="font-weight-bold user-info-title"></div>
+                                <div class="user-info-item">
+                                    <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" th:field="*{id}"/>
+                        <input type="hidden" th:field="*{password}"/>
+                        <div class="d-flex align-items-center user-info-field">
+                            <div class="font-weight-bold user-info-title">Email</div>
+                            <div class="user-info-item">
+                                <input type="email" class="form-control" id="email" th:field="*{email}" th:value="${user.email}" required readonly/>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center user-info-field">
+                            <div class="font-weight-bold user-info-title">Họ nguời dùng</div>
+                            <div class="user-info-item">
+                                <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required/>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center user-info-field">
+                            <div class="font-weight-bold user-info-title">Tên người dùng</div>
+                            <div class="user-info-item">
+                                <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required/>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center user-info-field">
+                            <div class="font-weight-bold user-info-title">Số điện thoại</div>
+                            <div class="user-info-item">
+                                <input type="text" class="form-control" id="phone" th:field="*{phone}"  required/>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center user-info-field">
+                            <div class="font-weight-bold user-info-title">Ngày sinh</div>
+                            <div class="user-info-item">
+                                <div class="input-date-picker input-group date" data-date-format="dd-mm-yyyy">
+                                    <input class="form-control" readonly="" type="text">
+                                    <span class="icon-input-date input-group-addon"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center user-info-field mt-4">
+                            <div class="font-weight-bold user-info-title"></div>
+                            <div class="user-info-item">
+                                <button class="profile-form-btn" type="submit">Cập nhật</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer_fragment :: footer"></div>
+</body>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            swal(
+                '',
+                messageSuccess,
+                'success'
+            )
+
+        }
+
+        if(messageError ) {
+            swal(
+                '',
+                messageError,
+                'error'
+            )
+        }
+    })
+</script>
+<script type="text/javascript">
+    $(function () {
+        $(".input-date-picker").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            endDate: '+0d'
+        });
+    });
+</script>
+
+</html>

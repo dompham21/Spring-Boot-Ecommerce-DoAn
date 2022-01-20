@@ -23,17 +23,15 @@ public class User {
     private String email;
 
     @NotBlank(message = "Mật khẩu không được bỏ trống!")
-    @Size(min = 8, max = 50, message = "Password phải từ 8 kí tự trở lên!")
+    @Size(min = 8, max = 100, message = "Password phải từ 8 kí tự trở lên!")
     @Column(name="password", nullable = false, length = 100)
     private String password;
 
     @NotBlank(message = "Họ không được bỏ trống!")
-    @Pattern(regexp = "^[a-zA-Z ]*$", message = "Họ không được chứa ký tự đặc biệt!")
     @Size(min = 1, max = 50, message = "Họ không được dài quá 50 ký tự!")
     @Column(name="first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Pattern(regexp = "^[a-zA-Z ]*$", message = "Tên không được chứa ký tự đặc biệt!")
     @Size(min = 1, max = 100, message = "Tên không được dài quá 50 ký tự!")
     @NotBlank(message = "Tên không được bỏ trống!")
     @Column(name="last_name", nullable = false, length = 100)
@@ -88,6 +86,7 @@ public class User {
         this.id = id;
     }
 
+    public String getFullName(){ return this.firstName + " " + this.lastName;}
 
     public String getPassword() {
         return password;
@@ -203,5 +202,18 @@ public class User {
 
     public void setCarts(Collection<Cart> carts) {
         this.carts = carts;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isActive=" + isActive +
+                ", roles=" + roles +
+                '}';
     }
 }

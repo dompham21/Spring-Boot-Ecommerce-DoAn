@@ -42,6 +42,17 @@ body::-webkit-scrollbar {
 }
 
 
+.swal-text {
+    font-weight: 500;
+    font-size: 18px;
+}
 
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom {
+    width: 266px;
+}
+
+.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-left.datepicker-orient-bottom table.table-condensed {
+    width: 100%;
+}
 
 
