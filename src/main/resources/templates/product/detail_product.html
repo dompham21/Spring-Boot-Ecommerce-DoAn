@@ -7,26 +7,31 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/detail_product.css}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnify/2.3.3/css/magnify.min.css" integrity="sha512-wzhF4/lKJ2Nc8mKHNzoFP4JZsnTcBOUUBT+lWPcs07mz6lK3NpMH1NKCKDMarjaw8gcYnSBNjjllN4kVbKedbw==" crossorigin="anonymous" referrerpolicy="no-referrer" /></head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnify/2.3.3/css/magnify.min.css" />
+
+</head>
 <body>
 <div th:replace="fragments/navbar_fragment :: navbar"></div>
 <div class="main-content">
     <div class="detail-wrapper d-flex justify-content-center">
         <div class="detail-zoom d-flex justify-content-center align-items-center position-relative">
             <div class="detail-zoom-magnifier d-flex justify-content-center align-items-center position-relative">
-                <img class="detail-zoom-img" th:src="@{/images/product1.png}" th:data-magnify-src="@{/images/product1.png}"/>
+                <img class="detail-zoom-img" th:src="${product.image}" th:data-magnify-src="${product.image}"/>
             </div>
         </div>
         <div class="detail-summary">
-            <div class="detail-summary-name">Mouse Logitech</div>
-            <div class="detail-summary-price">10.000</div>
+            <div class="detail-summary-name" th:text="${product.name}"></div>
+            <div class="detail-summary-price d-flex align-items-center">
+                <div th:replace="fragments :: format_currency(${product.price})"></div>
+                <span>₫</span>
+            </div>
             <div class="detail-summary-brand d-flex align-items-center">
                 <h2 class="brand-title">Brand:</h2>
                 <div class="brand-item">
                     <img th:src="@{/images/brand.png}"/>
                 </div>
             </div>
-            <div class="detail-summary-short-desc">This is a product test</div>
+            <div class="detail-summary-short-desc" th:text="${product.shortDescription}"></div>
             <div class="detail-summary-policy">
                 <ul class="detail-summary-policy-list">
                     <li>
@@ -48,7 +53,7 @@
             <div class="detail-summary-tool d-flex align-items-center">
                 <div class="detail-summary-wrapper-qlt d-flex">
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
-                    <input type="number" min="1"  class="detail-summary-qlt" value="1"/>
+                    <input type="number" min="1"  class="detail-summary-qlt" value="1" th:max="${product.inStock}"/>
                     <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
                 </div>
 
@@ -85,77 +90,111 @@
             <div class="tab-review-wrapper d-flex justify-content-between">
                 <div class="tab-review-comment">
                     <ul class="tab-review-comment-list">
-                        <li class="tab-review-comment-item d-flex">
-                            <div class="tab-review-comment-avatar">
-                                <div class="reviewer-avatar">
-                                    <img th:src="@{/images/money.png}"/>
+                        <th:block th:each="review : ${listReviews}">
+                            <li class="tab-review-comment-item d-flex">
+                                <div class="tab-review-comment-avatar">
+                                    <div class="reviewer-avatar">
+                                        <img th:src="@{/images/money.png}"/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-review-comment-main">
-                                <div class="tab-review-comment-name">779x3lg02z</div>
-                                <div class="d-flex tab-review-comment-stars">
-                                    <ul class="list-stars">
-                                        <li><i class="fas fa-star"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                        <li><i class="fas fa-star"></i></li>
-                                    </ul>
+                                <div class="tab-review-comment-main">
+                                    <div class="tab-review-comment-name" th:text="${review.user.firstName + ' ' + review.user.lastName}"></div>
+                                    <div class="d-flex tab-review-comment-stars">
+                                        <ul class="list-stars">
+                                            <th:block th:each="star: ${#numbers.sequence(0, review.vote - 1)}">
+                                                <li><i class="fas fa-star" style="color: #f7bc3d;"></i></li>
+                                            </th:block>
+                                            <th:block th:if="${(5 - review.vote) != 0}" th:each="star: ${#numbers.sequence(0, 5 - review.vote - 1)}">
+                                                <li><i class="fas fa-star"></i></li>
+                                            </th:block>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-review-comment-text" th:text="${review.comment}"></div>
+                                    <div class="tab-review-comment-date" th:text="${#dates.format(review.date, 'dd/MM/yyyy')}" ></div>
                                 </div>
-                                <div class="tab-review-comment-text">Chất lượng sản phẩm tuyệt vời, đóng gói sản phẩm rất đẹp và chắc, lần sau sẽ ủng hộ shop tiếp</div>
-                                <div class="tab-review-comment-date">December 4, 2021 at 3:12 pm</div>
-                            </div>
-                        </li>
+                            </li>
+                        </th:block>
                     </ul>
+                    <div class="tab-review-comment-write d-flex">
+                        <div class="tab-review-comment-avatar">
+                            <div class="reviewer-avatar">
+                                <img th:src="@{/images/money.png}"/>
+                            </div>
+                        </div>
+                        <div class="tab-review-comment-main">
+                            <form th:action="@{'/product/review'}" th:object="${review}" method="post" id="form-review">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <input type="hidden" name="id" th:field="*{id}" />
+                                <div class="d-flex tab-review-comment-stars">
+                                    <div class="rating">
+                                        <input type="radio" name="vote" th:field="*{vote}" value="5" id="rating-5">
+                                        <label for="rating-5"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="4" id="rating-4">
+                                        <label for="rating-4"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="3" id="rating-3">
+                                        <label for="rating-3"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="2" id="rating-2">
+                                        <label for="rating-2"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="1" id="rating-1">
+                                        <label for="rating-1"><i class="fas fa-star"></i></label>
+                                    </div>
+                                </div>
+
+                                <textarea class="form-control" id="review-comment" th:field="*{comment}" rows="4" placeholder="Viết đánh giá sản phẩm..." required></textarea>
+                                <button class="btn-submit-review" type="submit">Gửi</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-review-result">
                     <div class="tab-review-result-ovg d-flex align-items-center">
-                        <div class="tab-review-result-point">4.8</div>
+                        <div class="tab-review-result-point" th:text="${overall}"></div>
                         <div class="tab-review-result-stars d-flex flex-column">
                             <ul class="list-stars">
-                                <li><i class="fas fa-star"></i></li>
-                                <li><i class="fas fa-star"></i></li>
-                                <li><i class="fas fa-star"></i></li>
-                                <li><i class="fas fa-star"></i></li>
-                                <li><i class="fas fa-star"></i></li>
+                                <th:block th:each="star: ${#numbers.sequence(0, T(Math).round(overall) - 1)}">
+                                    <li><i class="fas fa-star" style="color: #f7bc3d;"></i></li>
+                                </th:block>
+                                <th:block th:if="${(5 - T(Math).round(overall)) != 0}" th:each="star: ${#numbers.sequence(0, 5 - T(Math).round(overall) - 1)}">
+                                    <li><i class="fas fa-star"></i></li>
+                                </th:block>
                             </ul>
-                            <div>23 nhan xet</div>
+                            <div><span th:text="${totalItems}"></span> nhan xet</div>
                         </div>
                     </div>
                     <div class="tab-review-process d-flex align-items-center">
                         <span class="d-flex align-items-center flex-shrink-0">5 <i class="fas fa-star"></i></span>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" th:style="'width:' + ${((0.0 + countStarFive) / totalItems) * 100} + '%'"  th:aria-valuenow="${((0.0 + countStarFive) / totalItems) * 100}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <span>14</span>
+                        <span th:text="${countStarFive}"></span>
                     </div>
                     <div class="tab-review-process d-flex align-items-center">
                         <span class="d-flex align-items-center flex-shrink-0">4 <i class="fas fa-star"></i></span>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" th:style="'width:' + ${((0.0 + countStarFour) / totalItems) * 100} + '%'"  th:aria-valuenow="${((0.0 + countStarFour) / totalItems) * 100}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <span>4</span>
+                        <span th:text="${countStarFour}"></span>
                     </div>
                     <div class="tab-review-process d-flex align-items-center">
                         <span class="d-flex align-items-center flex-shrink-0">3 <i class="fas fa-star"></i></span>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" th:style="'width:' + ${((0.0 + countStarThree) / totalItems) * 100} + '%'"  th:aria-valuenow="${((0.0 + countStarThree) / totalItems) * 100}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <span>0</span>
+                        <span th:text="${countStarThree}"></span>
                     </div>
                     <div class="tab-review-process d-flex align-items-center">
                         <span class="d-flex align-items-center flex-shrink-0">2 <i class="fas fa-star"></i></span>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" th:style="'width:' + ${((0.0 + countStarTwo) / totalItems) * 100} + '%'"  th:aria-valuenow="${((0.0 + countStarTwo) / totalItems) * 100}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <span>0</span>
+                        <span th:text="${countStarTwo}"></span>
                     </div>
                     <div class="tab-review-process d-flex align-items-center">
                         <span class="d-flex align-items-center flex-shrink-0">1 <i class="fas fa-star"></i></span>
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" th:style="'width:' + ${((0.0 + countStarOne) / totalItems) * 100} + '%'"  th:aria-valuenow="${((0.0 + countStarOne) / totalItems) * 100}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <span>0</span>
+                        <span th:text="${countStarOne}"></span>
                     </div>
                 </div>
             </div>
@@ -169,11 +208,31 @@
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnify/2.3.3/js/jquery.magnify.min.js"></script>
-<script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script th:inline="javascript">
     $(document).ready(function() {
-        $('.detail-zoom-img').magnify(
-        );
-    });
+        $('.detail-zoom-img').magnify();
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            swal(
+                '',
+                messageSuccess,
+                'success'
+            )
+        }
+        if(messageError ) {
+            swal(
+                '',
+                messageError,
+                'error'
+            )
+        }
+    })
+</script>
+<script>
     function openTabs(evt,tabName) {
         let i;
         let tabItem;
@@ -190,4 +249,3 @@
 
     }
 </script>
-

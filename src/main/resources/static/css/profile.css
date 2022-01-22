@@ -171,23 +171,30 @@
     top: 8px;
 }
 
-.profile-order-header {
-
+.profile-order-main {
+    padding-bottom: 70px;
 }
 
-.profile-order-filter-item {
-
+.profile-order-filter {
+    gap: 16px;
 }
 
 .profile-order-input {
-    width: 142px;
-    background-color: transparent;
+    width: 142px !important;
+    background-color: transparent !important;
     color: white;
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
 }
 
 .profile-order-input:focus {
     outline: none;
     box-shadow: none;
     background-color: transparent;
+    color: white;
+}
+
+.order-table {
+    margin-top: 20px;
     color: white;
 }

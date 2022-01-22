@@ -3,21 +3,24 @@ package com.luv2code.doan.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "review")
-public class Review implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Review  {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected Integer id;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
-    @Id
     @ManyToOne
     @JoinColumn(name="product_id")
     private Product product;
@@ -27,11 +30,21 @@ public class Review implements Serializable {
     @Column(name="date")
     private Date date;
 
+    @NotBlank(message = "Bình luận không được bỏ trống!")
     @Column(name="comment", length = 300, nullable = false)
     private String comment;
 
+    @NotNull(message = "Vote không được bỏ trống!")
     @Column(name="vote")
     private Integer vote;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;
@@ -71,5 +84,16 @@ public class Review implements Serializable {
 
     public void setVote(Integer vote) {
         this.vote = vote;
+    }
+
+    @Override
+    public String toString() {
+        return "Review{" +
+                "user=" + user.getId() +
+                ", product=" + product.getId() +
+                ", date=" + date +
+                ", comment='" + comment + '\'' +
+                ", vote=" + vote +
+                '}';
     }
 }

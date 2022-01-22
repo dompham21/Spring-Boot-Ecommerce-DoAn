@@ -2,8 +2,10 @@ package com.luv2code.doan.controller;
 
 
 import com.luv2code.doan.entity.Product;
+import com.luv2code.doan.entity.Review;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.service.ProductService;
+import com.luv2code.doan.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ReviewService reviewService;
 
 
     @GetMapping("/admin/product/add")
@@ -183,7 +188,42 @@ public class ProductController {
     public String detailProduct(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model) {
         try {
             Product product = productService.getProductById(id);
+            Page<Review> page = reviewService.getReviewByProduct(id, 1);
+            List<Review> listReviews = page.getContent();
+
+            Review review = new Review();
+            int pageNum = 1;
+            long startCount = (pageNum - 1) * reviewService.REVIEW_PER_PAGE + 1;
+            long endCount = startCount +  reviewService.REVIEW_PER_PAGE - 1;
+
+            if(endCount > page.getTotalElements()) {
+                endCount = page.getTotalElements();
+            }
+            int countStarOne = reviewService.getCountStarNumByProduct(id, 1);
+            int countStarTwo = reviewService.getCountStarNumByProduct(id, 2);
+            int countStarThree = reviewService.getCountStarNumByProduct(id, 3);
+            int countStarFour = reviewService.getCountStarNumByProduct(id, 4);
+            int countStarFive = reviewService.getCountStarNumByProduct(id, 5);
+
+            float overall = (5 * countStarFive + 4 * countStarFour + 3 * countStarThree + 2 * countStarTwo + countStarOne) /(float) page.getTotalElements();
+
+            model.addAttribute("countStarOne", countStarOne);
+            model.addAttribute("countStarTwo", countStarTwo);
+            model.addAttribute("countStarThree", countStarThree);
+            model.addAttribute("countStarFour", countStarFour);
+            model.addAttribute("countStarFive", countStarFive);
+            model.addAttribute("overall", overall);
+
+
+
             model.addAttribute("product", product);
+            model.addAttribute("review", review);
+            model.addAttribute("listReviews", listReviews);
+            model.addAttribute("startCount", startCount);
+            model.addAttribute("endCount", endCount);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("currentPage", pageNum);
             return "product/detail_product";
         }
         catch (ProductNotFoundException e) {

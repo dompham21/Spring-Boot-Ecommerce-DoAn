@@ -85,4 +85,9 @@ public class ProductService {
 
         productRepository.deleteById(id);
     }
+
+    public Page<Product> listLatestProduct() {
+        Pageable pageable = PageRequest.of(0, 10);
+        return productRepository.findLatestProduct(pageable);
+    }
 }

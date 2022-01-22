@@ -87,7 +87,7 @@
                                                [[${product.soldQuantity}]]
                                             </td>
                                             <td class="text-end d-none d-sm-table-cell fs-sm">
-                                                <div  th:replace="fragments :: format_currency(${product.price})"><strong>₫</strong></div>
+                                                <div th:replace="fragments :: format_currency(${product.price})"><strong>₫</strong></div>
                                             </td>
                                             <td>
                                                 <span th:if="${product.isActive == true}" class="badge bg-success">Available</span>
