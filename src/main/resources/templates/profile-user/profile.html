@@ -92,16 +92,21 @@
 <script th:inline="javascript">
     $(document).ready(function () {
         let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
 
-        console.log(messageError)
-        if(messageError) {
+        if(messageSuccess) {
             swal(
-                'Good job!',
-                'You clicked the button!',
+                '',
+                messageSuccess,
                 'success'
             )
-
-
+        }
+        if(messageError ) {
+            swal(
+                '',
+                messageError,
+                'error'
+            )
         }
 
     })

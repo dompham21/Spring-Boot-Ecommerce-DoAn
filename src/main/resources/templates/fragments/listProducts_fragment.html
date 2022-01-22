@@ -1,271 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<section th:fragment="listProduct(title)" class="list-product">
+<section th:fragment="listProduct(title, listProduct)" class="list-product">
     <div class="list-product-wrapper">
         <div class="list-product-title d-flex flex-column justify-content-center position-relative">
             <h3 th:text="${title}"></h3>
         </div>
         <div class="list-product-carousel">
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/product/detail/1">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
+            <th:block th:each="product: ${listProduct}">
+                <div class="list-product-item">
+                    <div class="list-product-card">
+                        <a th:href="@{'/product/detail/' + ${product.id}}">
+                            <div class="card-wrapper position-relative">
+                                <div class="card-container position-relative">
+                                    <img class="card-container-img" th:src="${product.image}">
                                 </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
+                                <div class="card-action position-absolute d-flex justify-content-center align-items-center">
+                                    <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
+                                        <i class="far fa-eye"></i>
+                                    </div>
+                                    <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
+                                        <i class="far fa-heart"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
+                            <div class="card-content d-flex flex-column">
+                                <a th:href="@{'/product/detail/' + ${product.id}}">
+                                    <div class="card-name" th:text="${product.name}"></div>
+                                </a>
+                                <p class="card-description" th:text="${product.shortDescription}"></p>
+                                <div class="card-price d-flex align-items-center justify-content-center">
+                                    <div th:replace="fragments :: format_currency(${product.price})"></div>
+                                    <span>₫</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="list-product-item">
-                <div class="list-product-card">
-                    <a href="/">
-                        <div class="card-wrapper position-relative">
-                            <div class="card-container position-relative">
-                                <img class="card-container-img" th:src="@{/images/product1.png}">
-                            </div>
-                            <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Quick View">
-                                    <i class="far fa-eye"></i>
-                                </div>
-                                <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                    <i class="far fa-heart"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content d-flex flex-column">
-                            <a href="/">
-                                <div class="card-name">Logitech Mouse</div>
-                            </a>
-                            <p class="card-description">This is a product test!</p>
-                            <div class="card-price text-center">10.000 d</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+            </th:block>
+
         </div>
     </div>
 </section>

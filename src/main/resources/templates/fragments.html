@@ -187,7 +187,7 @@
 
     <!-- FORMAT CURRENCY -->
     <div th:fragment="format_currency(amount)">
-        <strong th:text="${#numbers.formatDecimal(amount, 0, 'COMMA', 0, 'POINT')}"></strong>
+        <span th:text="${#numbers.formatDecimal(amount, 0, 'COMMA', 0, 'POINT')}"></span>
     </div>
     <!-- FORMAT CURRENCY END-->
 </body>
