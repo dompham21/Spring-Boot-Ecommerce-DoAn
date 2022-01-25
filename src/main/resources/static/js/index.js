@@ -36,7 +36,7 @@ function formatNumber(event, input) {
 
 /** double to price */
 function formatPrice(inputPrice) {
-    return parseFloat(inputPrice).toLocaleString('de-DE', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+    return parseFloat(inputPrice).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
 }
 
 
@@ -100,3 +100,132 @@ function clearFilter(entityName) {
     window.location = `/admin/${entityName}/page/1`;
 }
 
+function handleInputNumber(evt) {
+    let max = parseInt(evt.currentTarget.getAttribute('max'));
+    let number = parseInt(evt.target.value);
+
+    if(number >= max) {
+        evt.target.value = max;
+    }
+    else if(number <=0 || isNaN(number)) {
+        evt.target.value = 1;
+    }
+    else {
+        evt.target.value = number;
+    }
+}
+
+
+function addToCart(productId) {
+    let quantity = $("#quantity" + productId).val();
+    let url = '/cart/add/'+ productId + '/' + quantity;
+    $.ajax({
+        type: "POST",
+        url: url,
+    })
+    .done(function(response) {
+        swal(
+            '',
+            response,
+            'success'
+        )
+    })
+    .fail(function (error) {
+
+        if(error.status = 401) { //Unauthorized
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = "<div><div>" + error.responseText + "</div><div>Go to <a style='color: #4c78dd; font-weight: 700' href='/login'>Login Page</a></div></div>"
+            swal( {
+                title: '',
+                icon: 'error',
+                content: wrapper,
+            })
+
+        }
+        else {
+            swal(
+                '',
+                error.responseText,
+                'error'
+            )
+        }
+    })
+
+
+
+
+
+}
+
+function showErrorLoginPage() {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = "<div><div>You must login to add this product to cart.</div><div>Go to <a style='color: #4c78dd; font-weight: 700' href='/login'>Login Page</a></div></div>"
+    swal( {
+        title: '',
+        icon: 'error',
+        content: wrapper,
+    })
+}
+
+$(document).on('click', '.dropdown-menu', function (e) {
+    e.stopPropagation();
+});
+
+function increaseQuantity(e, productId) {
+    e.parentNode.querySelector('input[type=number]').stepUp();
+    updatedQuantityCart(productId);
+}
+
+function decreaseQuantity(e, productId) {
+    e.parentNode.querySelector('input[type=number]').stepDown();
+    updatedQuantityCart(productId);
+}
+
+function updatedQuantityCart(productId) {
+    quantity = $("#quantity" + productId).val();
+    url =  "/cart/update/" + productId + "/" + quantity;
+
+    $.ajax({
+        type: "POST",
+        url: url,
+    }).done(function(response) {
+        if(response.status === "OK") {
+            $("#subtotal" + productId).text(formatPrice(response.subtotal));
+            $("#cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
+        }
+    }).fail(function(error) {
+        swal(
+            '',
+            error.responseText,
+            'error'
+        )
+    });
+}
+
+function deleteItemCart(productId) {
+    url = "/cart/delete/" + productId;
+    $.ajax({
+        type: "DELETE",
+        url: url,
+    }).done(function(response) {
+        if(response.status === "OK") {
+            $("#cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
+            removeItemFromHtml(productId);
+            if($('.cart-item').length === 0) {
+                $("#sectionEmptyCartMessage").removeClass("d-none");
+                $("#sectionEmptyCartMessage").addClass("d-flex");
+
+            }
+        }
+    }).fail(function(error) {
+        swal(
+            '',
+            error.responseText,
+            'error'
+        )
+    });
+}
+
+function removeItemFromHtml(productId) {
+    $("#cartitem"+productId).remove();
+}

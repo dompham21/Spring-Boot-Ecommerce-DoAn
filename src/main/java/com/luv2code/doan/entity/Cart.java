@@ -6,28 +6,30 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "carts")
-public class Cart implements Serializable {
-    /**
-     * Serializable convert the state of an object to a byte stream
-     * can save to a database or transfer
-     **/
-
-
-    //We use serialVersionUID to verify that the saved and loaded objects
-    private static final long serialVersionUID = 1L;
-
+public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product products;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Product getProducts() {
         return products;
@@ -53,5 +55,7 @@ public class Cart implements Serializable {
         this.quantity = quantity;
     }
 
-
+    public Double getSubtotal() {
+        return this.quantity * this.products.getPrice();
+    }
 }
