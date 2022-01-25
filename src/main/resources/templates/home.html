@@ -75,20 +75,18 @@
 	</div>
 
 
+<script th:inline="javascript">
+	var page = [[${page}]];
+	console.log(page)
 
-
-
-
-	<script th:inline="javascript">
-    	var page = [[${page}]];
-    	console.log(page)
-    	
-    	$('#example').peritable({
-	       tableY: true,
-	       tableHeight: 400,
-	       url: '/pagination',
-	       columnName: ["id", "username", "email"],
-	       totalElements: page.totalElements
-	    });
-	</script>
+	$('#example').peritable({
+	   tableY: true,
+	   tableHeight: 400,
+	   url: '/pagination',
+	   columnName: ["id", "username", "email"],
+	   totalElements: page.totalElements
+	});
+</script>
 </body>
+
+</html>

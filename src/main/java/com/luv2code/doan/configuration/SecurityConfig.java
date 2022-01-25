@@ -14,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -40,7 +42,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers( "/profile/**").hasAnyAuthority("ROLE_USER")
             .antMatchers("/api/**","/webjars/**", "/images/**",
                     "/signup/**", "/verify/**","/auth/**","/checkout/**",
-                    "/login/**", "/logout/**","/assets/**", "/css/**","/product/**","/").permitAll()
+                    "/login/**", "/logout/**","/assets/**", "/css/**","/product/**","/","/js/**" , "/cart/**").permitAll()
             .anyRequest().authenticated()
 
             .and()

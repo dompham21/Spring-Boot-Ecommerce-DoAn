@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragments :: page_head('Home - Shopwise Website', 'none')" />
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
@@ -50,17 +50,22 @@
                     </li>
                 </ul>
             </div>
-            <div class="detail-summary-tool d-flex align-items-center">
-                <div class="detail-summary-wrapper-qlt d-flex">
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
-                    <input type="number" min="1"  class="detail-summary-qlt" value="1" th:max="${product.inStock}"/>
-                    <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
-                </div>
-
-                <button class="detail-summary-btn">Add To Cart</button>
-                <div class="detail-summary-tool-wishlist d-flex align-items-center justify-content-center position-relative" aria-label="Add To Wishlist">
-                    <i class="far fa-heart"></i>
-                </div>
+            <div class="detail-summary-tool">
+                <form th:action="@{'/cart/add'}" method="post" id="add-cart-form">
+                    <div class="d-flex align-items-center" style="gap: 20px">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <div class="detail-summary-wrapper-qlt d-flex">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
+                            <input type="number" name="quantity" th:id="'quantity' + ${product.id}" min="1"  class="detail-summary-qlt input-number-qlt" value="1" th:max="${product.inStock}" onchange="handleInputNumber(event)"/>
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+                        </div>
+                        <button sec:authorize="isAuthenticated()" class="detail-summary-btn" type="submit">Add To Cart</button>
+                        <button sec:authorize="isAnonymous()" class="detail-summary-btn" th:onclick="showErrorLoginPage()" type="button">Add To Cart</button>
+                        <div class="detail-summary-tool-wishlist d-flex align-items-center justify-content-center position-relative" aria-label="Add To Wishlist">
+                            <i class="far fa-heart"></i>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="detail-summary-meta d-flex flex-column">
                 <div class="detail-summary-meta-categories">
@@ -90,6 +95,9 @@
             <div class="tab-review-wrapper d-flex justify-content-between">
                 <div class="tab-review-comment">
                     <ul class="tab-review-comment-list">
+<!--                        <th:block th:if="${#lists.isEmpty(listReviews)}">-->
+<!--                            <div>Hien tai chua co danh gia nao!</div>-->
+<!--                        </th:block>-->
                         <th:block th:each="review : ${listReviews}">
                             <li class="tab-review-comment-item d-flex">
                                 <div class="tab-review-comment-avatar">
@@ -148,15 +156,23 @@
                 </div>
                 <div class="tab-review-result">
                     <div class="tab-review-result-ovg d-flex align-items-center">
-                        <div class="tab-review-result-point" th:text="${overall}"></div>
+                        <div class="tab-review-result-point" th:text="${overall == 0 ? '0' : overall}"></div>
                         <div class="tab-review-result-stars d-flex flex-column">
                             <ul class="list-stars">
-                                <th:block th:each="star: ${#numbers.sequence(0, T(Math).round(overall) - 1)}">
-                                    <li><i class="fas fa-star" style="color: #f7bc3d;"></i></li>
+                                <th:block th:if="${overall != 0}">
+                                    <th:block th:each="star: ${#numbers.sequence(0, T(Math).round(overall) - 1)}">
+                                        <li><i class="fas fa-star" style="color: #f7bc3d;"></i></li>
+                                    </th:block>
+                                    <th:block th:if="${(5 - T(Math).round(overall)) != 0}" th:each="star: ${#numbers.sequence(0, 5 - T(Math).round(overall) - 1)}">
+                                        <li><i class="fas fa-star"></i></li>
+                                    </th:block>
                                 </th:block>
-                                <th:block th:if="${(5 - T(Math).round(overall)) != 0}" th:each="star: ${#numbers.sequence(0, 5 - T(Math).round(overall) - 1)}">
-                                    <li><i class="fas fa-star"></i></li>
+                                <th:block th:if="${overall == 0}">
+                                    <th:block th:each="i : ${#numbers.sequence(0,4)}">
+                                        <li><i class="fas fa-star"></i></li>
+                                    </th:block>
                                 </th:block>
+
                             </ul>
                             <div><span th:text="${totalItems}"></span> nhan xet</div>
                         </div>
@@ -204,9 +220,9 @@
 </div>
 <div th:replace="fragments/footer_fragment :: footer"></div>
 
-</body>
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnify/2.3.3/js/jquery.magnify.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -230,7 +246,9 @@
                 'error'
             )
         }
+
     })
+
 </script>
 <script>
     function openTabs(evt,tabName) {
@@ -246,6 +264,7 @@
         }
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " tab-active";
-
     }
 </script>
+</body>
+

@@ -1,15 +1,19 @@
 package com.luv2code.doan.controller;
 
 
+import com.luv2code.doan.entity.Cart;
 import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.Review;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
+import com.luv2code.doan.principal.UserPrincipal;
+import com.luv2code.doan.service.CartService;
 import com.luv2code.doan.service.ProductService;
 import com.luv2code.doan.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +36,9 @@ public class ProductController {
 
     @Autowired
     private ReviewService reviewService;
+
+    @Autowired
+    private CartService cartService;
 
 
     @GetMapping("/admin/product/add")
@@ -185,11 +192,28 @@ public class ProductController {
     }
 
     @GetMapping("/product/detail/{id}")
-    public String detailProduct(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model) {
+    public String detailProduct(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model,
+                                @AuthenticationPrincipal UserPrincipal loggedUser) {
         try {
             Product product = productService.getProductById(id);
             Page<Review> page = reviewService.getReviewByProduct(id, 1);
             List<Review> listReviews = page.getContent();
+
+            if(loggedUser != null) {
+                List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
+                log.info(listCarts.isEmpty() + "");
+
+                double estimatedTotal = 0;
+
+                for (Cart item : listCarts) {
+                    estimatedTotal += item.getSubtotal();
+
+                }
+
+                log.info(estimatedTotal + "");
+                model.addAttribute("listCarts", listCarts);
+                model.addAttribute("estimatedTotal", estimatedTotal);
+            }
 
             Review review = new Review();
             int pageNum = 1;
@@ -206,6 +230,10 @@ public class ProductController {
             int countStarFive = reviewService.getCountStarNumByProduct(id, 5);
 
             float overall = (5 * countStarFive + 4 * countStarFour + 3 * countStarThree + 2 * countStarTwo + countStarOne) /(float) page.getTotalElements();
+            if(Float.isNaN(overall)) {
+                overall = 0;
+            }
+
 
             model.addAttribute("countStarOne", countStarOne);
             model.addAttribute("countStarTwo", countStarTwo);

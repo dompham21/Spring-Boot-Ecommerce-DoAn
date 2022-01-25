@@ -128,7 +128,6 @@
     <div th:if="${messageSuccess != ''}" th:replace="fragments :: modal_dialog('Successfully', ${messageSuccess})" />
     <div th:if="${messageError != ''}" th:replace="fragments :: modal_error('Error', ${messageError})" />
 
-</body>
 
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -153,6 +152,7 @@
 
     })
 </script>
+</body>
 
 
 </html>

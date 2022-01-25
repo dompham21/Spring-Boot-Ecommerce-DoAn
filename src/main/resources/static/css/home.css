@@ -338,6 +338,7 @@ body::-webkit-resizer { background-color: #666;}
 }
 
 
+
 @keyframes slideInLeft {
     0% {
         opacity: 0;
@@ -348,6 +349,12 @@ body::-webkit-resizer { background-color: #666;}
         transform: translateX(0)
     }
 }
+
+.modal-quick-view .modal-quick-view-dialog {
+    width: 800px;
+    max-width: 800px;
+}
+
 
 @keyframes slideInRight {
     0% {
