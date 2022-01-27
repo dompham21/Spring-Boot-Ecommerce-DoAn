@@ -55,9 +55,9 @@
                     <div class="d-flex align-items-center" style="gap: 20px">
                         <input type="hidden" name="productId" th:value="${product.id}">
                         <div class="detail-summary-wrapper-qlt d-flex">
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" ></button>
-                            <input type="number" name="quantity" th:id="'quantity' + ${product.id}" min="1"  class="detail-summary-qlt input-number-qlt" value="1" th:max="${product.inStock}" onchange="handleInputNumber(event)"/>
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" type="button"></button>
+                            <input type="number" name="quantity" min="1"  class="detail-summary-qlt input-number-qlt" value="1" th:max="${product.inStock}" onchange="handleInputNumber(event)"/>
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus" type="button"></button>
                         </div>
                         <button sec:authorize="isAuthenticated()" class="detail-summary-btn" type="submit">Add To Cart</button>
                         <button sec:authorize="isAnonymous()" class="detail-summary-btn" th:onclick="showErrorLoginPage()" type="button">Add To Cart</button>
