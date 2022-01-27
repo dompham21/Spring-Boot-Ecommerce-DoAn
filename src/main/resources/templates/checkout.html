@@ -11,7 +11,8 @@
 <body>
     <div th:replace="fragments/navbar_fragment :: navbar"></div>
     <div class="main-content">
-        <div class="d-flex checkout-main">
+        <th:block th:if="${listCarts != null and !listCarts.empty}">
+            <div id="checkout-main" class="d-flex checkout-main">
             <div class="checkout-info">
                 <div class="checkout-info-main">
                     <div class="checkout-title">Thông tin người nhận hàng</div>
@@ -118,24 +119,33 @@
             <div class="checkout-cart">
                 <div class="checkout-title">Thông tin giỏ hàng</div>
                 <div class="d-flex flex-column">
-                    <div class="cart-body d-flex flex-column">
-                        <div class="cart-item d-flex">
-                            <div class="cart-img">
-                                <img th:src="@{/images/product1.png}"/>
-                            </div>
-                            <div class="cart-item-main">
-                                <div class="cart-item-name">Mouse Logitech</div>
-                                <div class="cart-item-price">20.000đ x 1</div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-qlt d-flex">
-                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" > - </button>
-                                        <input type="number" min="1"  class="detail-summary-qlt" value="1"/>
-                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"> + </button>
-                                    </div>
-                                    <div class="cart-item-sum d-flex">20.000đ</div>
+                    <div class="cart-body d-flex flex-column checkout-cart-body">
+                        <th:block th:if="${listCarts != null and !listCarts.empty}" th:each="cart : ${listCarts}">
+                            <div th:class="'cart-item d-flex position-relative cartitem' + ${cart.products.id}">
+                                <div class="cart-img">
+                                    <img th:src="${cart.products.image}"/>
                                 </div>
+                                <div class="cart-item-main">
+                                    <div class="cart-item-name" th:text="${cart.products.name}"></div>
+                                    <div class="cart-item-price d-flex align-items-center">
+                                        <div th:replace="fragments :: format_currency(${cart.products.price})"></div>
+                                        <span th:class="'price-quantity'+${cart.products.id}" th:text="'đ x ' + ${cart.quantity}"></span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-qlt d-flex">
+                                            <button th:onclick="'decreaseQuantity(this,'+${cart.products.id}+')'" > - </button>
+                                            <input type="number" min="1"  th:class="'detail-summary-qlt quantity' + ${cart.products.id}" th:value="${cart.quantity}" th:max="${cart.products.inStock}" th:onchange="'handleInputNumberCart(event,' + ${cart.products.id} + ')'" />
+                                            <button class="plus"  th:onclick="'increaseQuantity(this,'+${cart.products.id}+')'"> + </button>
+                                        </div>
+                                        <div class="cart-item-sum d-flex align-items-center" >
+                                            <div th:class="'subtotal' + ${cart.products.id}">[[${#numbers.formatDecimal(cart.subtotal, 0, 'COMMA', 0, 'POINT')}]]</div>
+                                            <span>đ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cart-delete-btn d-flex align-items-center justify-content-center" th:onclick="'deleteItemCart(' + ${cart.products.id} +')'"><i class="far fa-trash-alt"></i></div>
                             </div>
-                        </div>
+                        </th:block>
                     </div>
                     <div class="cart-divine"></div>
                     <div class="cart-footer d-flex flex-column align-items-stretch">
@@ -143,8 +153,9 @@
                             <div class="cart-sum-text">
                                 <strong>Tổng cộng:</strong>
                             </div>
-                            <div class="cart-sum-number text-right">
-                                <strong>37.000 VNĐ</strong>
+                            <div class="cart-sum-number text-right font-weight-bold d-flex align-items-center">
+                                <div class="cart-estimatedTotal">[[${#numbers.formatDecimal(estimatedTotal, 0, 'COMMA', 0, 'POINT')}]]</div>
+                                <span>đ</span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
@@ -167,13 +178,24 @@
                 </div>
             </div>
         </div>
+        </th:block>
+        <div th:class="'align-items-center justify-content-center flex-column ' + ${listCarts == null or listCarts.empty ? 'd-flex' : 'd-none'}" id="checkout-empty" >
+            <div class="d-flex align-items-center justify-content-center" style="width: 6.75rem; height: 6.125rem;">
+                <img th:src="@{/images/empty-cart.png}" style="width: 100%; height: 100%"/>
+            </div>
+            <div class="text-center mt-4" style="color: white; margin-top: 18px">Giỏ hàng của bạn còn trống</div>
+            <a href="/" class="checkout-btn-submit text-center d-flex align-items-center" style="margin-top: 17px; color: white!important;">Mua Ngay</a>
+        </div>
+
     </div>
 
     <div th:replace="fragments/footer_fragment :: footer"></div>
 
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<script>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}" ></script>
+
+    <script>
     function openTabs(evt,tabName) {
         let i;
         let tabItem;

@@ -1,3 +1,11 @@
+body::-webkit-scrollbar { width: 8px; height: 3px;}
+body::-webkit-scrollbar-button {  background-color: #666; }
+body::-webkit-scrollbar-track {  background-color: #646464;}
+body::-webkit-scrollbar-track-piece { background-color: #000;}
+body::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+body::-webkit-scrollbar-corner { background-color: #646464;}
+body::-webkit-resizer { background-color: #666;}
+
 .checkout-main {
     padding: 70px 70px 30px 70px;
     gap: 24px;
@@ -220,4 +228,32 @@
 
 .checkout-cart .cart-sum-number-main {
     color: #ffca28;
+}
+
+#checkout-empty {
+    max-height: 700px;
+    min-height: 600px;
+    width: 100%;
+    height: 100vh;
+}
+
+.checkout-main .cart-delete-btn i {
+    color: white;
+}
+
+.checkout-main .cart-delete-btn:hover i{
+    color: rgba(0,0,0,.87);
+}
+
+.checkout-cart-body {
+    gap: 20px;
+    max-height: unset;
+}
+
+.checkout-cart-body::-webkit-scrollbar { width: 6px;}
+.checkout-cart-body::-webkit-scrollbar-track {  background: transparent; }
+.checkout-cart-body::-webkit-scrollbar-thumb {
+    background-color: #848085;
+    border-radius: 10px;
+    border: 3px solid transparent;
 }

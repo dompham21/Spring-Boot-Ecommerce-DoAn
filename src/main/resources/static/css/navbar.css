@@ -336,3 +336,61 @@
 .cart-delete-btn:hover {
     background: #eeeeee;
 }
+
+.nav-badge {
+    z-index: auto;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+    background: #ff4d4f;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px #fff;
+    position: absolute;
+    top: 13px;
+    right: 7px;
+    transform: translate(50%,-50%);
+    transform-origin: 100% 0%;
+}
+
+.pulse-ring {
+    display: block;
+    border-radius: 40px;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    -webkit-animation: animation-pulse 3.5s ease-out;
+    animation: animation-pulse 3.5s ease-out;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    opacity: 0;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #e4e6ef;
+}
+
+@keyframes animation-pulse {
+    0% {
+        -webkit-transform: scale(.1,.1);
+        opacity: 0
+    }
+
+    60% {
+        -webkit-transform: scale(.1,.1);
+        opacity: 0
+    }
+
+    65% {
+        opacity: 1
+    }
+
+    100% {
+        -webkit-transform: scale(1.2,1.2);
+        opacity: 0
+    }
+}

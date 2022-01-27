@@ -60,7 +60,22 @@ public class MainController {
     }
 
     @GetMapping("/checkout")
-    public String checkout() {
+    public String checkout(Model model, @AuthenticationPrincipal UserPrincipal loggedUser) {
+        if(loggedUser != null) {
+            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
+            log.info(listCarts.isEmpty() + "");
+
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+
+            }
+
+            log.info(estimatedTotal + "");
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
+        }
         return "checkout";
     }
 

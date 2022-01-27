@@ -103,7 +103,6 @@ function clearFilter(entityName) {
 function handleInputNumber(evt) {
     let max = parseInt(evt.currentTarget.getAttribute('max'));
     let number = parseInt(evt.target.value);
-
     if(number >= max) {
         evt.target.value = max;
     }
@@ -115,46 +114,9 @@ function handleInputNumber(evt) {
     }
 }
 
-
-function addToCart(productId) {
-    let quantity = $("#quantity" + productId).val();
-    let url = '/cart/add/'+ productId + '/' + quantity;
-    $.ajax({
-        type: "POST",
-        url: url,
-    })
-    .done(function(response) {
-        swal(
-            '',
-            response,
-            'success'
-        )
-    })
-    .fail(function (error) {
-
-        if(error.status = 401) { //Unauthorized
-            const wrapper = document.createElement('div');
-            wrapper.innerHTML = "<div><div>" + error.responseText + "</div><div>Go to <a style='color: #4c78dd; font-weight: 700' href='/login'>Login Page</a></div></div>"
-            swal( {
-                title: '',
-                icon: 'error',
-                content: wrapper,
-            })
-
-        }
-        else {
-            swal(
-                '',
-                error.responseText,
-                'error'
-            )
-        }
-    })
-
-
-
-
-
+function handleInputNumberCart(evt, productId) {
+    handleInputNumber(evt);
+    updatedQuantityCart(productId, evt.target.value)
 }
 
 function showErrorLoginPage() {
@@ -173,16 +135,20 @@ $(document).on('click', '.dropdown-menu', function (e) {
 
 function increaseQuantity(e, productId) {
     e.parentNode.querySelector('input[type=number]').stepUp();
-    updatedQuantityCart(productId);
+    let quantity = $(e).parent().find('input').val()
+    updatedQuantityCart(productId, quantity);
+
 }
 
 function decreaseQuantity(e, productId) {
     e.parentNode.querySelector('input[type=number]').stepDown();
-    updatedQuantityCart(productId);
+    let quantity = $(e).parent().find('input').val()
+    updatedQuantityCart(productId, quantity);
 }
 
-function updatedQuantityCart(productId) {
-    quantity = $("#quantity" + productId).val();
+function updatedQuantityCart(productId, quantity) {
+    $('.quantity' + productId).val(quantity);
+    $('.price-quantity' +productId).text('đ x ' + quantity);
     url =  "/cart/update/" + productId + "/" + quantity;
 
     $.ajax({
@@ -190,8 +156,8 @@ function updatedQuantityCart(productId) {
         url: url,
     }).done(function(response) {
         if(response.status === "OK") {
-            $("#subtotal" + productId).text(formatPrice(response.subtotal));
-            $("#cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
+            $(".subtotal" + productId).text(formatPrice(response.subtotal));
+            $(".cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
         }
     }).fail(function(error) {
         swal(
@@ -209,12 +175,17 @@ function deleteItemCart(productId) {
         url: url,
     }).done(function(response) {
         if(response.status === "OK") {
-            $("#cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
+            $(".cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
             removeItemFromHtml(productId);
-            if($('.cart-item').length === 0) {
+            if($('.cart-item-count').length === 0) {
                 $("#sectionEmptyCartMessage").removeClass("d-none");
                 $("#sectionEmptyCartMessage").addClass("d-flex");
+                $("#checkout-empty").removeClass("d-none");
+                $("#checkout-empty").addClass("d-flex");
 
+                $("#checkout-main").remove();
+                $(".pulse-ring").remove();
+                $(".nav-badge").remove();
             }
         }
     }).fail(function(error) {
@@ -227,5 +198,5 @@ function deleteItemCart(productId) {
 }
 
 function removeItemFromHtml(productId) {
-    $("#cartitem"+productId).remove();
+    $(".cartitem"+productId).remove();
 }
