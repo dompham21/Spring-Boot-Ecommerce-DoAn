@@ -221,3 +221,15 @@
 .checkout-cart .cart-sum-number-main {
     color: #ffca28;
 }
+
+#section-checkout-empty {
+    height: 100vh;
+    padding-bottom: 65px;
+    min-height: 500px;
+    color: white;
+    max-height: 750px;
+}
+
+#section-checkout-empty img {
+    width: 150px;
+}

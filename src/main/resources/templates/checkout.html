@@ -11,194 +11,215 @@
 <body>
     <div th:replace="fragments/navbar_fragment :: navbar"></div>
     <div class="main-content">
-        <div class="d-flex checkout-main">
-            <div class="checkout-info">
-                <div class="checkout-info-main">
-                    <div class="checkout-title">Thông tin người nhận hàng</div>
-                    <div class="checkout-form">
-                        <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
-                            <div style="width: 100%">
-                                <label class="form-label" for="ho">Họ nguời nhận</label>
-                                <input type="text" class="form-control checkout-input"  id="ho" placeholder="Họ" required>
-                            </div>
-                            <div style="width: 100%">
-                                <label class="form-label" for="ten">Tên nguời nhận</label>
-                                <input type="text" class="form-control checkout-input" id="ten" placeholder="Tên" required>
-                            </div>
-
-                        </div>
-                        <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
-                            <div style="width: 100%">
-                                <label class="form-label" for="email">Email</label>
-                                <input type="email" class="form-control checkout-input" id="email" placeholder="Email" required>
-                            </div>
-                            <div style="width: 100%">
-                                <label class="form-label" for="phone">Số điện thoại</label>
-                                <input type="text" class="form-control checkout-input" id="phone" placeholder="Số điện thoại" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="checkout-info-address">
-                    <div class="checkout-title">Vui lòng điền đầy đủ thông tin bên dưới hoặc chọn địa chỉ đã lưu.</div>
-                    <div class="checkout-tabs-header d-flex align-items-center">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input radio-tab-btn" id="customControlValidation2" checked="true"  onclick="openTabs(event,'tab-newaddress')">
-                            <label class="custom-control-label" for="customControlValidation2">Địa chỉ giao hàng mới</label>
-                        </div>
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input radio-tab-btn" id="customControlValidation3" onclick="openTabs(event,'tab-oldaddress')" >
-                            <label class="custom-control-label" for="customControlValidation3">Địa chỉ giao hàng đã lưu</label>
-                        </div>
-                    </div>
-                    <div id="tab-newaddress" class="tab-item">
+        <th:block th:if="${listCarts != null and !listCarts.empty}">
+            <div class="d-flex checkout-main" id="checkout-controller">
+                <div class="checkout-info">
+                    <div class="checkout-info-main">
+                        <div class="checkout-title">Thông tin người nhận hàng</div>
                         <div class="checkout-form">
                             <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
                                 <div style="width: 100%">
-                                    <select class="custom-select checkout-select" required id="province">
-                                        <option value="" selected>Chọn tỉnh/thành phố</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
+                                    <label class="form-label" for="ho">Họ nguời nhận</label>
+                                    <input type="text" class="form-control checkout-input"  id="ho" placeholder="Họ" required>
                                 </div>
                                 <div style="width: 100%">
-                                    <select class="custom-select checkout-select" required id="district">
-                                        <option value="" selected>Chọn quận/huyện</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
+                                    <label class="form-label" for="ten">Tên nguời nhận</label>
+                                    <input type="text" class="form-control checkout-input" id="ten" placeholder="Tên" required>
                                 </div>
+
                             </div>
                             <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
                                 <div style="width: 100%">
-                                    <select class="custom-select checkout-select" required id="ward">
-                                        <option value="" selected>Chọn phường/xã</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                    </select>
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="email" class="form-control checkout-input" id="email" placeholder="Email" required>
                                 </div>
                                 <div style="width: 100%">
-                                    <input type="text" class="form-control checkout-input" id="number-home" placeholder="Số nhà, ngõ, tên đường..." required/>
+                                    <label class="form-label" for="phone">Số điện thoại</label>
+                                    <input type="text" class="form-control checkout-input" id="phone" placeholder="Số điện thoại" required>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                    <div id="tab-oldaddress" class="tab-item" style="display:none"></div>
-
-                </div>
-                <div class="checkout-info-payment">
-                    <div class="checkout-title">Hình thức thanh toán</div>
-                    <div role="radiogroup" class="checkout-payment-main">
-                        <div class="custom-control custom-radio radio-payment-control">
-                            <input type="radio" class="custom-control-input radio-payment" id="radio-1" checked="true" onclick="checkRadio(event)" >
-                            <label class="custom-control-label d-flex align-items-center" for="radio-1">
-                                <div class="checkout-payment-img"><img th:src="@{/images/cod.png}"/></div>
-
-                                <span>Thanh toán khi nhận hàng</span>
-                            </label>
-                        </div>
-                        <div class="custom-control custom-radio radio-payment-control">
-                            <input type="radio" class="custom-control-input radio-payment" id="radio-2" onclick="checkRadio(event)">
-                            <label class="custom-control-label d-flex align-items-center" for="radio-2">
-                                <div class="checkout-payment-img"><img th:src="@{/images/bank.png}"/></div>
-                                <span>Chuyển khoản qua Ngân hàng</span>
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="d-flex justify-content-center align-items-center" style="padding: 16px; padding-bottom: 32px">
-                    <button class="checkout-btn-submit">Đặt hàng</button>
-                </div>
-            </div>
-            <div class="checkout-cart">
-                <div class="checkout-title">Thông tin giỏ hàng</div>
-                <div class="d-flex flex-column">
-                    <div class="cart-body d-flex flex-column">
-                        <div class="cart-item d-flex">
-                            <div class="cart-img">
-                                <img th:src="@{/images/product1.png}"/>
+                    <div class="checkout-info-address">
+                        <div class="checkout-title">Vui lòng điền đầy đủ thông tin bên dưới hoặc chọn địa chỉ đã lưu.</div>
+                        <div class="checkout-tabs-header d-flex align-items-center">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input radio-tab-btn" id="customControlValidation2" checked="true"  onclick="openTabs(event,'tab-newaddress')">
+                                <label class="custom-control-label" for="customControlValidation2">Địa chỉ giao hàng mới</label>
                             </div>
-                            <div class="cart-item-main">
-                                <div class="cart-item-name">Mouse Logitech</div>
-                                <div class="cart-item-price">20.000đ x 1</div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-qlt d-flex">
-                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" > - </button>
-                                        <input type="number" min="1"  class="detail-summary-qlt" value="1"/>
-                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"> + </button>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input radio-tab-btn" id="customControlValidation3" onclick="openTabs(event,'tab-oldaddress')" >
+                                <label class="custom-control-label" for="customControlValidation3">Địa chỉ giao hàng đã lưu</label>
+                            </div>
+                        </div>
+                        <div id="tab-newaddress" class="tab-item">
+                            <div class="checkout-form">
+                                <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
+                                    <div style="width: 100%">
+                                        <select class="custom-select checkout-select" required id="province">
+                                            <option value="" selected>Chọn tỉnh/thành phố</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
                                     </div>
-                                    <div class="cart-item-sum d-flex">20.000đ</div>
+                                    <div style="width: 100%">
+                                        <select class="custom-select checkout-select" required id="district">
+                                            <option value="" selected>Chọn quận/huyện</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
+                                    <div style="width: 100%">
+                                        <select class="custom-select checkout-select" required id="ward">
+                                            <option value="" selected>Chọn phường/xã</option>
+                                            <option value="1">One</option>
+                                            <option value="2">Two</option>
+                                            <option value="3">Three</option>
+                                        </select>
+                                    </div>
+                                    <div style="width: 100%">
+                                        <input type="text" class="form-control checkout-input" id="number-home" placeholder="Số nhà, ngõ, tên đường..." required/>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
+                        <div id="tab-oldaddress" class="tab-item" style="display:none"></div>
+
                     </div>
-                    <div class="cart-divine"></div>
-                    <div class="cart-footer d-flex flex-column align-items-stretch">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="cart-sum-text">
-                                <strong>Tổng cộng:</strong>
+                    <div class="checkout-info-payment">
+                        <div class="checkout-title">Hình thức thanh toán</div>
+                        <div role="radiogroup" class="checkout-payment-main">
+                            <div class="custom-control custom-radio radio-payment-control">
+                                <input type="radio" class="custom-control-input radio-payment" id="radio-1" checked="true" onclick="checkRadio(event)" >
+                                <label class="custom-control-label d-flex align-items-center" for="radio-1">
+                                    <div class="checkout-payment-img"><img th:src="@{/images/cod.png}"/></div>
+
+                                    <span>Thanh toán khi nhận hàng</span>
+                                </label>
                             </div>
-                            <div class="cart-sum-number text-right">
-                                <strong>37.000 VNĐ</strong>
+                            <div class="custom-control custom-radio radio-payment-control">
+                                <input type="radio" class="custom-control-input radio-payment" id="radio-2" onclick="checkRadio(event)">
+                                <label class="custom-control-label d-flex align-items-center" for="radio-2">
+                                    <div class="checkout-payment-img"><img th:src="@{/images/bank.png}"/></div>
+                                    <span>Chuyển khoản qua Ngân hàng</span>
+                                </label>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="cart-sum-text">
-                                <strong>Giảm giá:</strong>
+
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center" style="padding: 16px; padding-bottom: 32px">
+                        <button class="checkout-btn-submit">Đặt hàng</button>
+                    </div>
+                </div>
+                <div class="checkout-cart">
+                    <div class="checkout-title">Thông tin giỏ hàng</div>
+                    <div class="d-flex flex-column">
+                        <th:block th:if="${listCarts != null and !listCarts.empty}" th:each="cart : ${listCarts}">
+                            <div class="cart-body d-flex flex-column position-relative">
+                                <div class="cart-item d-flex">
+                                    <div class="cart-img">
+                                        <img th:src="${cart.products.image}"/>
+                                    </div>
+                                    <div class="cart-item-main">
+                                        <div class="cart-item-name" th:text="${cart.products.name}"></div>
+                                        <div class="cart-item-price d-flex align-items-center">
+                                            <div th:replace="fragments :: format_currency(${cart.products.price})"></div>
+                                            <span th:text="'đ x ' + ${cart.quantity}"></span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-qlt d-flex">
+                                                <button th:onclick="'decreaseQuantity(this,'+${cart.products.id}+')'" > - </button>
+                                                <input type="number" min="1"  class="detail-summary-qlt" th:value="${cart.quantity}" th:id="'checkout-quantity' + ${cart.products.id}"  th:max="${cart.products.inStock}" onchange="handleInputNumber(event)"/>
+                                                <button class="plus"  th:onclick="'increaseQuantity(this,'+${cart.products.id}+')'"> + </button>
+                                            </div>
+                                            <div class="cart-item-sum d-flex align-items-center" >
+                                                <div th:id="'checkout-subtotal' + ${cart.products.id}">[[${#numbers.formatDecimal(cart.subtotal, 0, 'COMMA', 0, 'POINT')}]]</div>
+                                                <span>đ</span>
+                                            </div>
+                                        </div>
+                                        <div class="cart-delete-btn d-flex align-items-center justify-content-center" th:onclick="'deleteItemCart(' + ${cart.products.id} +')'"><i class="far fa-trash-alt"></i></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="cart-sum-number text-right">
-                                <strong>-10.000 VNĐ</strong>
+                        </th:block>
+                        <div class="cart-divine"></div>
+                        <div class="cart-footer d-flex flex-column align-items-stretch">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="cart-sum-text">
+                                    <strong>Tổng cộng:</strong>
+                                </div>
+                                <div class="cart-sum-number text-right">
+                                    <strong>37.000 VNĐ</strong>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center" style="margin-top: 12px">
-                            <div class="cart-sum-text-main">
-                                <strong>Tổng:</strong>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="cart-sum-text">
+                                    <strong>Giảm giá:</strong>
+                                </div>
+                                <div class="cart-sum-number text-right">
+                                    <strong>-10.000 VNĐ</strong>
+                                </div>
                             </div>
-                            <div class="cart-sum-number-main text-right">
-                                <strong>67.000 VNĐ</strong>
+                            <div class="d-flex justify-content-between align-items-center" style="margin-top: 12px">
+                                <div class="cart-sum-text-main">
+                                    <strong>Tổng:</strong>
+                                </div>
+                                <div class="cart-sum-number-main text-right">
+                                    <strong>67.000 VNĐ</strong>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </th:block>
+
+        <div id="section-checkout-empty" th:class="'flex-column align-items-center justify-content-center ' + ${listCarts == null or listCarts.empty ? 'd-flex' : 'd-none'}" >
+            <img th:src="@{/images/empty-cart.png}"/>
+            <div class="mb-3">Giỏ hàng của bạn còn trống</div>
+            <a class="checkout-btn-submit d-flex align-items-center justify-content-center" href="/">Mua Ngay</a>
         </div>
+
+
     </div>
 
     <div th:replace="fragments/footer_fragment :: footer"></div>
 
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<script>
-    function openTabs(evt,tabName) {
-        let i;
-        let tabItem;
-        let x = document.getElementsByClassName("tab-item");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        tabItem = document.getElementsByClassName("radio-tab-btn");
-        for (i = 0; i < x.length; i++) {
-            tabItem[i].checked = false;
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.checked  = true;
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}" ></script>
 
-    }
+    <script>
+        function openTabs(evt,tabName) {
+            let i;
+            let tabItem;
+            let x = document.getElementsByClassName("tab-item");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            tabItem = document.getElementsByClassName("radio-tab-btn");
+            for (i = 0; i < x.length; i++) {
+                tabItem[i].checked = false;
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.checked  = true;
 
-    function checkRadio(evt) {
-        let radioItem = document.getElementsByClassName("radio-payment");
-        for (let i = 0; i < radioItem.length; i++) {
-            radioItem[i].checked = false;
         }
-        evt.currentTarget.checked  = true;
 
-    }
-</script>
+        function checkRadio(evt) {
+            let radioItem = document.getElementsByClassName("radio-payment");
+            for (let i = 0; i < radioItem.length; i++) {
+                radioItem[i].checked = false;
+            }
+            evt.currentTarget.checked  = true;
+
+        }
+    </script>
 </body>
 
 </html>

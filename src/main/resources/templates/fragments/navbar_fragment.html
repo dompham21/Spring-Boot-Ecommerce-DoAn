@@ -32,8 +32,12 @@
                 <i class="far fa-heart"></i>
             </a>
             <div class="dropdown">
-                <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-center" role="button" id="dropdownCart" data-toggle="dropdown" aria-expanded="false">
+                <a href="#" class="dropdown-toggle d-flex align-items-center justify-content-center position-relative" role="button" id="dropdownCart" data-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-shopping-basket"></i>
+                    <th:block th:if="${listCarts != null and !listCarts.empty}">
+                        <span class="nav-badge"  th:text="${#lists.size(listCarts)}"></span>
+                        <div class="pulse-ring"></div>
+                    </th:block>
                 </a>
                 <div class="dropdown-menu dropdown-cart-menu" aria-labelledby="dropdownCart">
                     <div class="d-flex flex-column">
@@ -41,7 +45,7 @@
 
                             <div class="cart-body d-flex flex-column">
                                 <th:block th:if="${listCarts != null and !listCarts.empty}" th:each="cart : ${listCarts}">
-                                    <div class="cart-item d-flex position-relative" th:id="'cartitem'+ ${cart.products.id}">
+                                    <div class="cart-item cart-item-count d-flex position-relative" th:id="'cartitem'+ ${cart.products.id}">
                                         <div class="cart-img">
                                             <img th:src="${cart.products.image}"/>
                                         </div>

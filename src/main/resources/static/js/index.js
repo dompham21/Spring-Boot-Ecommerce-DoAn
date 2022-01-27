@@ -211,10 +211,14 @@ function deleteItemCart(productId) {
         if(response.status === "OK") {
             $("#cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
             removeItemFromHtml(productId);
-            if($('.cart-item').length === 0) {
+            if($('.cart-item-count').length === 0) {
                 $("#sectionEmptyCartMessage").removeClass("d-none");
                 $("#sectionEmptyCartMessage").addClass("d-flex");
-
+                $("#section-checkout-empty").removeClass("d-none");
+                $("#section-checkout-empty").addClass("d-flex");
+                $("#checkout-controller").remove();
+                $(".nav-badge").remove();
+                $(".pulse-ring").remove();
             }
         }
     }).fail(function(error) {
