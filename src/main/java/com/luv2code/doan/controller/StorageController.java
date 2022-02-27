@@ -23,7 +23,7 @@ public class StorageController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
-//        log.info(file.getName());
+        log.info(file.getName());
         return new ResponseEntity<>(storageService.uploadFile(file), HttpStatus.OK);
     }
 

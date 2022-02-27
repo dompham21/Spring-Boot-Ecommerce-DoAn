@@ -198,3 +198,77 @@
     margin-top: 20px;
     color: white;
 }
+
+.profile-address-list {
+    margin-top: 30px;
+}
+
+.profile-address-item {
+    padding: 30px 3px 30px 20px;
+    min-height: 100px;
+    border-top: 1px solid #4a4a4a;
+
+}
+
+.profile-address-item-content {
+    flex: 1;
+}
+
+.profile-address-item-field {
+    margin-right: 25px;
+    width: 160px;
+    text-align: right;
+}
+
+.profile-address-item-name {
+    display: inline-block;
+    margin-right: 10px;
+    max-width: 350px;
+    font-weight: 700;
+    font-size: 16px;
+    word-break: break-word;
+
+}
+
+.profile-address-item-tool {
+    width: 220px;
+    gap: 16px;
+    flex-shrink: 1;
+}
+
+.profile-address-input {
+    font-size: 15px;
+    background-color: rgba(0, 0, 0, 0.24) !important;
+    color: rgba(244, 244, 245, 0.9) !important;
+    padding: 10px 15px;
+    height: 45px;
+    border-radius: 6px;
+    border: 1px solid white !important;
+    outline: none;
+}
+
+.profile-address-input label {
+    font-weight: 400;
+    color: rgba(244, 244, 245, 0.9);
+    font-size: 15px;
+}
+.profile-address-input label:before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+}
+
+.profile-address-select {
+    font-size: 15px;
+    background-color: rgba(0, 0, 0, 0.24);
+    color: rgba(244, 244, 245, 0.9);
+    padding: 10px 15px;
+    height: 45px;
+    border-radius: 6px;
+    border: 1px solid white !important;
+    outline: none;
+}

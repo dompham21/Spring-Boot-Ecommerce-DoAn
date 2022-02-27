@@ -6,18 +6,11 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "order_detail")
-public class OrderDetail implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class OrderDetail {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order orders;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product products;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -25,21 +18,20 @@ public class OrderDetail implements Serializable {
     @Column(name = "item_price")
     private Double itemPrice;
 
-    public Order getOrders() {
-        return orders;
-    }
+    @Column(name = "sub_total")
+    private Double subTotal;
 
-    public void setOrders(Order orders) {
-        this.orders = orders;
-    }
+    @Column(name = "unit_price")
+    private Double unitPrice;
 
-    public Product getProducts() {
-        return products;
-    }
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
-    public void setProducts(Product products) {
-        this.products = products;
-    }
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
 
     public Integer getQuantity() {
         return quantity;
@@ -55,5 +47,45 @@ public class OrderDetail implements Serializable {
 
     public void setItemPrice(Double itemPrice) {
         this.itemPrice = itemPrice;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Double getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(Double subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

@@ -108,6 +108,7 @@ public class ProductController {
         }
 
         else {
+            log.info("image");
             product.setRegistrationDate(new Date());
             product.setSoldQuantity(0);
             productService.saveProduct(product);

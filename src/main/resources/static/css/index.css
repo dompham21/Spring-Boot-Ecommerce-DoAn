@@ -56,3 +56,10 @@ body::-webkit-scrollbar {
 }
 
 
+option[value=""][disabled] {
+    display: none;
+}
+
+a.disabled {
+    pointer-events: none;
+}

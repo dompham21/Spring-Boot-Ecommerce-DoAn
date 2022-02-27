@@ -29,8 +29,16 @@
                                 </a>
                                 <p class="card-description" th:text="${product.shortDescription}"></p>
                                 <div class="card-price d-flex align-items-center justify-content-center">
-                                    <div th:replace="fragments :: format_currency(${product.price})"></div>
-                                    <span>₫</span>
+                                    <th:block th:if="${product.discount > 0}">
+                                        <div class="d-flex align-items-center justify-content-center" style="font-size: 16px; text-decoration: line-through; margin-right: 5px; color: #9da0ad;">
+                                            <div th:replace="fragments :: format_currency(${product.price})"></div>
+                                            <span>₫</span>
+                                        </div>
+                                    </th:block>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div th:replace="fragments :: format_currency(${product.getDiscountPrice()})"></div>
+                                        <span>₫</span>
+                                    </div>
                                 </div>
                             </div>
                         </a>
