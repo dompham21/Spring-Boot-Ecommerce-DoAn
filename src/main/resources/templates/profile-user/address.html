@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Home - Shopwise Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
+
+</head>
+<body>
+<div th:replace="fragments/navbar_fragment :: navbar"></div>
+<div class="main-content">
+    <div class="profile-main">
+        <div class="profile-header d-flex align-items-center">
+            <div class="profile-author d-flex align-items-center">
+                <div class="profile-author-img"><img th:src="@{/images/car.png}"/></div>
+                <div class="profile-author-content d-flex flex-column flex-wrap">
+                    <div class="profile-author-name" style="text-transform: capitalize" th:text="${user.firstName + ' ' + user.lastName}"></div>
+                    <th:block th:if="${user.phone}">
+                        <div class="profile-author-phone" th:text="${user.phone}"></div>
+                    </th:block>
+                    <th:block th:unless="${user.phone}">
+                        <div class="profile-author-phone">Chưa cập nhật</div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="profile-title">Địa chỉ của tôi</div>
+        </div>
+        <div class="profile-content d-flex">
+            <div class="profile-tab d-flex flex-column">
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/change-password">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <span>Đổi mật khẩu</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/order/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-clipboard"></i>
+                    </div>
+                    <span>Danh sách đơn hàng</span>
+                </a>
+                <a class="profile-tabs-button tab-active d-flex align-items-center"  href="/profile/address">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span>Địa chỉ của tôi</span>
+                </a>
+            </div>
+            <div class="profile-content-body">
+                <div id="form-profile-address" class="profile-tab-item">
+                    <div class="profile-address-header d-flex align-items-center justify-content-between">
+                        <div class="profile-address-title" style="font-size: 1.125rem">Địa chỉ đã lưu</div>
+                        <a class="profile-form-btn" href="/profile/address/add">Thêm địa chỉ mới</a>
+                    </div>
+                    <div th:class="'align-items-center justify-content-center flex-column '+ ${listAddresses == null or listAddresses.empty ? 'd-flex' : 'd-none'}" style="border-top: 1px solid #4a4a4a; margin-top: 30px; padding-top: 20px" >
+                        <div class="d-flex align-items-center justify-content-center" style="width: 6.75rem; height: 6.125rem;">
+                            <img th:src="@{/images/empty-cart.png}" style="width: 100%; height: 100%"/>
+                        </div>
+                        <div class="text-center mt-4" style="color: white; margin-top: 18px">Hiện tại bạn chưa lưu địa chỉ nào</div>
+                        <a href="/profile/address/add" class="profile-form-btn text-center d-flex align-items-center" style="margin-top: 17px; color: white!important;">Thêm ngay</a>
+                    </div>
+                    <th:block th:if="${listAddresses != null and !listAddresses.empty}">
+                        <div class="profile-address-list">
+                            <th:block th:if="${listAddresses != null and !listAddresses.empty}" th:each="address : ${listAddresses}">
+                                <div class="profile-address-item d-flex justify-content-between">
+                                    <div class="profile-address-item-content">
+                                        <div class="d-flex align-items-center" style="margin-bottom: 15px">
+                                            <div class="profile-address-item-field">Họ Và Tên</div>
+                                            <div class="d-flex justify-content-center" >
+                                                <span class="profile-address-item-name" th:text="${address.firstName + ' ' + address.lastName}"></span>
+                                                <th:block th:if="${address.isDefault}">
+                                                    <span class="badge badge-success">Mặc Định</span>
+                                                </th:block>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center" style="margin-bottom: 10px">
+                                            <div class="profile-address-item-field">Số Điện Thoại</div>
+                                            <div th:text="${address.phone}"></div>
+                                        </div>
+                                        <div class=" d-flex align-items-start" style="margin-bottom: 10px">
+                                            <div class="profile-address-item-field">Địa Chỉ</div>
+                                            <div>
+                                                <span th:text="${address.specificAddress}"></span><br>
+                                                <span th:text="${address.ward.fullName}"></span><br>
+                                                <span th:text="${address.ward.district.fullName}"></span><br>
+                                                <span th:text="${address.ward.district.province.fullName}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="profile-address-item-tool d-flex flex-column">
+                                        <div class="d-flex justify-content-end" style="margin-top: 8px">
+                                            <a th:href="@{'/profile/address/edit/' + ${address.id}}" style="text-decoration: underline"
+                                               data-toggle="tooltip" data-placement="top" title="Sửa"
+                                            >Sửa</a>
+                                            <th:block th:if="${!address.isDefault}">
+                                                <a th:href="@{'/profile/address/delete/' + ${address.id}}"
+                                                   class="link-delete" th:entityId="${address.id}"
+                                                   style="margin-left: 20px; text-decoration: underline"
+                                                   data-toggle="tooltip" data-placement="top" title="Xoá"
+                                                >Xoá</a>
+                                            </th:block>
+
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <a th:href="@{'/profile/address/default/' + ${address.id}}"  th:class="'btn btn-light ' + ${address.isDefault ?'disabled' : ''} " style="color: black">Đặt mặc định</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments :: confirm_modal" />
+
+<div th:replace="fragments/footer_fragment :: footer"></div>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            swal(
+                '',
+                messageSuccess,
+                'success'
+            )
+        }
+
+        if(messageError ) {
+            swal(
+                '',
+                messageError,
+                'error'
+            )
+        }
+
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), 'address');
+        });
+
+    })
+</script>
+</body>
+
+</html>

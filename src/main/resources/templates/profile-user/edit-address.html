@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Home - Shopwise Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
+
+</head>
+<body>
+<div th:replace="fragments/navbar_fragment :: navbar"></div>
+<div class="main-content">
+    <div class="profile-main">
+        <div class="profile-header d-flex align-items-center">
+            <div class="profile-author d-flex align-items-center">
+                <div class="profile-author-img"><img th:src="@{/images/car.png}"/></div>
+                <div class="profile-author-content d-flex flex-column flex-wrap">
+                    <div class="profile-author-name" style="text-transform: capitalize" th:text="${user.firstName + ' ' + user.lastName}"></div>
+                    <th:block th:if="${user.phone}">
+                        <div class="profile-author-phone" th:text="${user.phone}"></div>
+                    </th:block>
+                    <th:block th:unless="${user.phone}">
+                        <div class="profile-author-phone">Chưa cập nhật</div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="profile-title" th:text="${isEdit ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}"></div>
+        </div>
+        <div class="profile-content d-flex">
+            <div class="profile-tab d-flex flex-column">
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/change-password">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <span>Đổi mật khẩu</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/order/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-clipboard"></i>
+                    </div>
+                    <span>Danh sách đơn hàng</span>
+                </a>
+                <a class="profile-tabs-button tab-active d-flex align-items-center"  href="/profile/address">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span>Địa chỉ của tôi</span>
+                </a>
+            </div>
+            <div class="profile-content-body">
+                <div id="form-profile-address" class="profile-tab-item">
+                    <form th:action="${isEdit} ? @{'/profile/address/edit/' + ${address.id}} : @{'/profile/address/add'}"  th:object="${address}" method="post" id="form-profile-address-edit">
+                        <div class="mb-4">
+                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
+                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
+                            <span th:if="${#fields.hasErrors('specificAddress')}" th:errors="*{specificAddress}"  class="form-valid-feedback"></span>
+                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
+                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
+                        </div>
+                        <input type="hidden" th:field="*{id}" />
+                        <div>
+                            <div class="profile-title">Thông tin người nhận hàng</div>
+                            <div style="padding: 16px">
+                                <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
+                                    <div style="width: 100%">
+                                        <label class="form-label" for="ho">Họ người nhận</label>
+                                        <input type="text" class="form-control profile-address-input" th:field="*{firstName}" id="ho" placeholder="Họ" required>
+                                    </div>
+                                    <div style="width: 100%">
+                                        <label class="form-label" for="ten">Tên người nhận</label>
+                                        <input type="text" class="form-control profile-address-input" th:field="*{lastName}" id="ten" placeholder="Tên" required>
+                                    </div>
+
+                                </div>
+                                <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
+                                    <div style="width: 100%">
+                                        <label class="form-label" for="email">Email</label>
+                                        <input type="email" class="form-control profile-address-input" th:field="*{email}" id="email" placeholder="Email" required>
+                                    </div>
+                                    <div style="width: 100%">
+                                        <label class="form-label" for="phone">Số điện thoại</label>
+                                        <input type="text" class="form-control profile-address-input" th:field="*{phone}" id="phone" placeholder="Số điện thoại" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="profile-title">Thông tin địa chỉ</div>
+                            <div style="padding: 16px">
+                                <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
+                                    <div style="width: 100%">
+                                        <select class="custom-select profile-address-select" required id="province">
+                                            <th:block th:if="${address.ward == null}">
+                                                <option value="" selected disabled>Chọn tỉnh/thành phố</option>
+                                            </th:block>
+                                            <th:block th:if="${address.ward != null}">
+                                                <option th:value="${address.ward.district.province.code}" th:text="${address.ward.district.province.name}"></option>
+                                            </th:block>
+                                            <option th:each="province : ${listProvinces}" th:value="${province.code}" th:text="${province.name}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div style="width: 100%">
+                                        <select class="custom-select profile-address-select" required id="district">
+                                            <th:block th:if="${address.ward == null}">
+                                                <option value="" selected disabled>Chọn quận/huyện</option>
+                                            </th:block>
+                                            <th:block th:if="${address.ward != null}">
+                                                <option th:value="${address.ward.district.code}" th:text="${address.ward.district.name}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4 d-flex justify-content-center align-items-center" style="gap: 24px">
+                                    <div style="width: 100%">
+                                        <select class="custom-select profile-address-select"  name="ward" required id="ward">
+                                            <th:block th:if="${address.ward == null}">
+                                                <option value="" selected disabled>Chọn phường/xã</option>
+                                            </th:block>
+                                            <th:block th:if="${address.ward != null}">
+                                                <option th:value="${address.ward.code}" th:text="${address.ward.name}"></option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                    <div style="width: 100%">
+                                        <input type="text" class="form-control profile-address-input" th:field="*{specificAddress}" id="number-home" placeholder="Số nhà, ngõ, tên đường..." required/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <button class="profile-form-btn" type="submit">Cập nhật</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer_fragment :: footer"></div>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            swal(
+                '',
+                messageSuccess,
+                'success'
+            )
+        }
+
+        if(messageError ) {
+            swal(
+                '',
+                messageError,
+                'error'
+            )
+        }
+        let dropdownProvinces = $("#province");
+        let dropdownDistricts = $("#district");
+
+        dropdownProvinces.on("change", function() {
+            loadDistrictByProvinces();
+        });
+
+        dropdownDistricts.on("change", function() {
+            loadWardByDistricts();
+        })
+
+        $("#province option").each(function() { //remove option duplicate when form is edit
+            $(this).siblings('[value="'+ this.value +'"]').remove();
+        });
+
+        let selectedProvice = $("#province option:selected");
+        let provinceCode = selectedProvice.val();
+        if(provinceCode !== '') {
+            loadDistrictByProvincesEdit();
+            loadWardByDistrictsEdit();
+        }
+
+
+    })
+</script>
+</body>
+
+</html>

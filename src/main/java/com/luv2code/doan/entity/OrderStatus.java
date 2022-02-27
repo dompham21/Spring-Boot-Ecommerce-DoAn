@@ -1,44 +1,84 @@
 package com.luv2code.doan.entity;
 
-import javax.persistence.*;
-import java.util.Collection;
+public enum OrderStatus {
 
-@Entity
-@Table(name="order_status")
-public class OrderStatus {
+    NEW {
+        @Override
+        public String defaultDescription() {
+            return "Order was placed by the customer";
+        }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Integer id;
+    },
 
-    @Column(name="description")
-    private String description;
+    CANCELLED {
+        @Override
+        public String defaultDescription() {
+            return "Order was rejected";
+        }
+    },
 
-    @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
-    private Collection<Order> orders;
+    PROCESSING {
+        @Override
+        public String defaultDescription() {
+            return "Order is being processed";
+        }
+    },
 
-    public Integer getId() {
-        return id;
-    }
+    PACKAGED {
+        @Override
+        public String defaultDescription() {
+            return "Products were packaged";
+        }
+    },
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    PICKED {
+        @Override
+        public String defaultDescription() {
+            return "Shipper picked the package";
+        }
+    },
 
-    public String getDescription() {
-        return description;
-    }
+    SHIPPING {
+        @Override
+        public String defaultDescription() {
+            return "Shipper is delivering the package";
+        }
+    },
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    DELIVERED {
+        @Override
+        public String defaultDescription() {
+            return "Customer received products";
+        }
+    },
 
-    public Collection<Order> getOrders() {
-        return orders;
-    }
+    RETURNED {
+        @Override
+        public String defaultDescription() {
+            return "Products were returned";
+        }
+    },
 
-    public void setOrders(Collection<Order> orders) {
-        this.orders = orders;
-    }
+    PAID {
+        @Override
+        public String defaultDescription() {
+            return "Customer has paid this order";
+        }
+    },
+
+    REFUNDED {
+        @Override
+        public String defaultDescription() {
+            return "Customer has been refunded";
+        }
+    },
+
+    RETURN_REQUESTED {
+        @Override
+        public String defaultDescription() {
+            return "Customer sent request to return purchase";
+        }
+    };
+
+    public abstract String defaultDescription();
 }

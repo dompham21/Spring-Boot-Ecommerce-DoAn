@@ -114,8 +114,7 @@ body::-webkit-resizer { background-color: #666;}
 }
 
 .checkout-payment-main {
-    padding: 16px;
-    padding-top: 0;
+    padding: 0 16px 16px 40px;
 }
 
 .radio-payment {
@@ -257,3 +256,29 @@ body::-webkit-resizer { background-color: #666;}
     border-radius: 10px;
     border: 3px solid transparent;
 }
+
+.old-address-item {
+    margin-left: 10px;
+    min-height: 75px;
+}
+
+.old-address-item-content {
+    flex: 1;
+}
+
+.old-address-item-field {
+    margin-right: 25px;
+    width: 160px;
+    text-align: right;
+}
+
+.old-address-item-name {
+    display: inline-block;
+    margin-right: 10px;
+    max-width: 350px;
+    font-weight: 700;
+    font-size: 16px;
+    word-break: break-word;
+
+}
+

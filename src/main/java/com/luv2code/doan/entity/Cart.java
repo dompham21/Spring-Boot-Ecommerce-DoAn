@@ -55,7 +55,8 @@ public class Cart {
         this.quantity = quantity;
     }
 
+    @Transient
     public Double getSubtotal() {
-        return this.quantity * this.products.getPrice();
+        return this.quantity * this.products.getDiscountPrice();
     }
 }

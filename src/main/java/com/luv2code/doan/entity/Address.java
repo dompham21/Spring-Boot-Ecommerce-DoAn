@@ -2,6 +2,9 @@ package com.luv2code.doan.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -13,15 +16,40 @@ public class Address {
     @Column(name="id")
     private Integer id;
 
-    @Column(name="description")
-    private String description;
+    @NotBlank(message = "Địa chỉ cụ thể không được bỏ trống!")
+    @Size(min = 1, max = 200, message = "Địa chỉ cụ thể không được dài quá 200 ký tự!")
+    @Column(name="specific_address")
+    private String specificAddress;
+
+    @NotBlank(message = "Họ không được bỏ trống!")
+    @Size(min = 1, max = 50, message = "Họ không được dài quá 50 ký tự!")
+    @Column(name="first_name", nullable = false, length = 50)
+    private String firstName;
+
+    @Size(min = 1, max = 100, message = "Tên không được dài quá 50 ký tự!")
+    @NotBlank(message = "Tên không được bỏ trống!")
+    @Column(name="last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @NotBlank(message = "Email không được bỏ trống!")
+    @Email(message = "Email không hợp lệ!")
+    @Column(name="email", length = 100, nullable = false)
+    private String email;
+
+    @NotBlank(message = "SDT không được bỏ trống!")
+    @Column(name="phone", length = 20)
+    private String phone;
+
+    @Column(name = "is_default")
+    private boolean isDefault;
 
     @ManyToOne
-    @JoinColumn(name="ward_id")
+    @JoinColumn(name="ward_code")
     private Ward ward;
 
-    @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
-    private Collection<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Integer getId() {
         return id;
@@ -31,12 +59,52 @@ public class Address {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSpecificAddress() {
+        return specificAddress;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setSpecificAddress(String specificAddress) {
+        this.specificAddress = specificAddress;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 
     public Ward getWard() {
@@ -47,13 +115,26 @@ public class Address {
         this.ward = ward;
     }
 
-    public Collection<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Collection<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", specificAddress='" + specificAddress + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isDefault=" + isDefault +
+                ", ward=" + ward.getName() +
+                ", user=" + user.getLastName() +
+                '}';
+    }
 }

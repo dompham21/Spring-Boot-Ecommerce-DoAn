@@ -65,9 +65,8 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name="address_id")
-    private Address address;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Collection<Address> addresses;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Order> orders;
@@ -172,12 +171,12 @@ public class User {
         this.roles = roles;
     }
 
-    public Address getAddress() {
-        return address;
+    public Collection<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddresses(Collection<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public Collection<Order> getOrders() {

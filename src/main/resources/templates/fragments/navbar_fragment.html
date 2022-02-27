@@ -54,7 +54,7 @@
                                         <div class="cart-item-main">
                                             <div class="cart-item-name" th:text="${cart.products.name}"></div>
                                             <div class="cart-item-price d-flex align-items-center">
-                                                <div th:replace="fragments :: format_currency(${cart.products.price})"></div>
+                                                <div th:replace="fragments :: format_currency(${cart.products.getDiscountPrice()})"></div>
                                                 <span th:class="'price-quantity'+${cart.products.id}" th:text="'đ x ' + ${cart.quantity}"></span>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">

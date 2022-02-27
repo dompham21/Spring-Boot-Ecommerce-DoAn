@@ -76,6 +76,17 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brands;
 
+
+    @Transient
+    public Double getDiscountPrice() {
+        if (this.getDiscount() > 0) {
+            System.out.println(this.getPrice() * this.getDiscount());
+            return this.getPrice() - ((this.getPrice() * this.getDiscount()) / 100);
+
+        }
+        return this.getPrice();
+    }
+
     public Integer getId() {
         return id;
     }

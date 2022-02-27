@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -27,12 +29,16 @@ public class Order {
     @JoinColumn(name="user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name="status_id")
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "orders", fetch = FetchType.LAZY)
-    private Collection<OrderDetail> orderDetails;
+    //orphanRemoval mean remove orderDetail when remove order
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderDetail> orderDetails = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name="address_id")
+    private Address address;
 
     public Integer getId() {
         return id;
@@ -74,11 +80,19 @@ public class Order {
         this.status = status;
     }
 
-    public Collection<OrderDetail> getOrderDetails() {
+    public Set<OrderDetail> getOrderDetails() {
         return orderDetails;
     }
 
-    public void setOrderDetails(Collection<OrderDetail> orderDetails) {
+    public void setOrderDetails(Set<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

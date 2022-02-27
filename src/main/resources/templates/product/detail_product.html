@@ -21,9 +21,17 @@
         </div>
         <div class="detail-summary">
             <div class="detail-summary-name" th:text="${product.name}"></div>
-            <div class="detail-summary-price d-flex align-items-center">
-                <div th:replace="fragments :: format_currency(${product.price})"></div>
-                <span>₫</span>
+            <div class="d-flex align-items-center">
+                <th:block th:if="${product.discount > 0}">
+                    <div class="d-flex align-items-center" style="font-size: 16px; text-decoration: line-through; margin-right: 5px; color: #babbc1;">
+                        <div th:replace="fragments :: format_currency(${product.price})"></div>
+                        <span>₫</span>
+                    </div>
+                </th:block>
+                <div class="detail-summary-price d-flex align-items-center">
+                    <div th:replace="fragments :: format_currency(${product.getDiscountPrice()})"></div>
+                    <span>₫</span>
+                </div>
             </div>
             <div class="detail-summary-brand d-flex align-items-center">
                 <h2 class="brand-title">Brand:</h2>
