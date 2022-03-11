@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Product - Music Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/list.css}"/>
+</head>
+<body>
+<div id="page-container" class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div th:replace="fragments/sidebar_fragment :: sidebar('category', 'category_all')"></div>
+        <div class="d-flex flex-column wrapper">
+            <div th:replace="fragments/header_fragment :: header"></div>
+            <div class="content">
+                <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+                    <h1 class="title">Sản Phẩm</h1>
+                    <a href="/admin/category/add">
+                        <button class="btn btn-primary d-flex align-items-center">
+                            <i class="fas fa-plus" style="margin-right: 0.5rem"></i>
+                            <span>Sản phẩm mới</span>
+                        </button>
+                    </a>
+
+                </div>
+                <section class="list-table">
+                    <div class="list-table-header d-flex align-items-center justify-content-between">
+                        <div th:replace="fragments :: search_form('product')"></div>
+                        <div class="dropdown dropdown-filter">
+                            <button type="button" class="btn-block-option-filter" id="dropdown-ecom-filters" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filters <i class="fa fa-angle-down ms-1"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-filter dropdown-menu-end" aria-labelledby="dropdown-ecom-filters" style="">
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                    Available
+                                    <span class="badge bg-success rounded-pill">24</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                    Out of Stock
+                                    <span class="badge bg-warning rounded-pill">24</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                    Banned
+                                    <span class="badge bg-danger rounded-pill">24</span>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                    All
+                                    <span class="badge bg-primary rounded-pill">14503</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-table-content">
+                        <div class="table-responsive">
+                            <table class="table table-borderless table-striped table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th th:replace="fragments :: column_link('id', 'ID','category')"></th>
+                                    <th th:replace="fragments :: column_link('name', 'Category','category')"></th>
+                                    <th class="d-none d-sm-table-cell text-center">description</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="category : ${listCategory}">
+                                    <td class="text-center fs-sm">
+                                        <a class="fw-semibold" href="be_pages_ecom_product_edit.html">
+                                            <strong>[[${category.id}]]</strong>
+                                        </a>
+                                    </td>
+                                    <td class="d-none d-md-table-cell fs-sm">
+                                        <strong>[[${category.name}]]</strong>
+                                    </td>
+
+                                    <td class="d-none d-md-table-cell fs-sm">
+                                        [[${category.description}]]
+                                    </td>
+
+                                    <td>
+                                        <span th:if="${category.isActive == true}" class="badge bg-success">Available</span>
+                                        <span th:if="${category.isActive == false}"  class="badge bg-danger">Banned</span>
+                                    </td>
+                                    <td class="text-center fs-sm">
+                                        <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/category/edit/' + ${category.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                            <i class="fas fa-pencil-alt"></i>                                                </a>
+                                        <a class="btn btn-sm btn-alt-danger link-delete" th:href="@{'/admin/category/delete/' + ${category.id}}" th:entityId="${category.id}" data-toggle="tooltip" data-placement="top" title="Delete">
+                                            <i class="fa fa-fw fa-times text-danger"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="empty d-flex flex-column align-items-center" th:if="${#lists.isEmpty(listCategory)}">
+                                <div class="empty-image d-flex justify-content-center align-items-center" style="margin-bottom: 10px">
+                                    <img th:src="@{/images/empty-icon.svg}" style="height: 200px"/>
+                                </div>
+                                <a href="/admin/category/add">
+                                    <button class="btn btn-primary d-flex align-items-center">
+                                        <span>Create Now</span>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                <div th:replace="fragments :: pagination('category')"></div>
+
+                </section>
+            </div>
+
+
+
+        </div>
+    </div>
+</body>
+</html>
