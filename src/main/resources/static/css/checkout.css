@@ -176,7 +176,6 @@ body::-webkit-resizer { background-color: #666;}
 }
 
 .checkout-btn-submit {
-    margin: 0 12px;
     height: 36px;
     background-color: #ec4c4d;
     color: white;

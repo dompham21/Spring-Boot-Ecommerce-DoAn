@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('User - Music Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/list.css}"/>
+</head>
+<body>
+    <div id="page-container" class="d-flex flex-column flex-root">
+        <div class="d-flex flex-row flex-column-fluid page">
+            <div th:replace="fragments/sidebar_fragment :: sidebar('user', 'user_all')"></div>
+            <div class="d-flex flex-column wrapper">
+                <div th:replace="fragments/header_fragment :: header"></div>
+                <div class="content">
+                    <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+                        <h1 class="title">Người dùng</h1>
+                        <a href="/admin/user/add">
+                            <button class="btn btn-primary d-flex align-items-center">
+                                <i class="fas fa-plus" style="margin-right: 0.5rem"></i>
+                                <span>Người dùng mới</span>
+                            </button>
+                        </a>
+
+                    </div>
+                    <section class="list-table">
+                        <div class="list-table-header d-flex align-items-center justify-content-between">
+                            <div th:replace="fragments :: search_form('user')"></div>
+                            <div class="dropdown dropdown-filter">
+                                <button type="button" class="btn-block-option-filter" id="dropdown-ecom-filters" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Filters <i class="fa fa-angle-down ms-1"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-filter dropdown-menu-end" aria-labelledby="dropdown-ecom-filters" style="">
+                                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                        Available
+                                        <span class="badge bg-success rounded-pill">24</span>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                        Banned
+                                        <span class="badge bg-danger rounded-pill">24</span>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
+                                        All
+                                        <span class="badge bg-primary rounded-pill">14503</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-table-content">
+                            <div class="table-responsive">
+                                <table class="table table-borderless table-striped table-vcenter">
+                                    <thead>
+                                        <tr>
+                                            <th th:replace="fragments :: column_link('id', 'ID','user')"></th>
+                                            <th th:replace="fragments :: column_link('firstName', 'Name','user')"></th>
+                                            <th th:replace="fragments :: column_link('registrationDate', 'Added','user')"></th>
+                                            <th class="d-none d-sm-table-cell text-center">Email</th>
+                                            <th class="d-none d-sm-table-cell text-center">Phone</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="user : ${listUsers}">
+                                            <td class="text-center fs-sm">
+                                                <a class="fw-semibold" href="be_pages_ecom_product_edit.html">
+                                                    <strong>[[${user.id}]]</strong>
+                                                </a>
+                                            </td>
+                                            <td class="d-none d-md-table-cell fs-sm">
+                                                <strong th:text="${user.firstName + ' ' + user.lastName}"></strong>
+                                            </td>
+                                            <td class="d-none d-sm-table-cell text-center fs-sm format-date">
+                                                <div  th:replace="fragments :: format_time(${user.registrationDate})"></div>
+                                            </td>
+                                            <td class="d-none d-sm-table-cell text-center fs-sm">
+                                                <div th:text="${user.email}"></div>
+                                            </td>
+                                            <td class="d-none d-sm-table-cell text-center fs-sm">
+                                                <div th:text="${user.phone}"></div>
+                                            </td>
+                                            <td>
+                                                <span th:if="${user.isActive == true}" class="badge bg-success">Available</span>
+                                                <span th:if="${user.isActive == false}"  class="badge bg-danger">Banned</span>
+                                            </td>
+                                            <td class="text-center fs-sm">
+                                                <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/user/edit/' + ${user.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <i class="fas fa-pencil-alt"></i>                                                </a>
+                                                <a class="btn btn-sm btn-alt-danger link-delete" th:href="@{'/admin/user/delete/' + ${user.id}}" th:entityId="${user.id}" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i class="fa fa-fw fa-times text-danger"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="empty d-flex flex-column align-items-center" th:if="${#lists.isEmpty(listUsers)}">
+                                    <div class="empty-image d-flex justify-content-center align-items-center" style="margin-bottom: 10px">
+                                        <img th:src="@{/images/empty-icon.svg}" style="height: 200px"/>
+                                    </div>
+                                    <a href="/admin/user/add">
+                                        <button class="btn btn-primary d-flex align-items-center">
+                                            <span>Create Now</span>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div th:replace="fragments :: pagination('user')"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments :: confirm_modal" />
+
+    <div th:if="${messageSuccess != ''}" th:replace="fragments :: modal_dialog('Successfully', ${messageSuccess})" />
+    <div th:if="${messageError != ''}" th:replace="fragments :: modal_error('Error', ${messageError})" />
+
+
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
+
+<script>
+    $(document).ready(function() {
+        if($('#modalBody').text() !== '') {
+            $('#modalDialog').modal('show');
+        }
+        if($('#modalErrorBody').text() !== '') {
+            $('#modalError').modal('show');
+        }
+
+
+        // $('.format-price').text(formatPrice($('.format-price').text()))
+
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), 'user');
+        });
+
+    })
+</script>
+</body>
+
+
+</html>

@@ -57,63 +57,94 @@
             <div class="profile-content-body">
                 <div id="profile-order-info" class="profile-tab-item">
                     <div class="profile-order-main">
-                        <form>
+                        <form action="/profile/order/info/page/1" id="form-order-info">
                             <div class="profile-order-filter d-flex align-items-center">
                                 <div class="profile-order-filter-item d-flex flex-column">
-                                    <label class="form-label" for="id">Mã đơn hàng</label>
-                                    <input type="text" class="form-control profile-order-input" id="id"/>
+                                    <label class="form-label" for="keyword">Tên sản phẩm</label>
+                                    <input type="text" th:value="${keyword}" name="keyword" class="form-control profile-order-input" id="keyword"/>
                                 </div>
                                 <div class="profile-order-filter-item d-flex flex-column">
                                     <label class="form-label" for="start-date">Từ ngày</label>
                                     <div id="start-date" class="profile-order-input-date input-group date" data-date-format="dd-mm-yyyy">
-                                        <input class="form-control profile-order-input" readonly="" type="text">
+                                        <input class="form-control profile-order-input" th:value="${#dates.format(startDate, 'dd-MM-yyyy')}" name="startDate" readonly="" type="text">
                                         <span class="icon-input-date input-group-addon"><i class="far fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
                                 <div class="profile-order-filter-item d-flex flex-column">
                                     <label class="form-label" for="end-date">Đến ngày</label>
-                                    <div id="end-date" class="profile-order-input-date input-group date" data-date-format="dd-mm-yyyy">
-                                        <input class="form-control profile-order-input" readonly="" type="text">
+                                    <div id="end-date" class="profile-order-input-date input-group date" data-date-format="dd-MM-yyyy">
+                                        <input class="form-control profile-order-input" th:value="${#dates.format(endDate, 'dd-MM-yyyy')}" readonly="" name="endDate" type="text">
                                         <span class="icon-input-date input-group-addon"><i class="far fa-calendar-alt"></i></span>
                                     </div>
                                 </div>
                                 <div class="profile-order-filter-item d-flex flex-column">
                                     <label class="form-label" for="status">Trạng thái</label>
-                                    <select class="custom-select profile-order-input" required id="status" name="status">
-                                        <option value="">Tất cả</option>
-                                        <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
+                                    <select class="custom-select profile-order-input" id="status" name="status">
+                                        <option value="ALL" >Tất cả</option>
+                                        <option th:each="statusItem : ${orderStatusList}" th:value="${statusItem}" th:text="${statusItem.getName()}"></option>
                                     </select>
                                 </div>
-
+                                <div class="profile-order-filter-item d-flex flex-column align-self-end">
+                                    <button class="profile-form-btn" style="text-transform: inherit; letter-spacing: inherit" type="submit">Lọc</button>
+                                </div>
                             </div>
-                            <table class="table order-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Mã đơn hàng</th>
-                                        <th scope="col">Ngày tạo đơn</th>
-                                        <th scope="col">Tổng tiền</th>
-                                        <th scope="col">Trạng thái</th>
-                                    </tr>
-                                </thead>
-                            </table>
                         </form>
+                        <table class="table order-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">Mã đơn hàng</th>
+                                    <th scope="col" class="text-center">Ngày tạo đơn</th>
+                                    <th scope="col" class="text-center">Sản phẩm</th>
+                                    <th scope="col" class="text-center">Tổng tiền</th>
+                                    <th scope="col" class="text-center">Trạng thái</th>
+                                    <th scope="col" class="text-center">Thực hiện</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order : ${listOrders}">
+                                <td class="text-center" th:text="${order.id}">ID</td>
+                                <td class="text-center" ><div th:replace="fragments :: format_time(${order.date})">Order Time</div></td>
+                                <td class="text-order-product" th:utext="${order.getProductNames()}"></td>
+                                <td class="text-center">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <div th:replace="fragments :: format_currency(${order.totalPrice})">Total</div>
+                                        <span>đ</span>
+                                    </div>
+
+                                </td>
+                                <td class="text-center"><span th:class="'textOrderStatus' + ${order.id}">[[${order.status.getName()}]]</span></td>
+                                <td class="text-center">
+                                    <a class="fas fa-file-alt fa-2x icon-green linkDetail"
+                                       th:href="@{'/profile/order/info/detail/' + ${order.id}}"
+                                       title="View details of this order"></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div th:replace="fragments :: pagination_user('order', '/profile/order/info')"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade" id="orderDetailsModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 <div th:replace="fragments/footer_fragment :: footer"></div>
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 <script th:inline="javascript">
     $(document).ready(function () {
         let messageError = [[${messageError}]];
         let messageSuccess = [[${messageSuccess}]];
+        let statusValue = [[${status}]];
 
         if(messageSuccess) {
             swal(
@@ -129,16 +160,41 @@
                 'error'
             )
         }
+
+        handleDetailLink(".linkDetail", "#orderDetailsModal");
+
+        $("#status option[value =" +  statusValue+ "]").prop("selected", "selected")
     })
 </script>
 <script type="text/javascript">
     $(function () {
-        $(".profile-order-input-date").datepicker({
+
+        $("#start-date").datepicker({
             autoclose: true,
             todayHighlight: true,
-            endDate: '+0d'
+            endDate: '+0d',
+            format: 'dd-mm-yyyy',
+        }).on('changeDate', function(selected){
+            let minDate = new Date(selected.date.valueOf());
+            $('#end-date').datepicker('setStartDate', minDate);
         });
-    });
+
+
+
+
+        $("#end-date").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            endDate: '+0d',
+            format: 'dd-mm-yyyy'
+        }).on('changeDate', function(selected){
+            let minDate = new Date(selected.date.valueOf());
+            $('#start-date').datepicker('setEndDate', minDate);
+        });
+
+
+
+ });
 </script>
 </body>
 

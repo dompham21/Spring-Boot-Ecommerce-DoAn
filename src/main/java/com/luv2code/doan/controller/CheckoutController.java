@@ -51,7 +51,6 @@ public class CheckoutController {
             List<Address> listAddresses = addressService.getListAddressByUserId(loggedUser.getId());
 
 
-            log.info(listCarts.isEmpty() + "");
 
             double estimatedTotal = 0;
 

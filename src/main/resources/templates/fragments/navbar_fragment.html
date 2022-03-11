@@ -6,13 +6,18 @@
         <a href="/" style="outline: none !important;box-shadow: none !important;">
             <img th:src="@{/images/logo-white.png}" alt="logo" class="navbar-logo"/>
         </a>
-
-        <div class="input-group navbar-search">
-            <span class="input-group-text navbar-search-text">
-                <i class="fas fa-search"></i>
-            </span>
-            <input type="text" class="form-control navbar-search-input" placeholder="Nhập tên sản phẩm, danh mục hoặc thương hiệu...">
+        <div class="navbar-search">
+            <form th:action="@{'/search/page/1'}" id="form-search">
+                <div class="input-group">
+               <span class="input-group-text navbar-search-text">
+                    <i class="fas fa-search"></i>
+                </span>
+                    <input type="text" autocomplete="off" class="form-control navbar-search-input" th:value="${keywordSearch != null ? keywordSearch : '' }" name="keywordSearch" placeholder="Nhập tên sản phẩm, danh mục hoặc thương hiệu...">
+                </div>
+            </form>
         </div>
+
+
     </div>
 
     <div class="navbar-right d-flex align-items-center justify-content-end">
@@ -123,10 +128,9 @@
                         <div class="user-menu-wrapper d-flex flex-column">
                             <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-user"></i><span>Thông tin tài khoản</span></a>
                             <a href="/profile/order/info" class="user-menu-item d-flex align-items-center"><i class="far fa-clipboard"></i><span>Danh sách đơn hàng</span></a>
+                            <a href="/profile/address" class="user-menu-item d-flex align-items-center"><i class="fas fa-map-marked-alt"></i><span>Địa chỉ của tôi</span></a>
                             <a href="/logout" class="user-menu-item d-flex align-items-center"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a>
-
                         </div>
-
                     </div>
                 </div>
             </div>

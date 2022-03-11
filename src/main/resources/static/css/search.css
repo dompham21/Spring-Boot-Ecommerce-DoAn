@@ -1,0 +1,98 @@
+.search-main {
+    padding: 70px 70px 30px 70px;
+    color: white;
+    font-size: 15px;
+}
+
+.search-content {
+    gap: 24px;
+}
+
+.search-form {
+    background-color: #1b194f;
+    border-radius: 6px;
+    width: 325px;
+    flex-shrink: 0;
+}
+
+.search-content-body {
+    flex: 1 auto;
+}
+
+.search-form-card {
+    padding: 26px 30px;
+}
+
+.form-group-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.checkbox-list {
+    padding-left: 8px;
+}
+
+.custom-control-label-radio.custom-control-label::before {
+    border-radius: 50% !important;
+}
+
+
+.custom-control-label::before {
+    top: 0.1rem;
+    left: -1.5rem;
+    width: 20px;
+    height: 20px;
+    background-color: #ebedf3;
+    border: 0;
+    border-radius: 6px !important;
+}
+
+.custom-control-label {
+    padding-left: 5px;
+    padding-top: 2px;
+}
+
+.custom-control-label::after {
+    width: 20px;
+    height: 20px;
+    top: 0.1rem;
+    left: -1.5rem;
+}
+
+.custom-control-input:checked ~ .custom-control-label::after {
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='25.412' height='19.855' viewBox='0 0 25.412 19.855'><path id='check' d='M22.6,3.8,8,19.4,1.4,11.7,0,12.9l7.9,9.3L24,5.1Z' transform='translate(0.703 -3.095)' fill='%23fff' stroke='%23fff' stroke-width='2'/></svg>") !important;
+
+}
+
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.search-btn-submit {
+    height: 36px;
+    background-color: #ec4c4d;
+    color: white;
+    box-shadow: 0 3px 1px -2px #00000033, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
+    border: 0;
+    outline: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: capitalize;
+    padding: 0 24px;
+}
+
+.search-btn-submit:hover {
+    background-color: #e72728;
+}
+
+
+.search-content-body .list-product {
+    padding: 0;
+}
+
+
+.search-content-body .list-product-carousel {
+    grid-template-columns: repeat(4, 1fr);
+}

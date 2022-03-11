@@ -1,6 +1,8 @@
 package com.luv2code.doan.repository;
 
 import com.luv2code.doan.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("Select u from User u WHere u.email = :email")
     public User getUserByEmail(String email);
+
+    @Query("SELECT u FROM User u WHERE u.firstName LIKE %:keyword% OR u.lastName LIKE %:keyword%")
+    public Page<User> findAll(String keyword, Pageable pageable);
 }

@@ -1,9 +1,14 @@
 package com.luv2code.doan.controller;
 
 import com.luv2code.doan.bean.ChangePassword;
+import com.luv2code.doan.entity.Address;
+import com.luv2code.doan.entity.Cart;
+import com.luv2code.doan.entity.Province;
 import com.luv2code.doan.entity.User;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.principal.UserPrincipal;
+import com.luv2code.doan.service.CartService;
+import com.luv2code.doan.service.OrderService;
 import com.luv2code.doan.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +23,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.validation.Valid;
+import java.util.List;
+
 
 @Controller
 public class ProfileController {
@@ -32,12 +38,25 @@ public class ProfileController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping("/profile/info")
     public String profileInfo(@AuthenticationPrincipal UserPrincipal loggedUser, Model model,
                               RedirectAttributes redirectAttributes) {
         Integer id = loggedUser.getId();
         try {
             User user = userService.getUserByID(id);
+            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
+
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+            }
+
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
             model.addAttribute("user", user);
             return "profile-user/profile";
         }
@@ -54,6 +73,16 @@ public class ProfileController {
         Integer id = loggedUser.getId();
         try {
             User user = userService.getUserByID(id);
+            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
+
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+            }
+
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
             model.addAttribute("user", user);
             return "profile-user/edit-profile";
         }
@@ -101,6 +130,16 @@ public class ProfileController {
         Integer id = loggedUser.getId();
         try {
             User user = userService.getUserByID(id);
+            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
+
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+            }
+
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
             model.addAttribute("user", user);
             return "profile-user/change-password";
         }
@@ -151,20 +190,4 @@ public class ProfileController {
         }
     }
 
-
-    @GetMapping("/profile/order/info")
-    public String profileOrderInfo(@AuthenticationPrincipal UserPrincipal loggedUser, Model model,
-                              RedirectAttributes redirectAttributes) {
-        Integer id = loggedUser.getId();
-        try {
-            User user = userService.getUserByID(id);
-            model.addAttribute("user", user);
-            return "profile-user/order-info";
-        }
-        catch (UserNotFoundException e) {
-            redirectAttributes.addFlashAttribute("messageError", e.getMessage());
-            return "profile-user/order-info";
-        }
-
-    }
 }
