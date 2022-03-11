@@ -65,7 +65,8 @@
 
                 </li>
                 <li class="menu-item d-flex flex-column justify-content-center">
-                    <a
+                    <a  th:classappend="${key =='category' ? 'menu-active' : ''}"
+                        th:attr="aria-expanded=${key == 'category' ? true : false}"
                         data-toggle="collapse"
                         href="#menu-item-collapse-2"
                         class="menu-link menu-toggle
@@ -85,15 +86,21 @@
                             </svg>
                             <!--end::Svg Icon-->
                         </span>
+
                         <span class="menu-text">Thể loại</span>
                         <i class="fas fa-chevron-right"></i>
                     </a>
-                    <ul class="collapse menu-item flex-column justify-content-center" id="menu-item-collapse-2">
-                        <li class="menu-link menu-item-sub align-items-center">
-                            <span class="menu-text">Xem tất cả</span>
+                    <ul class="collapse menu-item flex-column justify-content-center" id="menu-item-collapse-2" th:classappend="${key =='category' ? 'show' : ''}">
+                        <li class="menu-link menu-item-sub align-items-center" th:classappend="${subkey =='category_all' ? 'menu-active' : ''}">
+                            <a href="/admin/category">
+                                <span class="menu-text">Xem tất cả</span>
+                            </a>
                         </li>
-                        <li class="menu-link menu-item-sub align-items-center">
-                            <span class="menu-text">Thêm mới</span>
+                        <li class="menu-link menu-item-sub align-items-center" th:classappend="${subkey =='category_new' ? 'menu-active' : ''}">
+
+                        <a href="/admin/category/add">
+                                <span class="menu-text">Thêm mới</span>
+                            </a>
                         </li>
                     </ul>
 
