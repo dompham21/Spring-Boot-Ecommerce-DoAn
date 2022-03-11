@@ -63,3 +63,15 @@ option[value=""][disabled] {
 a.disabled {
     pointer-events: none;
 }
+
+body.modal-open {
+    padding-right: 0 !important;
+}
+
+.modal-open .modal::-webkit-scrollbar { width: 8px; height: 3px;}
+.modal-open .modal::-webkit-scrollbar-button {  background-color: #666; }
+.modal-open .modal::-webkit-scrollbar-track {  background-color: #646464;}
+.modal-open .modal::-webkit-scrollbar-track-piece { background-color: #000;}
+.modal-open .modal::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+.modal-open .modal::-webkit-scrollbar-corner { background-color: #646464;}
+.modal-open .modal::-webkit-resizer { background-color: #666;}

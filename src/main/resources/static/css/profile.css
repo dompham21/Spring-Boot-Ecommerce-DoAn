@@ -272,3 +272,29 @@
     border: 1px solid white !important;
     outline: none;
 }
+
+.text-order-product ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.page-link {
+    background-color: #3e4347;
+    color: white;
+    border-color: white;
+}
+
+.page-item.disabled .page-link {
+    background: #394148;
+    color: #747474;
+}
+
+.page-item.active .page-link {
+    border-color: white;
+    background-color: #1d1c2c;
+}
+
+.profile-order-main td {
+    vertical-align: middle;
+}

@@ -21,7 +21,7 @@
     max-width: 700px;
     padding: 0;
     height: 40px;
-
+    flex: 1;
 }
 
 .navbar-search-text {
@@ -31,6 +31,8 @@
     outline: none;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 
 .navbar-search-text i {
@@ -38,6 +40,7 @@
 }
 
 .navbar-search-input {
+    height: calc(1.5em + 0.75rem + 4px);
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     background-color: #12142b;

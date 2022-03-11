@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
     @Query("SELECT p FROM Product p WHERE p.name LIKE %?1% "
-            + "OR p.description LIKE %?1% ")
+            + "OR p.shortDescription LIKE %?1% ")
     public Page<Product> findAll(String keyword, Pageable pageable);
 
     @Query("SELECT COUNT(p.id) from Product p WHERE p.id = :id")
@@ -23,4 +23,17 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product  p ORDER BY p.registrationDate DESC")
     public Page<Product> findLatestProduct(Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE p.price between :minPrice AND :maxPrice")
+    public Page<Product> searchFilterProduct(double minPrice, double maxPrice, Pageable pageable);
+
+    @Query("SELECT p FROM Product p WHERE (p.name LIKE %:keyword% OR p.shortDescription LIKE %:keyword%) AND " +
+            "(p.price between :minPrice AND :maxPrice)")
+    public Page<Product> searchWithKeywordFilterProduct(String keyword, double minPrice, double maxPrice, Pageable pageable);
+
+    @Query("SELECT max(p.price) FROM Product  p")
+    public double getMaxPrice();
+
+    @Query("SELECT min(p.price) FROM Product  p")
+    public double getMinPrice();
 }
