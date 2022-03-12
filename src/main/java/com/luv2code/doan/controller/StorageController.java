@@ -1,6 +1,7 @@
 package com.luv2code.doan.controller;
 
 
+import com.luv2code.doan.exceptions.StorageUploadFileException;
 import com.luv2code.doan.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class StorageController {
     private StorageService storageService;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestParam(value = "file") MultipartFile file) throws StorageUploadFileException {
         log.info(file.getName());
         return new ResponseEntity<>(storageService.uploadFile(file), HttpStatus.OK);
     }

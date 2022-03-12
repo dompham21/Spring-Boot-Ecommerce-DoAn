@@ -26,7 +26,7 @@
                         <div class="form-container-content">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-8">
-                                    <form th:action="${isEdit} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${product}" method="post" id="form-product">
+                                    <form th:action="${isEdit} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${productValidate}" enctype="multipart/form-data" method="post" id="form-product">
                                         <div class="mb-4">
                                             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
                                             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
@@ -93,8 +93,8 @@
                                         </div>
                                         <div class="row mb-4" style="padding:0 15px">
                                             <div class="upload-zone d-flex justify-content-center align-items-center">
-                                                <input type="file"  accept="image/*" class="upload-zone-input" onchange="loadFile(event)" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
-                                                <input type="text" id="image" th:field="*{image}" style="display: none; opacity: 0"/>
+                                                <input type="file" th:field="*{image}" accept="image/*" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
+<!--                                                <input type="text" id="image" th:field="*{image}" style="display: none; opacity: 0"/>-->
                                                 <img id="image-output"/>
                                                 <div class="upload-zone-content">
                                                     <div class="upload-zone-title">Select file</div>
@@ -197,9 +197,9 @@
             e.preventDefault();//stop submit event
             $('#price').val(parseInt($('#price').val().split('.').join(""))) //remove dots
             $('#inStock').val(parseInt($('#inStock').val().split('.').join(""))) //remove dots
-            let output = document.getElementById('image-output');
-
-            $('#image').val(output.src)
+            // let output = document.getElementById('image-output');
+            //
+            // $('#image').val(output.src)
 
             $(this).off("submit");//need form submit event off.
             $(this).submit();//submit form

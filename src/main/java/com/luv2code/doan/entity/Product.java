@@ -35,7 +35,7 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @NotEmpty(message = "Image không được bỏ trống!")
+    @NotBlank(message = "Image không được bỏ trống!")
     @Column(name = "image", nullable = false)
     private String image;
 
@@ -60,7 +60,6 @@ public class Product {
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
-
 
     @ManyToOne
     @JoinColumn(name = "category_id")

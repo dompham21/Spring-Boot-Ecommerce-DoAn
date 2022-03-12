@@ -53,26 +53,21 @@ function formatDate(inputDate) {
 
 
 let loadFile = function(event) {
-    let data = new FormData();
-    data.append("file",event.target.files[0]);
-    $.ajax ({
-        data: data,
-        type: "POST",
-        url: "/file/upload",
-        cache: false,
-        enctype : 'multipart/form-data',
-        contentType: false,
-        processData: false,
-        success: function(url) {
-            let output = document.getElementById('image-output');
-            $('#image-output').css('display', 'block')
-            output.src = url;
-            $('.upload-zone-content').css('display', 'none');
-        },
-        error: function(data) {
-            console.log(data);
-        }
-    });
+    let output = document.getElementById('image-output');
+    output.src  = URL.createObjectURL(event.target.files[0]);
+    $('#image-output').css('display', 'block')
+    $('.upload-zone-content').css('display', 'none');
+
+    // let reader = new FileReader();
+    // reader.onload = function(){
+    //     let output = document.getElementById('image-output');
+    //     console.log(reader.result)
+    //
+    //     output.src = reader.result;
+    //     $('#image-output').css('display', 'block')
+    //     $('.upload-zone-content').css('display', 'none');
+    // };
+    // reader.readAsDataURL(event.target.files[0]);
 
 };
 

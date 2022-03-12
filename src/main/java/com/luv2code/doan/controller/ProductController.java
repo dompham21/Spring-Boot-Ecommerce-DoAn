@@ -1,19 +1,23 @@
 package com.luv2code.doan.controller;
 
 
+import com.luv2code.doan.bean.ProductValidate;
 import com.luv2code.doan.entity.Cart;
 import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.Review;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
+import com.luv2code.doan.exceptions.StorageUploadFileException;
 import com.luv2code.doan.principal.UserPrincipal;
 import com.luv2code.doan.service.CartService;
 import com.luv2code.doan.service.ProductService;
 import com.luv2code.doan.service.ReviewService;
+import com.luv2code.doan.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,12 +44,16 @@ public class ProductController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private StorageService storageService;
+
+
 
     @GetMapping("/admin/product/add")
     public String addProduct(Model model) {
         Product product = new Product();
         product.setIsActive(true);
-        model.addAttribute("product", product);
+        model.addAttribute("productValidate", new ProductValidate());
 
         return "product/new_product";
     }
@@ -97,10 +105,10 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/add")
-    public String saveProduct(@Valid Product product, BindingResult errors, RedirectAttributes redirectAttributes) {
+    public String saveProduct(@Valid ProductValidate productValidate, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
 
-        if(productService.getProductByName(product.getName()) != null) {
-            errors.rejectValue("name", "product", "Ten san pham khong duoc trung!");
+        if(productService.getProductByName(productValidate.getName()) != null) {
+            errors.rejectValue("name", "productValidate", "Ten san pham khong duoc trung!");
         }
         if(errors.hasErrors()) {
             log.info("has errors");
@@ -108,13 +116,31 @@ public class ProductController {
         }
 
         else {
-            log.info("image");
-            product.setRegistrationDate(new Date());
-            product.setSoldQuantity(0);
-            productService.saveProduct(product);
+              String url = storageService.uploadFile(productValidate.getImage());
+              Product product = new Product();
 
-            redirectAttributes.addFlashAttribute("messageSuccess", "The product has been saved successfully.");
-            return "redirect:/admin/product/page/1";
+
+              product.setRegistrationDate(new Date());
+              product.setSoldQuantity(0);
+              product.setIsActive(productValidate.getIsActive());
+              product.setName(productValidate.getName());
+              product.setDescription(productValidate.getDescription());
+              product.setShortDescription(productValidate.getShortDescription());
+              product.setPrice(productValidate.getPrice());
+              product.setInStock(productValidate.getInStock());
+
+              if(productValidate.getDiscount() == null) {
+                  product.setDiscount(0);
+              }
+              else {
+                  product.setDiscount(productValidate.getDiscount());
+              }
+
+              product.setImage(url);
+              productService.saveProduct(product);
+
+              redirectAttributes.addFlashAttribute("messageSuccess", "The product has been saved successfully.");
+              return "redirect:/admin/product/page/1";
 
         }
 
