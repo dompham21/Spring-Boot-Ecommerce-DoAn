@@ -11,7 +11,7 @@
         <div id="kt_aside_menu" class="aside-menu mb-1" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
             <ul class="menu-nav">
                 <li class="menu-item menu-item-active" aria-haspopup="true">
-                    <a href="/" class="menu-link" th:classappend="${key =='dashboard' ? 'menu-active' : ''}">
+                    <a href="/admin" class="menu-link" th:classappend="${key =='dashboard' ? 'menu-active' : ''}">
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -65,15 +65,14 @@
 
                 </li>
                 <li class="menu-item d-flex flex-column justify-content-center">
-                    <a  th:classappend="${key =='category' ? 'menu-active' : ''}"
-                        th:attr="aria-expanded=${key == 'category' ? true : false}"
-                        data-toggle="collapse"
-                        href="#menu-item-collapse-2"
-                        class="menu-link menu-toggle
-                        align-items-center"
-                        role="button"
-                        aria-expanded="false"
-                        aria-controls="menu-item-collapse-2"
+                    <a   data-toggle="collapse"
+                         href="#menu-item-collapse-2"
+                         th:classappend="${key =='category' ? 'menu-active' : ''}"
+                         th:attr="aria-expanded=${key == 'category' ? true : false}"
+                         class="menu-link menu-toggle align-items-center"
+                         role="button"
+                         aria-expanded="false"
+                         aria-controls="menu-item-collapse-2"
                     >
                         <span class="svg-icon menu-icon">
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Layout/Layout-4-blocks.svg-->

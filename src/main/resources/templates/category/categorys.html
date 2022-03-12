@@ -27,7 +27,7 @@
                 </div>
                 <section class="list-table">
                     <div class="list-table-header d-flex align-items-center justify-content-between">
-                        <div th:replace="fragments :: search_form('product')"></div>
+                        <div th:replace="fragments :: search_form('category')"></div>
                         <div class="dropdown dropdown-filter">
                             <button type="button" class="btn-block-option-filter" id="dropdown-ecom-filters" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Filters <i class="fa fa-angle-down ms-1"></i>
@@ -116,5 +116,8 @@
 
         </div>
     </div>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/index.js}" ></script>
 </body>
 </html>

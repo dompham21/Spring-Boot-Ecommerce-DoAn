@@ -3,6 +3,7 @@ package com.luv2code.doan.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.luv2code.doan.exceptions.StorageUploadFileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,23 @@ public class StorageService {
     @Autowired
     private AmazonS3 s3Client;
 
-    public String uploadFile(MultipartFile file) {
-        File fileObj = convertMultiPartFileToFile(file);
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
-        String fileUrl = String.valueOf(s3Client.getUrl(bucketName, fileName));
+    public String uploadFile(MultipartFile file) throws StorageUploadFileException {
+        String fileUrl = "";
+        try {
+            File fileObj = convertMultiPartFileToFile(file);
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
+            fileUrl = String.valueOf(s3Client.getUrl(bucketName, fileName));
 
-        fileObj.delete();
-        log.info("File upload: "+ fileName + " ,File url is: " + fileUrl);
+            fileObj.delete();
+            log.info("File upload: "+ fileName + " ,File url is: " + fileUrl);
+        }
+        catch (Exception e) {
+            throw new StorageUploadFileException("Error upload file to server");
+        }
         return fileUrl;
+
+
     }
 
 
