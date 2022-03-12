@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Query("SELECT p FROM Category p WHERE p.name LIKE %:keyword% "
             + "OR p.description LIKE %:keyword% ")
-    public Page<Product> findAll(String keyword, Pageable pageable);
+    public Page<Category> findAll(String keyword, Pageable pageable);
 }
