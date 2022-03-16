@@ -128,7 +128,7 @@
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/index.js}" ></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
 
 <script th:inline="javascript">
     $(document).ready(function () {
@@ -136,19 +136,19 @@
         let messageSuccess = [[${messageSuccess}]];
 
         if(messageSuccess) {
-            swal(
-                '',
-                messageSuccess,
-                'success'
-            )
+            Swal.fire({
+                title: '',
+                text: messageSuccess,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            })
         }
-
         if(messageError ) {
-            swal(
-                '',
-                messageError,
-                'error'
-            )
+            Swal.fire({
+                title: '',
+                text: messageError,
+                icon: 'error',
+            })
         }
 
         $(".link-delete").on("click", function(e) {

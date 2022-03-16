@@ -134,5 +134,9 @@ public class MainController {
 
 
 
+    @GetMapping("/api/test")
+    public String test() {
+        return "test";
+    }
 
 }

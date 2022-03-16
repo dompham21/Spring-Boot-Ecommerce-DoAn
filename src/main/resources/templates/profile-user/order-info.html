@@ -147,18 +147,19 @@
         let statusValue = [[${status}]];
 
         if(messageSuccess) {
-            swal(
-                '',
-                messageSuccess,
-                'success'
-            )
+            Swal.fire({
+                title: '',
+                text: messageSuccess,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            })
         }
         if(messageError ) {
-            swal(
-                '',
-                messageError,
-                'error'
-            )
+            Swal.fire({
+                title: '',
+                text: messageError,
+                icon: 'error',
+            })
         }
 
         handleDetailLink(".linkDetail", "#orderDetailsModal");

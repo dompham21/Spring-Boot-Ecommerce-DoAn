@@ -10,15 +10,6 @@ $('.dropdown-filter').click(function(){
 
 });
 
-function showDeleteConfirmModal(link, entityName) {
-    entityId = link.attr("entityId");
-
-    $("#yesButton").attr("href", link.attr("href"));
-    $("#confirmText").text("Are you sure you want to delete this "
-        + entityName + " ID " + entityId + "?");
-    $("#confirmModal").modal();
-}
-
 
 function formatNumber(event, input) {
     if(event.which >= 37 && event.which <= 40){
@@ -53,43 +44,17 @@ function formatDate(inputDate) {
 
 
 let loadFile = function(event) {
-    let output = document.getElementById('image-output');
-    output.src  = URL.createObjectURL(event.target.files[0]);
-    $('#image-output').css('display', 'block')
-    $('.upload-zone-content').css('display', 'none');
-
-    // let reader = new FileReader();
-    // reader.onload = function(){
-    //     let output = document.getElementById('image-output');
-    //     console.log(reader.result)
-    //
-    //     output.src = reader.result;
-    //     $('#image-output').css('display', 'block')
-    //     $('.upload-zone-content').css('display', 'none');
-    // };
-    // reader.readAsDataURL(event.target.files[0]);
-
+    let reader = new FileReader();
+    reader.onload = function(){
+        let output = document.getElementById('image-output');
+        output.src = reader.result;
+        $('#image-output').css('display', 'block')
+        $('#image').val(reader.result)
+        $('.upload-zone-content').css('display', 'none');
+    };
+    reader.readAsDataURL(event.target.files[0]);
 };
 
-function uploadImage(image) {
-    let data = new FormData();
-    data.append("file",image);
-    $.ajax ({
-        data: data,
-        type: "POST",
-        url: "/file/upload",
-        cache: false,
-        enctype : 'multipart/form-data',
-        contentType: false,
-        processData: false,
-        success: function(url) {
-            $('#description').summernote("insertImage", url);
-        },
-        error: function(data) {
-            console.log(data);
-        }
-    });
-}
 
 function clearFilter(entityName) {
     window.location = `/admin/${entityName}/page/1`;
@@ -109,91 +74,58 @@ function handleInputNumber(evt) {
     }
 }
 
-function handleInputNumberCart(evt, productId) {
-    handleInputNumber(evt);
-    updatedQuantityCart(productId, evt.target.value)
-}
+
 
 function showErrorLoginPage() {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = "<div><div>You must login to add this product to cart.</div><div>Go to <a style='color: #4c78dd; font-weight: 700' href='/login'>Login Page</a></div></div>"
-    swal( {
+
+    Swal.fire({
         title: '',
-        icon: 'error',
         content: wrapper,
+        icon: 'error'
     })
+
 }
 
 $(document).on('click', '.dropdown-menu', function (e) {
     e.stopPropagation();
 });
 
-function increaseQuantity(e, productId) {
-    e.parentNode.querySelector('input[type=number]').stepUp();
-    let quantity = $(e).parent().find('input').val()
-    updatedQuantityCart(productId, quantity);
 
+
+function showConfirmDelete(event, entityId ) {
+    event.preventDefault();
+    let link = $("#link-delete-" + entityId)
+    let entityName = link.attr("entity")
+
+    let url = link.attr("href")
+
+
+    Swal.fire({
+        title: "Are you sure you want to delete this "
+            + entityName + " ID " + entityId + "?",
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `<a href= ${url}>Yes, delete it!</a>`,
+    })
 }
 
-function decreaseQuantity(e, productId) {
-    e.parentNode.querySelector('input[type=number]').stepDown();
-    let quantity = $(e).parent().find('input').val()
-    updatedQuantityCart(productId, quantity);
-}
-
-function updatedQuantityCart(productId, quantity) {
-    $('.quantity' + productId).val(quantity);
-    $('.price-quantity' +productId).text('đ x ' + quantity);
-    url =  "/cart/update/" + productId + "/" + quantity;
-
-    $.ajax({
-        type: "POST",
-        url: url,
-    }).done(function(response) {
-        if(response.status === "OK") {
-            $(".subtotal" + productId).text(formatPrice(response.subtotal));
-            $(".cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
-        }
-    }).fail(function(error) {
-        swal(
-            '',
-            error.responseText,
-            'error'
-        )
-    });
-}
-
-function deleteItemCart(productId) {
-    url = "/cart/delete/" + productId;
-    $.ajax({
-        type: "DELETE",
-        url: url,
-    }).done(function(response) {
-        if(response.status === "OK") {
-            $(".cart-estimatedTotal").text(formatPrice(response.estimatedTotal));
-            removeItemFromHtml(productId);
-            if($('.cart-item-count').length === 0) {
-                $("#sectionEmptyCartMessage").removeClass("d-none");
-                $("#sectionEmptyCartMessage").addClass("d-flex");
-                $("#checkout-empty").removeClass("d-none");
-                $("#checkout-empty").addClass("d-flex");
-
-                $("#checkout-main").remove();
-                $(".pulse-ring").remove();
-                $(".nav-badge").remove();
-            }
-        }
-    }).fail(function(error) {
-        swal(
-            '',
-            error.responseText,
-            'error'
-        )
-    });
-}
-
-function removeItemFromHtml(productId) {
-    $(".cartitem"+productId).remove();
+function btnDeleteCartItem(event,productId) {
+    event.preventDefault();
+    let url = '/cart/delete/' + productId
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `<a href= ${url}>Yes, delete it!</a>`,
+    })
 }
 
 
@@ -211,11 +143,12 @@ function loadDistrictByProvinces() {
         });
 
     }).fail(function() {
-        swal(
-            '',
-            'Error loading district for the selected provice.',
-            'error'
-        )
+        Swal.fire({
+            title: '',
+            text: 'Error loading district for the selected provice.',
+            icon: 'error'
+        })
+
     })
 }
 
@@ -235,11 +168,12 @@ function loadWardByDistricts() {
         });
 
     }).fail(function() {
-        swal(
-            '',
-            'Error loading ward for the selected district.',
-            'error'
-        )
+        Swal.fire({
+            title: '',
+            text: 'Error loading ward for the selected district.',
+            icon: 'error'
+        })
+
     })
 }
 
@@ -260,11 +194,12 @@ function loadDistrictByProvincesEdit() {
         });
 
     }).fail(function() {
-        swal(
-            '',
-            'Error loading district for the selected provice.',
-            'error'
-        )
+        Swal.fire({
+            title: '',
+            text: 'Error loading district for the selected provice',
+            icon: 'error'
+        })
+
     })
 }
 
@@ -283,11 +218,12 @@ function loadWardByDistrictsEdit() {
         });
 
     }).fail(function() {
-        swal(
-            '',
-            'Error loading ward for the selected district.',
-            'error'
-        )
+        Swal.fire({
+            title: '',
+            text: 'Error loading ward for the selected district.',
+            icon: 'error'
+        })
+
     })
 }
 

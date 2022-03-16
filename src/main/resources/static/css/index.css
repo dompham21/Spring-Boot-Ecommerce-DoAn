@@ -75,3 +75,10 @@ body.modal-open {
 .modal-open .modal::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
 .modal-open .modal::-webkit-scrollbar-corner { background-color: #646464;}
 .modal-open .modal::-webkit-resizer { background-color: #666;}
+
+
+
+body.swal2-shown.swal2-height-auto {
+    padding: 0 !important;
+    overflow: unset !important;
+}

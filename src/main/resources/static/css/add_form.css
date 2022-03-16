@@ -185,3 +185,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+
+.note-btn.btn-light i {
+    color: #212529;
+}

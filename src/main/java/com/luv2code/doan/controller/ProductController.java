@@ -1,7 +1,6 @@
 package com.luv2code.doan.controller;
 
 
-import com.luv2code.doan.bean.ProductValidate;
 import com.luv2code.doan.entity.Cart;
 import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.Review;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,7 +51,7 @@ public class ProductController {
     public String addProduct(Model model) {
         Product product = new Product();
         product.setIsActive(true);
-        model.addAttribute("productValidate", new ProductValidate());
+        model.addAttribute("product", product);
 
         return "product/new_product";
     }
@@ -105,10 +103,10 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/add")
-    public String saveProduct(@Valid ProductValidate productValidate, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
-
-        if(productService.getProductByName(productValidate.getName()) != null) {
-            errors.rejectValue("name", "productValidate", "Ten san pham khong duoc trung!");
+    public String saveProduct(@Valid Product product, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
+        log.info(product.toString());
+        if(productService.getProductByName(product.getName()) != null) {
+            errors.rejectValue("name", "product", "Ten san pham khong duoc trung!");
         }
         if(errors.hasErrors()) {
             log.info("has errors");
@@ -116,26 +114,14 @@ public class ProductController {
         }
 
         else {
-              String url = storageService.uploadFile(productValidate.getImage());
-              Product product = new Product();
+              String url = storageService.uploadFile(product.getImage());
 
 
-              product.setRegistrationDate(new Date());
-              product.setSoldQuantity(0);
-              product.setIsActive(productValidate.getIsActive());
-              product.setName(productValidate.getName());
-              product.setDescription(productValidate.getDescription());
-              product.setShortDescription(productValidate.getShortDescription());
-              product.setPrice(productValidate.getPrice());
-              product.setInStock(productValidate.getInStock());
-
-              if(productValidate.getDiscount() == null) {
+              if(product.getDiscount() == null) {
                   product.setDiscount(0);
               }
-              else {
-                  product.setDiscount(productValidate.getDiscount());
-              }
-
+              product.setSoldQuantity(0);
+              product.setRegistrationDate(new Date());
               product.setImage(url);
               productService.saveProduct(product);
 
@@ -164,6 +150,8 @@ public class ProductController {
     public String editProduct(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model) {
         try {
             Product product = productService.getProductById(id);
+
+
             model.addAttribute("product", product);
             model.addAttribute("isEdit", true);
             model.addAttribute("productName", product.getName());
@@ -192,7 +180,13 @@ public class ProductController {
                 log.info("has errors");
                 return "product/new_product";
             } else {
-
+                if(!existProduct.getImage().equals(product.getImage())) {
+                    String url = storageService.uploadFile(product.getImage());
+                    existProduct.setImage(url);
+                }
+                else {
+                    existProduct.setImage(product.getImage());
+                }
                 existProduct.setName(product.getName());
                 existProduct.setIsActive(product.getIsActive());
                 existProduct.setPrice(product.getPrice());
@@ -200,7 +194,7 @@ public class ProductController {
                 existProduct.setDescription(product.getDescription());
                 existProduct.setShortDescription(product.getShortDescription());
                 existProduct.setDiscount(product.getDiscount());
-                existProduct.setImage(product.getImage());
+
 //                    existProduct.setBrands(product.getBrands());
 //                    existProduct.setCategories(product.getCategories());
 
@@ -212,7 +206,7 @@ public class ProductController {
 
 
             }
-        } catch (ProductNotFoundException e) {
+        } catch (ProductNotFoundException | StorageUploadFileException e) {
             redirectAttributes.addFlashAttribute("messageError", e.getMessage());
             return "redirect:/admin/product/page/1";
         }
