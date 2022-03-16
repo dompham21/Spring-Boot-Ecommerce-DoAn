@@ -102,7 +102,7 @@
                                             >Sửa</a>
                                             <th:block th:if="${!address.isDefault}">
                                                 <a th:href="@{'/profile/address/delete/' + ${address.id}}"
-                                                   class="link-delete" th:entityId="${address.id}"
+                                                   th:id="'link-delete-' + ${address.id}" th:onclick="'showConfirmDelete(event,' + ${address.id} + ')'" entity="address"
                                                    style="margin-left: 20px; text-decoration: underline"
                                                    data-toggle="tooltip" data-placement="top" title="Xoá"
                                                 >Xoá</a>
@@ -151,10 +151,7 @@
             })
         }
 
-        $(".link-delete").on("click", function(e) {
-            e.preventDefault();
-            showDeleteConfirmModal($(this), 'address');
-        });
+
 
     })
 </script>

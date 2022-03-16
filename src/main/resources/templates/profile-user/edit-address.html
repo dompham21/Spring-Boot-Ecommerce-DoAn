@@ -101,9 +101,9 @@
                                                 <option value="" selected disabled>Chọn tỉnh/thành phố</option>
                                             </th:block>
                                             <th:block th:if="${address.ward != null}">
-                                                <option th:value="${address.ward.district.province.code}" th:text="${address.ward.district.province.name}"></option>
+                                                <option th:value="${address.ward.district.province.code}" th:text="${address.ward.district.province.fullName}"></option>
                                             </th:block>
-                                            <option th:each="province : ${listProvinces}" th:value="${province.code}" th:text="${province.name}">
+                                            <option th:each="province : ${listProvinces}" th:value="${province.code}" th:text="${province.fullName}">
                                             </option>
                                         </select>
                                     </div>
@@ -113,7 +113,7 @@
                                                 <option value="" selected disabled>Chọn quận/huyện</option>
                                             </th:block>
                                             <th:block th:if="${address.ward != null}">
-                                                <option th:value="${address.ward.district.code}" th:text="${address.ward.district.name}"></option>
+                                                <option th:value="${address.ward.district.code}" th:text="${address.ward.district.fullName}"></option>
                                             </th:block>
                                         </select>
                                     </div>
@@ -125,7 +125,7 @@
                                                 <option value="" selected disabled>Chọn phường/xã</option>
                                             </th:block>
                                             <th:block th:if="${address.ward != null}">
-                                                <option th:value="${address.ward.code}" th:text="${address.ward.name}"></option>
+                                                <option th:value="${address.ward.code}" th:text="${address.ward.fullName}"></option>
                                             </th:block>
                                         </select>
                                     </div>
@@ -154,6 +154,9 @@
     $(document).ready(function () {
         let messageError = [[${messageError}]];
         let messageSuccess = [[${messageSuccess}]];
+        let listDistricts = [[${listDistricts}]]
+        let listWards = [[${listWards}]]
+
 
         if(messageSuccess) {
             Swal.fire({
@@ -175,11 +178,36 @@
         let dropdownDistricts = $("#district");
 
         dropdownProvinces.on("change", function() {
-            loadDistrictByProvinces();
+            let selectedProvice = $("#province option:selected");
+            let provinceCode = selectedProvice.val();
+            let dropdownDistrict = $("#district");
+            let dropdownWard = $("#ward");
+
+            dropdownWard.empty();
+            $("<option>").val("").text("Chọn phường/xã").attr("disabled", "disabled").attr("selected","selected").appendTo(dropdownWard);
+
+            dropdownDistrict.empty();
+            $("<option>").val("").text("Chọn quận/huyện").attr("disabled", "disabled").attr("selected","selected").appendTo(dropdownDistrict);
+
+            let listDistrictsFilter = listDistricts.filter(e => e.province.code === provinceCode)
+            listDistrictsFilter.forEach(district =>  {
+                $("<option>").val(district.code).text(district.fullName).appendTo(dropdownDistrict);
+            })
         });
 
         dropdownDistricts.on("change", function() {
-            loadWardByDistricts();
+            let selectedDistrict = $("#district option:selected");
+            let districtCode = selectedDistrict.val();
+            let dropdownWard = $("#ward");
+
+            dropdownWard.empty();
+            $("<option>").val("").text("Chọn phường/xã").attr("disabled", "disabled").attr("selected","selected").appendTo(dropdownWard);
+
+            let listWardsFilter = listWards.filter(e => e.district.code === districtCode)
+            listWardsFilter.forEach(ward =>  {
+                $("<option>").val(ward.code).text(ward.fullName).appendTo(dropdownWard);
+            })
+
         })
 
         $("#province option").each(function() { //remove option duplicate when form is edit
@@ -189,8 +217,29 @@
         let selectedProvice = $("#province option:selected");
         let provinceCode = selectedProvice.val();
         if(provinceCode !== '') {
-            loadDistrictByProvincesEdit();
-            loadWardByDistrictsEdit();
+            let selectedDistrict = $("#district option:selected");
+            let districtCode = selectedDistrict.val();
+            let dropdownWard = $("#ward");
+            let dropdownDistrict = $("#district");
+
+            let listDistrictsFilter = listDistricts.filter(e => e.province.code === provinceCode)
+            listDistrictsFilter.forEach(district =>  {
+                $("<option>").val(district.code).text(district.fullName).appendTo(dropdownDistrict);
+            })
+
+
+            let listWardsFilter = listWards.filter(e => e.district.code === districtCode)
+            listWardsFilter.forEach(ward =>  {
+                $("<option>").val(ward.code).text(ward.fullName).appendTo(dropdownWard);
+            })
+
+
+            $("#district option").each(function() { //remove option duplicate when form is edit
+                $(this).siblings('[value="'+ this.value +'"]').remove();
+            });
+            $("#ward option").each(function() { //remove option duplicate when form is edit
+                $(this).siblings('[value="'+ this.value +'"]').remove();
+            });
         }
 
 

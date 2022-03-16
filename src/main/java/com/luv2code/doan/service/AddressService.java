@@ -34,12 +34,12 @@ public class AddressService {
         return provinceRepository.findAll();
     }
 
-    public List<District> getListDistrictByProvinceCode(String provinceCode) {
-        return districtRepository.findDistrictByProvinceCode(provinceCode);
+    public List<District> getListDistrict() {
+        return districtRepository.findAll();
     }
 
-    public List<Ward> getListWardByDistrictCode(String districtCode) {
-        return wardRepository.findWardByDistrictCode(districtCode);
+    public List<Ward> getListWard() {
+        return wardRepository.findAll();
     }
 
     public List<Address> getListAddressByUserId(Integer id) {

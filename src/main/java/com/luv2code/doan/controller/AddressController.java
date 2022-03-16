@@ -1,14 +1,12 @@
 package com.luv2code.doan.controller;
 
 
-import com.luv2code.doan.entity.Address;
-import com.luv2code.doan.entity.Product;
-import com.luv2code.doan.entity.Province;
-import com.luv2code.doan.entity.User;
+import com.luv2code.doan.entity.*;
 import com.luv2code.doan.exceptions.AddressNotFoundException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.principal.UserPrincipal;
 import com.luv2code.doan.service.AddressService;
+import com.luv2code.doan.service.CartService;
 import com.luv2code.doan.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,11 +32,24 @@ public class AddressController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CartService cartService;
+
     @GetMapping("/profile/address")
     public String getListAddress(@AuthenticationPrincipal UserPrincipal loggedUser, Model model,
                                  RedirectAttributes redirectAttributes) {
         Integer id = loggedUser.getId();
         try {
+            List<Cart> listCarts = cartService.findCartByUser(id);
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+
+            }
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
+
             User user = userService.getUserByID(id);
             List<Address> listAddresses = addressService.getListAddressByUserId(id);
 
@@ -58,13 +69,29 @@ public class AddressController {
         Integer id = loggedUser.getId();
         try {
             User user = userService.getUserByID(id);
+            List<Cart> listCarts = cartService.findCartByUser(id);
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+
+            }
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
             List<Province> listProvinces = addressService.getListProvinces();
+            List<District> listDistricts = addressService.getListDistrict();
+            List<Ward> listWards = addressService.getListWard();
 
             Address address = new Address();
 
+
+            model.addAttribute("listDistricts", listDistricts);
+            model.addAttribute("listWards", listWards);
             model.addAttribute("listProvinces", listProvinces);
             model.addAttribute("address", address);
             model.addAttribute("user", user);
+            model.addAttribute("isEdit", false);
+
             return "profile-user/edit-address";
         }
         catch (UserNotFoundException e) {
@@ -152,9 +179,23 @@ public class AddressController {
         try {
             User user = userService.getUserByID(id);
             List<Province> listProvinces = addressService.getListProvinces();
-
+            List<District> listDistricts = addressService.getListDistrict();
+            List<Ward> listWards = addressService.getListWard();
             Address address = addressService.getAddress(addressId, id);
-            LOGGER.info(address.getWard().getFullName());
+            List<Cart> listCarts = cartService.findCartByUser(id);
+
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+
+            }
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
+
+
+            model.addAttribute("listDistricts", listDistricts);
+            model.addAttribute("listWards", listWards);
             model.addAttribute("listProvinces", listProvinces);
             model.addAttribute("address", address);
             model.addAttribute("user", user);
@@ -197,5 +238,6 @@ public class AddressController {
             return "redirect:/profile/address";
         }
     }
+
 
 }
