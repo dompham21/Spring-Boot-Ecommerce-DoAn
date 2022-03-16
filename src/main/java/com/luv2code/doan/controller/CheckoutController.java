@@ -49,7 +49,8 @@ public class CheckoutController {
             List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
             List<Province> listProvinces = addressService.getListProvinces();
             List<Address> listAddresses = addressService.getListAddressByUserId(loggedUser.getId());
-
+            List<District> listDistricts = addressService.getListDistrict();
+            List<Ward> listWards = addressService.getListWard();
 
 
             double estimatedTotal = 0;
@@ -60,6 +61,8 @@ public class CheckoutController {
             }
 
             log.info(estimatedTotal + "");
+            model.addAttribute("listDistricts", listDistricts);
+            model.addAttribute("listWards", listWards);
             model.addAttribute("listCarts", listCarts);
             model.addAttribute("estimatedTotal", estimatedTotal);
             model.addAttribute("listProvinces", listProvinces);

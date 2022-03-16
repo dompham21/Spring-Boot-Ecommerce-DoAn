@@ -61,7 +61,7 @@
                                         <div style="width: 100%">
                                             <select class="custom-select checkout-select" required id="province">
                                                 <option value="" selected disabled>Chọn tỉnh/thành phố</option>
-                                                <option th:each="province : ${listProvinces}" th:value="${province.code}" th:text="${province.name}">
+                                                <option th:each="province : ${listProvinces}" th:value="${province.code}" th:text="${province.fullName}">
 
                                                 </option>
                                             </select>
@@ -237,15 +237,42 @@
 
     <script th:inline="javascript">
         $(document).ready(function() {
+            let listDistricts = [[${listDistricts}]]
+            let listWards = [[${listWards}]]
             let dropdownProvinces = $("#province");
             let dropdownDistricts = $("#district");
 
             dropdownProvinces.on("change", function() {
-                loadDistrictByProvinces();
+                let selectedProvice = $("#province option:selected");
+                let provinceCode = selectedProvice.val();
+                let dropdownDistrict = $("#district");
+                let dropdownWard = $("#ward");
+
+                dropdownWard.empty();
+                $("<option>").val("").text("Chọn phường/xã").attr("disabled", "disabled").attr("selected","selected").appendTo(dropdownWard);
+
+                dropdownDistrict.empty();
+                $("<option>").val("").text("Chọn quận/huyện").attr("disabled", "disabled").attr("selected","selected").appendTo(dropdownDistrict);
+
+                let listDistrictsFilter = listDistricts.filter(e => e.province.code === provinceCode)
+                listDistrictsFilter.forEach(district =>  {
+                    $("<option>").val(district.code).text(district.fullName).appendTo(dropdownDistrict);
+                })
             });
 
             dropdownDistricts.on("change", function() {
-                loadWardByDistricts();
+                let selectedDistrict = $("#district option:selected");
+                let districtCode = selectedDistrict.val();
+                let dropdownWard = $("#ward");
+
+                dropdownWard.empty();
+                $("<option>").val("").text("Chọn phường/xã").attr("disabled", "disabled").attr("selected","selected").appendTo(dropdownWard);
+
+                let listWardsFilter = listWards.filter(e => e.district.code === districtCode)
+                listWardsFilter.forEach(ward =>  {
+                    $("<option>").val(ward.code).text(ward.fullName).appendTo(dropdownWard);
+                })
+
             })
 
             let messageError = [[${messageError}]];
