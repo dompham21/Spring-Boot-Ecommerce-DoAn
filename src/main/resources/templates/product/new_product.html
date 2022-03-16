@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/add_form.css}"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="page-container" class="d-flex flex-column flex-root">
@@ -26,7 +26,7 @@
                         <div class="form-container-content">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-8">
-                                    <form th:action="${isEdit} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${productValidate}" enctype="multipart/form-data" method="post" id="form-product">
+                                    <form th:action="${isEdit} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${product}"  method="post" id="form-product">
                                         <div class="mb-4">
                                             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
                                             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
@@ -71,7 +71,7 @@
                                             <div class="col-md-6">
                                                 <label class="form-label" for="price">Price</label>
                                                 <div class="input-group">
-                                                    <input type="text"  class="form-control" id="price" th:field="*{price}" required pattern="^([.]?[0-9])+$" value="0">
+                                                    <input type="text"  class="form-control" id="price" th:field="*{price}" required  value="0">
                                                     <span class="input-group-text">VNĐ</span>
                                                 </div>
                                             </div>
@@ -79,7 +79,7 @@
                                         <div class="row mb-4">
                                             <div class="col-md-6">
                                                 <label class="form-label" for="inStock">In Stock</label>
-                                                <input type="text" class="form-control" id="inStock" th:field="*{inStock}" required  pattern="^([.]?[0-9])+$" value="0">
+                                                <input type="text" class="form-control" id="inStock" th:field="*{inStock}" required  value="0">
                                             </div>
                                         </div>
                                         <div class="row mb-4">
@@ -93,8 +93,8 @@
                                         </div>
                                         <div class="row mb-4" style="padding:0 15px">
                                             <div class="upload-zone d-flex justify-content-center align-items-center">
-                                                <input type="file" th:field="*{image}" accept="image/*" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
-<!--                                                <input type="text" id="image" th:field="*{image}" style="display: none; opacity: 0"/>-->
+                                                <input type="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
+                                                <input type="text" id="image" th:field="*{image}" readonly style="display: none; opacity: 0"/>
                                                 <img id="image-output"/>
                                                 <div class="upload-zone-content">
                                                     <div class="upload-zone-title">Select file</div>
@@ -125,8 +125,7 @@
     </div>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script><script type="text/javascript" th:src="@{/js/index.js}" ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -150,20 +149,14 @@
                 toolbar: [
                     ['style', ['bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
-
                     ['fontsize', ['fontsize']],
                     ['color', ['forecolor']],
-                    ['table', ['table']],
                     ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
                     ['height', ['height']],
                     ['insert', ['link', 'picture']],
-                    ['view', ['fullscreen', 'codeview']]
+                    ['view', ['fullscreen']]
                 ],
-                callbacks : {
-                    onImageUpload: function(image) {
-                        uploadImage(image[0]);
-                    }
-                },
                 tooltip: false,
                 dialogsInBody: true
 
@@ -197,9 +190,6 @@
             e.preventDefault();//stop submit event
             $('#price').val(parseInt($('#price').val().split('.').join(""))) //remove dots
             $('#inStock').val(parseInt($('#inStock').val().split('.').join(""))) //remove dots
-            // let output = document.getElementById('image-output');
-            //
-            // $('#image').val(output.src)
 
             $(this).off("submit");//need form submit event off.
             $(this).submit();//submit form

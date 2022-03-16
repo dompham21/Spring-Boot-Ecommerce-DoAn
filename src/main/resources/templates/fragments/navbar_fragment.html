@@ -64,9 +64,9 @@
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="btn-qlt d-flex">
-                                                    <button th:onclick="'decreaseQuantity(this,'+${cart.products.id}+')'" > - </button>
-                                                    <input type="number" min="1"  th:value="${cart.quantity}" th:class="'quantity' + ${cart.products.id}"  th:max="${cart.products.inStock}" th:onchange="'handleInputNumberCart(event,' + ${cart.products.id} + ')'"/>
-                                                    <button class="plus"  th:onclick="'increaseQuantity(this,'+${cart.products.id}+')'"> + </button>
+                                                    <a th:href="'/cart/update/' + ${cart.products.id} + '/' + ${cart.quantity - 1}" > - </a>
+                                                    <input type="number" min="1"  th:value="${cart.quantity}" th:class="'quantity' + ${cart.products.id}"  th:max="${cart.products.inStock}" readonly/>
+                                                    <a class="plus" th:href="'/cart/update/' + ${cart.products.id} + '/' + ${cart.quantity + 1}"> + </a>
                                                 </div>
 
                                                 <div class="cart-item-sum d-flex align-items-center" >
@@ -75,7 +75,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="cart-delete-btn d-flex align-items-center justify-content-center" th:onclick="'deleteItemCart(' + ${cart.products.id} +')'"><i class="far fa-trash-alt"></i></div>
+                                        <div class="cart-delete-btn d-flex align-items-center justify-content-center" th:onclick="'btnDeleteCartItem(event,' + ${cart.products.id} + ')'"><i class="far fa-trash-alt"></i></div>
                                     </div>
                                 </th:block>
                                 <div th:class="'flex-column align-items-center ' + ${listCarts == null or listCarts.empty ? 'd-flex' : 'd-none'}" id="sectionEmptyCartMessage" style="padding: 45px 0;">
