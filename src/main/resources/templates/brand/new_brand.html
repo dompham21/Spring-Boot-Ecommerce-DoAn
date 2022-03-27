@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Brand - Music Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add_form.css}"/>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="page-container" class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div th:replace="${isEdit} ? ~{fragments/sidebar_fragment :: sidebar('brand','brand_all')} : ~{fragments/sidebar_fragment :: sidebar('brand','brand_new')}"></div>
+
+        <div class="d-flex flex-column wrapper">
+            <div th:replace="fragments/header_fragment :: header"></div>
+            <div class="content">
+
+                <section class="form-container">
+                    <div class="form-container-header d-flex align-items-center justify-content-between">
+                        <h1 class="title" th:text="${isEdit} ? 'Sua Thong Tin San Pham': 'Thêm Sản Phẩm Mới'"></h1>
+                    </div>
+                    <div class="form-container-content">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 col-lg-8">
+                                <form th:action="${isEdit} ? @{'/admin/brand/edit/' + ${brand.id}} : @{/admin/brand/add}" th:object="${brand}"  method="post" id="form-brand">
+                                    <div class="mb-4">
+                                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
+                                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
+                                        <span th:if="${#fields.hasErrors('logo')}" th:errors="*{logo}"  class="form-valid-feedback"></span>
+                                    </div>
+                                    <input type="hidden" th:field="*{id}" />
+                                    <div class="mb-4">
+                                        <label class="form-label" for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" th:field="*{name}"  required/>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="description">Description</label>
+                                        <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+                                    </div>
+                                    <div class="row mb-4" style="padding:0 15px">
+                                        <div class="upload-zone d-flex justify-content-center align-items-center">
+                                            <input type="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
+                                            <input type="text" id="image" th:field="*{logo}" readonly style="display: none; opacity: 0"/>
+                                            <img id="image-output"/>
+                                            <div class="upload-zone-content">
+                                                <div class="upload-zone-title">Select file</div>
+                                                <div class="upload-zone-desc">Click browse thorough your machine</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4 d-flex align-items-center justify-content-end">
+                                        <button type="submit" class="btn btn-danger auth-btn">Luu lai</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script><script type="text/javascript" th:src="@{/js/index.js}" ></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+
+<script>
+        $(document).ready(function() {
+
+            if($("#image").val() != '' && $("#image").val() != null) {
+                let image_output = document.getElementById('image-output');
+                $('#image-output').css('display', 'block')
+                image_output.src = $("#image").val();
+                $('.upload-zone-content').css('display', 'none');
+            }
+
+            $('#description').summernote({
+                height: 400,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['forecolor']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['height', ['height']],
+                    ['insert', ['link', 'picture']],
+                    ['view', ['fullscreen']]
+                ],
+                tooltip: false,
+                dialogsInBody: true
+
+            });
+            let buttonClose = $('<button type="button" class="close-summernote-dialog" aria-hidden="true" tabindex="-1">&times;</button>')
+            $(".note-modal-content").append(buttonClose);
+
+            $('button.close-summernote-dialog').click(function(){
+                $('.note-modal').removeClass('open');
+                $('.note-modal-backdrop').css('display', 'none');
+            })
+
+
+
+        })
+
+    </script>
+
+<script>
+        $('#form-brand').on("submit", function (e) {
+            e.preventDefault();//stop submit event
+            $(this).off("submit");//need form submit event off.
+            $(this).submit();//submit form
+        });
+    </script>
+</body>
+
+</html>
