@@ -70,7 +70,7 @@
                                     <tbody>
                                         <tr th:each="product : ${listProducts}">
                                             <td class="text-center fs-sm">
-                                                <a class="fw-semibold" href="be_pages_ecom_product_edit.html">
+                                                <a>
                                                     <strong>[[${product.id}]]</strong>
                                                 </a>
                                             </td>
@@ -130,6 +130,7 @@
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/index.js}" ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+
 
 <script th:inline="javascript">
     $(document).ready(function() {

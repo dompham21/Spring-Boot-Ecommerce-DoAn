@@ -51,14 +51,32 @@ public class BrandController {
     }
 
     @PostMapping("admin/brand/add")
-    public String saveBrand(@Valid Brand brand, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
-        log.info(brand.toString());
+    public String saveBrand(Brand brand, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
+
         if(brandService.getBrandByName(brand.getName()) != null) {
-            errors.rejectValue("name", "brand", "Ten brand khong duoc trung!");
+            errors.rejectValue("name", "brand", "Tên thương hiệu này đã có!");
         }
 
+        if(brand.getName().trim().length() == 0) {
+            errors.rejectValue("name", "brand", "Vui lòng nhập tên thương hiệu!");
+        }
+        else if(brand.getName().length() > 100) {
+            errors.rejectValue("name", "brand", "Tên thương hiệu không được dài quá 100 ký tự!");
+        }
+
+        if(brand.getDescription().trim().length() == 0) {
+            errors.rejectValue("description", "brand", "Vui lòng nhập mô tả thương hiệu!");
+        }
+        else if(brand.getDescription().length() > 200) {
+            errors.rejectValue("description", "brand", "Mô tả không được dài quá 200 ký tự!");
+        }
+
+        if(brand.getLogo().trim().length() == 0) {
+            errors.rejectValue("image", "brand", "Vui lòng nhập hinh anh thương hiệu!");
+        }
+
+
         if(errors.hasErrors()) {
-            log.info("has errors");
             return "brand/new_brand";
         }
         else {
@@ -77,10 +95,7 @@ public class BrandController {
         try {
             Brand brand = brandService.getBrandById(id);
 
-
             model.addAttribute("brand", brand);
-            model.addAttribute("isEdit", true);
-            model.addAttribute("brandName", brand.getName());
             return "brand/new_brand";
         }
         catch (BrandNotFoundException e) {
@@ -91,7 +106,7 @@ public class BrandController {
     }
 
     @PostMapping("/admin/brand/edit/{id}")
-    public String saveEditBrand(@Valid Brand brand, BindingResult errors, RedirectAttributes redirectAttributes,
+    public String saveEditBrand(Brand brand, BindingResult errors, RedirectAttributes redirectAttributes,
                                   @PathVariable("id") Integer id) {
 
         try {
@@ -99,25 +114,38 @@ public class BrandController {
 
             Brand brandCheckUnique = brandService.getBrandByName(brand.getName());
 
-            if ((!brand.getName().equals(existBrand.getName())) && (brandCheckUnique != null)) {
-                errors.rejectValue("name", "brand", "Ten brand khong duoc trung!");
+            if(brand.getName().trim().length() == 0) {
+                errors.rejectValue("name", "brand", "Vui lòng nhập tên thương hiệu!");
+            }
+            else if(brand.getName().length() > 100) {
+                errors.rejectValue("name", "brand", "Tên thương hiệu không được dài quá 100 ký tự!");
+            }
+
+            if(brandCheckUnique != null && !brandCheckUnique.getId().equals(existBrand.getId())) {
+                errors.rejectValue("name", "brand", "Tên thương hiệu này đã có!");
+            }
+
+
+            if(brand.getDescription().trim().length() == 0) {
+                errors.rejectValue("description", "brand", "Vui lòng nhập mô tả thương hiệu!");
+            }
+            else if(brand.getDescription().length() > 200) {
+                errors.rejectValue("description", "brand", "Mô tả không được dài quá 200 ký tự!");
+            }
+
+            if(brand.getLogo().trim().length() == 0) {
+                errors.rejectValue("image", "brand", "Vui lòng nhập hinh anh thương hiệu!");
             }
             if (errors.hasErrors()) {
-                log.info("has errors");
                 return "brand/new_brand";
             } else {
                 if(!existBrand.getLogo().equals(brand.getLogo())) {
                     String url = storageService.uploadFile(brand.getLogo());
-                    existBrand.setLogo(url);
+                    brand.setLogo(url);
                 }
-                else {
-                    existBrand.setLogo(brand.getLogo());
-                }
-                existBrand.setName(brand.getName());
-                existBrand.setDescription(brand.getDescription());
 
-                log.info(existBrand.toString());
-                brandService.saveBrand(existBrand);
+
+                brandService.saveBrand(brand);
 
                 redirectAttributes.addFlashAttribute("messageSuccess", "The brand has been edited successfully.");
                 return "redirect:/admin/brand";

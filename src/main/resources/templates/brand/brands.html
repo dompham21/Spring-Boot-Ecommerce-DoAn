@@ -38,10 +38,6 @@
                                     <span class="badge bg-success rounded-pill">24</span>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
-                                    Out of Stock
-                                    <span class="badge bg-warning rounded-pill">24</span>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="javascript:void(0)">
                                     Banned
                                     <span class="badge bg-danger rounded-pill">24</span>
                                 </a>
@@ -58,18 +54,19 @@
                                 <thead>
                                 <tr>
                                     <th th:replace="fragments :: column_link('id', 'ID','brand')"></th>
-                                    <th th:replace="fragments :: column_link('name', 'Brand','brand')"></th>
-                                    <th class="d-none d-sm-table-cell text-center">Description</th>
                                     <th>Logo</th>
+                                    <th th:replace="fragments :: column_link('name', 'Name','brand')"></th>
+                                    <th class="d-none d-sm-table-cell text-center" style="width: 50%">Description</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="brand : ${listBrand}">
                                     <td class="text-center fs-sm">
-                                        <a class="fw-semibold" href="be_pages_ecom_product_edit.html">
-                                            <strong>[[${brand.id}]]</strong>
-                                        </a>
+                                        <strong>[[${brand.id}]]</strong>
+                                    </td>
+                                    <td class="d-none d-md-table-cell fs-sm">
+                                        <img th:src="${brand.logo}" style="width: 200px"/>
                                     </td>
                                     <td class="d-none d-md-table-cell fs-sm">
                                         <strong>[[${brand.name}]]</strong>
@@ -77,13 +74,10 @@
                                     <td class="d-none d-md-table-cell fs-sm">
                                         [[${brand.description}]]
                                     </td>
-                                    <td class="d-none d-md-table-cell fs-sm">
-                                        [[${brand.logo}]]
-                                    </td>
                                     <td class="text-center fs-sm">
                                         <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/brand/edit/' + ${brand.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
                                             <i class="fas fa-pencil-alt"></i>                                                </a>
-                                        <a class="btn btn-sm btn-alt-danger link-delete" th:href="@{'/admin/brand/delete/' + ${brand.id}}" th:entityId="${brand.id}" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <a class="btn btn-sm btn-alt-danger" th:id="'link-delete-' + ${brand.id}" th:onclick="'showConfirmDelete(event,' + ${brand.id} + ')'" entity="brand" th:href="@{'/admin/brand/delete/' + ${brand.id}}"  data-toggle="tooltip" data-placement="top" title="Delete">
                                             <i class="fa fa-fw fa-times text-danger"></i>
                                         </a>
                                     </td>
@@ -109,32 +103,33 @@
         </div>
     </div>
 </div>
-<div th:replace="fragments :: confirm_modal" />
-
-<div th:if="${messageSuccess != ''}" th:replace="fragments :: modal_dialog('Successfully', ${messageSuccess})" />
-<div th:if="${messageError != ''}" th:replace="fragments :: modal_error('Error', ${messageError})" />
 
 
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/index.js}" ></script>
-
-<script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+<script th:inline="javascript">
     $(document).ready(function() {
-        if($('#modalBody').text() !== '') {
-            $('#modalDialog').modal('show');
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            Swal.fire({
+                title: '',
+                text: messageSuccess,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            })
         }
-        if($('#modalErrorBody').text() !== '') {
-            $('#modalError').modal('show');
+
+        if(messageError ) {
+            Swal.fire({
+                title: '',
+                text: messageError,
+                icon: 'error'
+            })
         }
-
-
-        // $('.format-price').text(formatPrice($('.format-price').text()))
-
-        $(".link-delete").on("click", function(e) {
-            e.preventDefault();
-            showDeleteConfirmModal($(this), 'brand');
-        });
 
     })
 </script>

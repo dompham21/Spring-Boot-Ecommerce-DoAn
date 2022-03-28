@@ -13,7 +13,7 @@
 <body>
     <div id="page-container" class="d-flex flex-column flex-root">
         <div class="d-flex flex-row flex-column-fluid page">
-            <div th:replace="${isEdit} ? ~{fragments/sidebar_fragment :: sidebar('product','product_all')} : ~{fragments/sidebar_fragment :: sidebar('product','product_new')}"></div>
+            <div th:replace="${product.id != null} ? ~{fragments/sidebar_fragment :: sidebar('product','product_all')} : ~{fragments/sidebar_fragment :: sidebar('product','product_new')}"></div>
 
             <div class="d-flex flex-column wrapper">
                 <div th:replace="fragments/header_fragment :: header"></div>
@@ -21,12 +21,12 @@
 
                     <section class="form-container">
                         <div class="form-container-header d-flex align-items-center justify-content-between">
-                            <h1 class="title" th:text="${isEdit} ? 'Sua Thong Tin San Pham': 'Thêm Sản Phẩm Mới'"></h1>
+                            <h1 class="title" th:text="${product.id != null} ? 'Sua Thong Tin San Pham': 'Thêm Sản Phẩm Mới'"></h1>
                         </div>
                         <div class="form-container-content">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-8">
-                                    <form th:action="${isEdit} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${product}"  method="post" id="form-product">
+                                    <form th:action="${product.id != null} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${product}"  method="post" id="form-product">
                                         <div class="mb-4">
                                             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
                                             <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
@@ -93,7 +93,7 @@
                                         </div>
                                         <div class="row mb-4" style="padding:0 15px">
                                             <div class="upload-zone d-flex justify-content-center align-items-center">
-                                                <input type="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${isEdit} ? 'false' : 'true'"/>
+                                                <input type="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${product.id != null} ? 'false' : 'true'"/>
                                                 <input type="text" id="image" th:field="*{image}" readonly style="display: none; opacity: 0"/>
                                                 <img id="image-output"/>
                                                 <div class="upload-zone-content">

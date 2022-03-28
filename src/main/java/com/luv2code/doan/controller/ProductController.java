@@ -1,6 +1,7 @@
 package com.luv2code.doan.controller;
 
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.luv2code.doan.entity.Cart;
 import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.Review;
@@ -103,11 +104,44 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/add")
-    public String saveProduct(@Valid Product product, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
-        log.info(product.toString());
+    public String saveProduct(Product product, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
+
+
+        if(product.getName().trim().length() == 0) {
+            errors.rejectValue("name", "product", "Vui lòng nhập tên sản phẩm !");
+        }
         if(productService.getProductByName(product.getName()) != null) {
             errors.rejectValue("name", "product", "Ten san pham khong duoc trung!");
         }
+        if(product.getPrice() == null) {
+            errors.rejectValue("price", "product", "Vui lòng nhập đơn giá !");
+        }
+        else if(product.getPrice() <= 0) {
+            errors.rejectValue("price", "product", "Đơn giá phải lớn hơn 0 !");
+        }
+        if(product.getShortDescription().trim().length() == 0) {
+            errors.rejectValue("shortDescription", "product", "Short description không được bỏ trống!");
+        }
+        if(product.getDescription().trim().length() == 0) {
+            errors.rejectValue("description", "product", "Description không được bỏ trống!");
+        }
+        if(product.getDiscount() == null) {
+            product.setDiscount(0);
+        }
+        if(product.getDiscount()  < 0 || product.getDiscount() > 100 ) {
+            errors.rejectValue("discount", "product", "Discount  phải lon hon hoac bang 0 va be hon hoac bang 100!");
+        }
+        if(product.getInStock() == null) {
+            errors.rejectValue("inStock", "product", "In stock không được bỏ trống!");
+        }
+        else if(product.getInStock() <= 0) {
+            errors.rejectValue("inStock", "product", "Số lượng phải nhiều hơn 0 !");
+        }
+
+        if(product.getImage() == null) {
+            errors.rejectValue("image", "product", "Image không được bỏ trống!");
+        }
+
         if(errors.hasErrors()) {
             log.info("has errors");
             return "product/new_product";
@@ -116,10 +150,6 @@ public class ProductController {
         else {
               String url = storageService.uploadFile(product.getImage());
 
-
-              if(product.getDiscount() == null) {
-                  product.setDiscount(0);
-              }
               product.setSoldQuantity(0);
               product.setRegistrationDate(new Date());
               product.setImage(url);
@@ -153,8 +183,6 @@ public class ProductController {
 
 
             model.addAttribute("product", product);
-            model.addAttribute("isEdit", true);
-            model.addAttribute("productName", product.getName());
             return "product/new_product";
         }
         catch (ProductNotFoundException e) {
@@ -165,16 +193,46 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/edit/{id}")
-    public String saveEditProduct(@Valid Product product, BindingResult errors, RedirectAttributes redirectAttributes,
+    public String saveEditProduct(Product product, BindingResult errors, RedirectAttributes redirectAttributes,
                                   @PathVariable("id") Integer id) {
 
         try {
             Product existProduct = productService.getProductById(id);
-
             Product productCheckUnique = productService.getProductByName(product.getName());
 
-            if ((!product.getName().equals(existProduct.getName())) && (productCheckUnique != null)) {
+            if ( productCheckUnique != null && !productCheckUnique.getId().equals(existProduct.getId())) {
                 errors.rejectValue("name", "product", "Ten san pham khong duoc trung!");
+            }
+            if(product.getName().trim().length() == 0) {
+                errors.rejectValue("name", "product", "Vui lòng nhập tên sản phẩm !");
+            }
+            if(product.getPrice() == null) {
+                errors.rejectValue("price", "product", "Vui lòng nhập đơn giá !");
+            }
+            else if(product.getPrice() <= 0) {
+                errors.rejectValue("price", "product", "Đơn giá phải lớn hơn 0 !");
+            }
+            if(product.getShortDescription().trim().length() == 0) {
+                errors.rejectValue("shortDescription", "product", "Short description không được bỏ trống!");
+            }
+            if(product.getDescription().trim().length() == 0) {
+                errors.rejectValue("description", "product", "Description không được bỏ trống!");
+            }
+            if(product.getDiscount() == null) {
+                product.setDiscount(0);
+            }
+            if(product.getDiscount()  < 0 || product.getDiscount() > 100 ) {
+                errors.rejectValue("discount", "product", "Discount  phải lon hon hoac bang 0 va be hon hoac bang 100!");
+            }
+            if(product.getInStock() == null) {
+                errors.rejectValue("inStock", "product", "In stock không được bỏ trống!");
+            }
+            else if(product.getInStock() <= 0) {
+                errors.rejectValue("inStock", "product", "Số lượng phải nhiều hơn 0 !");
+            }
+
+            if(product.getImage() == null) {
+                errors.rejectValue("image", "product", "Image không được bỏ trống!");
             }
             if (errors.hasErrors()) {
                 log.info("has errors");
@@ -182,24 +240,18 @@ public class ProductController {
             } else {
                 if(!existProduct.getImage().equals(product.getImage())) {
                     String url = storageService.uploadFile(product.getImage());
-                    existProduct.setImage(url);
+                    product.setImage(url);
                 }
-                else {
-                    existProduct.setImage(product.getImage());
-                }
-                existProduct.setName(product.getName());
-                existProduct.setIsActive(product.getIsActive());
-                existProduct.setPrice(product.getPrice());
-                existProduct.setInStock(product.getInStock());
-                existProduct.setDescription(product.getDescription());
-                existProduct.setShortDescription(product.getShortDescription());
-                existProduct.setDiscount(product.getDiscount());
 
-//                    existProduct.setBrands(product.getBrands());
-//                    existProduct.setCategories(product.getCategories());
 
-                log.info(existProduct.toString());
-                productService.saveProduct(existProduct);
+                product.setSoldQuantity(existProduct.getSoldQuantity());
+                product.setRegistrationDate(existProduct.getRegistrationDate());
+
+
+
+
+                log.info(product.toString());
+//                productService.saveProduct(product);
 
                 redirectAttributes.addFlashAttribute("messageSuccess", "The product has been edited successfully.");
                 return "redirect:/admin/product/page/1";
