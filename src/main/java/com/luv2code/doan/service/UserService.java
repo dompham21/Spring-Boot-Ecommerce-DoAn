@@ -1,8 +1,11 @@
 package com.luv2code.doan.service;
 
 import com.luv2code.doan.entity.Product;
+import com.luv2code.doan.entity.Role;
 import com.luv2code.doan.entity.User;
+import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
+import com.luv2code.doan.repository.RoleRepository;
 import com.luv2code.doan.repository.UserRepository;
 import net.bytebuddy.utility.RandomString;
 import org.slf4j.Logger;
@@ -22,10 +25,7 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -36,6 +36,9 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private JavaMailSender emailSender;
 
     @Autowired
@@ -43,6 +46,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     @Value("${spring.mail.username}")
     private String senderEmail;
@@ -57,6 +61,12 @@ public class UserService {
         user.setVerificationCode(randomCode);
         return userRepository.save(user);
     }
+
+    public User saveUserAdmin(User user) {
+
+        return userRepository.save(user);
+    }
+
 
     public User saveEditUser(User user) {
         return userRepository.save(user);
@@ -118,6 +128,19 @@ public class UserService {
         return user;
     }
 
+    public User getUserByPhone(String phone) {
+        User user = userRepository.getUserByPhone(phone);
+        return user;
+    }
+
+    public void deleteUser(Integer id) throws UserNotFoundException {
+        Long count = userRepository.countById(id);
+        if (count == null || count == 0) {
+            throw new UserNotFoundException("Could not find any user with ID " + id);
+        }
+
+        userRepository.deleteById(id);
+    }
 
     public Page<User> listByPage(Integer pageNum, String keyword, String sortField, String sortDir) {
         Pageable pageable = null;
@@ -135,5 +158,9 @@ public class UserService {
             return userRepository.findAll(keyword, pageable);
         }
         return userRepository.findAll(pageable);
+    }
+
+    public List<Role> listRoles() {
+        return (List<Role>) roleRepository.findAll();
     }
 }

@@ -11,13 +11,13 @@ public class Brand {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 45, unique = true)
+    @Column(name = "name", nullable = false, length = 100, unique = true)
     private String name;
 
-    @Column(nullable = false, length = 300)
+    @Column(nullable = false)
     private String logo;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 200, nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "brands", fetch = FetchType.LAZY)

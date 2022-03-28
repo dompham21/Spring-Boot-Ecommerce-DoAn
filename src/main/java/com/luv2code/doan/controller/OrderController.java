@@ -132,4 +132,9 @@ public class OrderController {
     }
 
 
+
+    @GetMapping("/admin/order")
+    public String listOrderAdminFirstPage(@AuthenticationPrincipal UserPrincipal loggedUser, Model model, RedirectAttributes redirectAttributes) {
+        return "";
+    }
 }

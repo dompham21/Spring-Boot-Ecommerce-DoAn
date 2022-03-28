@@ -17,23 +17,16 @@ public class User {
     @Column(name="id")
     private Integer id;
 
-    @NotBlank(message = "Email không được bỏ trống!")
-    @Email(message = "Email không hợp lệ!")
     @Column(name="email", unique = true, length = 100, nullable = false)
     private String email;
 
-    @NotBlank(message = "Mật khẩu không được bỏ trống!")
-    @Size(min = 8, max = 100, message = "Password phải từ 8 kí tự trở lên!")
+
     @Column(name="password", nullable = false, length = 100)
     private String password;
 
-    @NotBlank(message = "Họ không được bỏ trống!")
-    @Size(min = 1, max = 50, message = "Họ không được dài quá 50 ký tự!")
     @Column(name="first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Size(min = 1, max = 100, message = "Tên không được dài quá 50 ký tự!")
-    @NotBlank(message = "Tên không được bỏ trống!")
     @Column(name="last_name", nullable = false, length = 100)
     private String lastName;
 
@@ -76,6 +69,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Collection<Cart> carts;
+
+
 
     public Integer getId() {
         return id;

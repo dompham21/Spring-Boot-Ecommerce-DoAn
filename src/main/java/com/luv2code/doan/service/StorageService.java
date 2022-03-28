@@ -35,7 +35,6 @@ public class StorageService {
             fileUrl = String.valueOf(s3Client.getUrl(bucketName, fileName));
 
             fileObj.delete();
-            log.info("File upload: "+ fileName + " ,File url is: " + fileUrl);
         }
         catch (Exception e) {
             throw new StorageUploadFileException("Error upload file to server");

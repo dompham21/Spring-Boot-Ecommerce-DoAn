@@ -18,34 +18,24 @@ public class Product {
     @Column(name = "id")
     private Integer id;
 
-    @NotBlank(message = "Tên không được bỏ trống!")
     @Column(name="name", unique = true, length = 255, nullable = false)
     private String name;
 
-    @NotBlank(message = "Description không được bỏ trống!")
     @Column(name = "description", nullable = false)
     private String description;
 
-    @NotBlank(message = "Short description không được bỏ trống!")
     @Column(name = "short_description", nullable = false)
     private String shortDescription;
 
-    @NotNull(message = "Price không được bỏ trống!")
-    @Min(value = 0, message = "Gia phải lon hon hoac bang 0!")
     @Column(name = "price", nullable = false)
     private Double price;
 
-    @NotBlank(message = "Image không được bỏ trống!")
     @Column(name = "image", nullable = false)
     private String image;
 
-    @Min(value = 0, message = "Discount  phải lon hon hoac bang 0!")
-    @Max(value = 100, message = "Discount phai be hon hoac bang 100!")
     @Column(name = "discount")
     private Integer discount;
 
-    @NotNull(message = "In stock không được bỏ trống!")
-    @Min(value = 0, message = "In stock so luong phải lon hon hoac bang 0!")
     @Column(name = "in_stock", nullable = false)
     private Integer inStock;
 
