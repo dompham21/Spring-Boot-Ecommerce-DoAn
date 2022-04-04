@@ -5,6 +5,7 @@ import com.luv2code.doan.entity.*;
 import com.luv2code.doan.exceptions.OrderNotFoundException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.repository.OrderRepository;
+import com.luv2code.doan.repository.OrderStatusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class OrderService {
     private OrderRepository orderRepository;
 
 
+    @Autowired
+    private OrderStatusRepository orderStatusRepository;
+
+
     public Order createOrder(User user, Address address, List<Cart> cartList) {
         Order newOrder = new Order();
         newOrder.setDate(new java.util.Date());
@@ -53,7 +58,9 @@ public class OrderService {
 
             orderDetailSet.add(orderDetail);
         }
-        newOrder.setStatus(OrderStatus.NEW);
+
+
+        newOrder.setStatus(orderStatusRepository.getOrderStatusById(1));
         newOrder.setTotalPrice(totalWithoutDiscount);
 
         return orderRepository.save(newOrder);

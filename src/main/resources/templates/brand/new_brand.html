@@ -24,7 +24,7 @@
                     <div class="form-container-content">
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8">
-                                <form th:action="${brand.id != null} ? @{'/admin/brand/edit/' + ${brand.id}} : @{/admin/brand/add}" th:object="${brand}"  method="post" id="form-brand">
+                                <form th:action="${brand.id != null} ? @{'/admin/brand/edit/' + ${brand.id}} : @{/admin/brand/add}" th:object="${brand}"  method="post" id="form-brand" enctype="multipart/form-data">
                                     <div class="mb-4">
                                         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
                                         <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="row mb-4" style="padding:0 15px">
                                         <div class="upload-zone d-flex justify-content-center align-items-center">
-                                            <input type="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${brand.id != null} ? 'false' : 'true'"/>
+                                            <input type="file" name="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${brand.id != null} ? 'false' : 'true'"/>
                                             <input type="text" id="image" th:field="*{logo}" readonly style="display: none; opacity: 0"/>
                                             <img id="image-output"/>
                                             <div class="upload-zone-content">

@@ -44,15 +44,16 @@ function formatDate(inputDate) {
 
 
 let loadFile = function(event) {
-    let reader = new FileReader();
-    reader.onload = function(){
-        let output = document.getElementById('image-output');
-        output.src = reader.result;
+    let output = document.getElementById('image-output');
+    let url = URL.createObjectURL(event.target.files[0]);
+    output.src = url;
+
+    output.onload = function(){
+        URL.revokeObjectURL(output.src) // free memory
         $('#image-output').css('display', 'block')
-        $('#image').val(reader.result)
+        $('#image').val(url);
         $('.upload-zone-content').css('display', 'none');
     };
-    reader.readAsDataURL(event.target.files[0]);
 };
 
 

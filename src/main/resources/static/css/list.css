@@ -118,3 +118,61 @@
     color: #334155;
 }
 
+
+.profile-order-filter {
+    gap: 16px;
+}
+
+.profile-order-input {
+    background-color: transparent !important;
+    color: black;
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+}
+
+.profile-order-input:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    color: black;
+}
+
+
+.icon-input-date {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+}
+
+.icon-input-date > i {
+    color: black;
+}
+.datepicker {
+    width: 210px;
+}
+
+
+.profile-form-btn {
+    background-color: #ec4c4d;
+    color: white;
+    box-shadow: 0 3px 1px -2px #00000033, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
+    border: 0;
+    outline: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .0892857143em;
+    padding: 8px 24px;
+}
+
+.profile-form-btn:hover {
+    background-color: #e72728;
+}
+
+.profile-order-input-date {
+    width: 160px;
+}
+.input-search-order {
+    width: 350px;
+}

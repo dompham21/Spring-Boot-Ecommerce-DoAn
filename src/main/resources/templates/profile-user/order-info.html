@@ -81,7 +81,7 @@
                                     <label class="form-label" for="status">Trạng thái</label>
                                     <select class="custom-select profile-order-input" id="status" name="status">
                                         <option value="ALL" >Tất cả</option>
-                                        <option th:each="statusItem : ${orderStatusList}" th:value="${statusItem}" th:text="${statusItem.getName()}"></option>
+                                        <option th:each="statusItem : ${orderStatusList}" th:value="${statusItem.id}" th:text="${statusItem.name}"></option>
                                     </select>
                                 </div>
                                 <div class="profile-order-filter-item d-flex flex-column align-self-end">
@@ -112,7 +112,7 @@
                                     </div>
 
                                 </td>
-                                <td class="text-center"><span th:class="'textOrderStatus' + ${order.id}">[[${order.status.getName()}]]</span></td>
+                                <td class="text-center"><span th:class="'textOrderStatus' + ${order.id}">[[${order.status.name}]]</span></td>
                                 <td class="text-center">
                                     <a class="fas fa-file-alt fa-2x icon-green linkDetail"
                                        th:href="@{'/profile/order/info/detail/' + ${order.id}}"
