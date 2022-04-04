@@ -18,9 +18,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class BrandController {
     }
 
     @PostMapping("admin/brand/add")
-    public String saveBrand(Brand brand, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
+    public String saveBrand(Brand brand, BindingResult errors, RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file) throws IOException {
 
         if(brandService.getBrandByName(brand.getName()) != null) {
             errors.rejectValue("name", "brand", "Tên thương hiệu này đã có!");
@@ -80,7 +83,7 @@ public class BrandController {
             return "brand/new_brand";
         }
         else {
-            String url = storageService.uploadFile(brand.getLogo());
+            String url = storageService.upload(file);
 
             brand.setLogo(url);
             brandService.saveBrand(brand);
@@ -107,7 +110,7 @@ public class BrandController {
 
     @PostMapping("/admin/brand/edit/{id}")
     public String saveEditBrand(Brand brand, BindingResult errors, RedirectAttributes redirectAttributes,
-                                  @PathVariable("id") Integer id) {
+                                  @PathVariable("id") Integer id, @RequestParam("file") MultipartFile file) {
 
         try {
             Brand existBrand = brandService.getBrandById(id);
@@ -140,7 +143,7 @@ public class BrandController {
                 return "brand/new_brand";
             } else {
                 if(!existBrand.getLogo().equals(brand.getLogo())) {
-                    String url = storageService.uploadFile(brand.getLogo());
+                    String url = storageService.upload(file);
                     brand.setLogo(url);
                 }
 
@@ -152,7 +155,7 @@ public class BrandController {
 
 
             }
-        } catch (BrandNotFoundException | StorageUploadFileException e) {
+        } catch (BrandNotFoundException | IOException e) {
             redirectAttributes.addFlashAttribute("messageError", e.getMessage());
             return "redirect:/admin/brand";
         }

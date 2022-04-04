@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -104,7 +106,7 @@ public class ProductController {
     }
 
     @PostMapping("/admin/product/add")
-    public String saveProduct(Product product, BindingResult errors, RedirectAttributes redirectAttributes) throws StorageUploadFileException {
+    public String saveProduct(Product product, BindingResult errors, RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file) throws StorageUploadFileException, IOException {
 
 
         if(product.getName().trim().length() == 0) {
@@ -148,7 +150,7 @@ public class ProductController {
         }
 
         else {
-              String url = storageService.uploadFile(product.getImage());
+              String url = storageService.upload(file);
 
               product.setSoldQuantity(0);
               product.setRegistrationDate(new Date());
@@ -194,7 +196,7 @@ public class ProductController {
 
     @PostMapping("/admin/product/edit/{id}")
     public String saveEditProduct(Product product, BindingResult errors, RedirectAttributes redirectAttributes,
-                                  @PathVariable("id") Integer id) {
+                                  @PathVariable("id") Integer id, @RequestParam("file") MultipartFile file) {
 
         try {
             Product existProduct = productService.getProductById(id);
@@ -239,7 +241,7 @@ public class ProductController {
                 return "product/new_product";
             } else {
                 if(!existProduct.getImage().equals(product.getImage())) {
-                    String url = storageService.uploadFile(product.getImage());
+                    String url = storageService.upload(file);
                     product.setImage(url);
                 }
 
@@ -251,14 +253,14 @@ public class ProductController {
 
 
                 log.info(product.toString());
-//                productService.saveProduct(product);
+                productService.saveProduct(product);
 
                 redirectAttributes.addFlashAttribute("messageSuccess", "The product has been edited successfully.");
                 return "redirect:/admin/product/page/1";
 
 
             }
-        } catch (ProductNotFoundException | StorageUploadFileException e) {
+        } catch (ProductNotFoundException | IOException e) {
             redirectAttributes.addFlashAttribute("messageError", e.getMessage());
             return "redirect:/admin/product/page/1";
         }

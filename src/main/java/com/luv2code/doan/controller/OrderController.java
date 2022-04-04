@@ -8,8 +8,10 @@ import com.luv2code.doan.entity.User;
 import com.luv2code.doan.exceptions.OrderNotFoundException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.principal.UserPrincipal;
+import com.luv2code.doan.repository.OrderStatusRepository;
 import com.luv2code.doan.service.CartService;
 import com.luv2code.doan.service.OrderService;
+import com.luv2code.doan.service.OrderStatusService;
 import com.luv2code.doan.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,9 @@ public class OrderController {
 
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private OrderStatusService orderStatusService;
 
     @GetMapping("/profile/order/info")
     public String listOrderFirstPage(@AuthenticationPrincipal UserPrincipal loggedUser, Model model, RedirectAttributes redirectAttributes) {
@@ -84,7 +89,7 @@ public class OrderController {
             if (endCount > page.getTotalElements()) {
                 endCount = page.getTotalElements();
             }
-            List<OrderStatus> orderStatusList = Arrays.asList(OrderStatus.values());
+            List<OrderStatus> orderStatusList = orderStatusService.listOrderStatus();
 
             log.info("user has add to model");
             model.addAttribute("listCarts", listCarts);
@@ -97,7 +102,6 @@ public class OrderController {
             model.addAttribute("listOrders", listOrders);
             model.addAttribute("keyword", keyword);
             model.addAttribute("status", status);
-            log.info("status is: " + status);
             model.addAttribute("startCount", startCount);
             model.addAttribute("endCount", endCount);
             model.addAttribute("startDate", startDate);
@@ -135,6 +139,71 @@ public class OrderController {
 
     @GetMapping("/admin/order")
     public String listOrderAdminFirstPage(@AuthenticationPrincipal UserPrincipal loggedUser, Model model, RedirectAttributes redirectAttributes) {
-        return "";
+
+        return listOrderAdminPage(loggedUser, model, 1,null, null, null, null, redirectAttributes);
     }
+
+    @GetMapping("/admin/order/page/{pageNum}")
+    public String listOrderAdminPage(@AuthenticationPrincipal UserPrincipal loggedUser, Model model,
+                                     @PathVariable(name = "pageNum") Integer pageNum,
+                                     @RequestParam(name = "keyword", required = false) String keyword,
+                                     @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date startDate,
+                                     @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date endDate,
+                                     @RequestParam(name = "status", required = false) String status,
+                                     RedirectAttributes redirectAttributes) {
+        Integer id = loggedUser.getId();
+        try {
+            log.info("Start profile order!!!!");
+            User user = userService.getUserByID(id);
+            log.info(user.toString());
+            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
+            double estimatedTotal = 0;
+
+            for (Cart item : listCarts) {
+                estimatedTotal += item.getSubtotal();
+
+            }
+
+            if(status == null) {
+                status = "ALL";
+            }
+
+
+            Page<Order> page = orderService.listForUserByPage(user, pageNum, keyword, startDate, endDate, status);
+            List<Order> listOrders = page.getContent();
+
+
+            long startCount = (long) (pageNum - 1) * OrderService.ORDERS_PER_PAGE + 1;
+            long endCount = startCount + OrderService.ORDERS_PER_PAGE - 1;
+            if (endCount > page.getTotalElements()) {
+                endCount = page.getTotalElements();
+            }
+            List<OrderStatus> orderStatusList = orderStatusService.listOrderStatus();
+
+            log.info("user has add to model");
+            model.addAttribute("listCarts", listCarts);
+            model.addAttribute("estimatedTotal", estimatedTotal);
+            model.addAttribute("orderStatusList", orderStatusList);
+            model.addAttribute("user", user);
+            model.addAttribute("totalPages", page.getTotalPages());
+            model.addAttribute("totalItems", page.getTotalElements());
+            model.addAttribute("currentPage", pageNum);
+            model.addAttribute("listOrders", listOrders);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("status", status);
+            model.addAttribute("startCount", startCount);
+            model.addAttribute("endCount", endCount);
+            model.addAttribute("startDate", startDate);
+            model.addAttribute("endDate", endDate);
+
+            return "order/orders";
+        }
+        catch (UserNotFoundException e) {
+            redirectAttributes.addFlashAttribute("messageError", e.getMessage());
+            return "redirect:/admin";
+        }
+    }
+
+
+
 }

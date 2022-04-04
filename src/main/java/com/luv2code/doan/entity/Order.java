@@ -29,7 +29,8 @@ public class Order {
     @JoinColumn(name="user_id")
     private User user;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name="status_id")
     private OrderStatus status;
 
     //orphanRemoval mean remove orderDetail when remove order

@@ -1,141 +1,55 @@
 package com.luv2code.doan.entity;
 
-public enum OrderStatus {
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
-    NEW {
-        @Override
-        public String defaultDescription() {
-            return "Order was placed by the customer";
-        }
+@Entity
+@Table(name = "order_status")
+public class OrderStatus {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-        @Override
-        public String getName() {
-            return "New";
-        }
+    @Column(name = "name", nullable = false, length = 50, unique = true )
+    private String name;
 
-    },
+    @Column(name = "description", nullable = false)
+    private String description;
 
-    CANCELLED {
-        @Override
-        public String defaultDescription() {
-            return "Order was rejected";
-        }
 
-        @Override
-        public String getName() {
-            return "Cancelled";
-        }
-    },
+    public OrderStatus() {
+    }
 
-    PROCESSING {
-        @Override
-        public String defaultDescription() {
-            return "Order is being processed";
-        }
+    public OrderStatus(Integer id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
 
-        @Override
-        public String getName() {
-            return "Pending";
-        }
-    },
+    public Integer getId() {
+        return id;
+    }
 
-    PACKAGED {
-        @Override
-        public String defaultDescription() {
-            return "Products were packaged";
-        }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-        @Override
-        public String getName() {
-            return "Ready for delivery";
-        }
-    },
+    public String getName() {
+        return name;
+    }
 
-    PICKED {
-        @Override
-        public String defaultDescription() {
-            return "Shipper picked the package";
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        @Override
-        public String getName() {
-            return "Picked";
-        }
-    },
+    public String getDescription() {
+        return description;
+    }
 
-    SHIPPING {
-        @Override
-        public String defaultDescription() {
-            return "Shipper is delivering the package";
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        @Override
-        public String getName() {
-            return "Shipping";
-        }
-    },
 
-    DELIVERED {
-        @Override
-        public String defaultDescription() {
-            return "Customer received products";
-        }
-
-        @Override
-        public String getName() {
-            return "Delivered";
-        }
-    },
-
-    RETURNED {
-        @Override
-        public String defaultDescription() {
-            return "Products were returned";
-        }
-
-        @Override
-        public String getName() {
-            return "Returned";
-        }
-    },
-
-    PAID {
-        @Override
-        public String defaultDescription() {
-            return "Customer has paid this order";
-        }
-
-        @Override
-        public String getName() {
-            return "Paid";
-        }
-    },
-
-    REFUNDED {
-        @Override
-        public String defaultDescription() {
-            return "Customer has been refunded";
-        }
-
-        @Override
-        public String getName() {
-            return "Refunded";
-        }
-    },
-
-    RETURN_REQUESTED {
-        @Override
-        public String defaultDescription() {
-            return "Customer sent request to return purchase";
-        }
-
-        @Override
-        public String getName() {
-            return "Request Return";
-        }
-    };
-
-    public abstract String defaultDescription();
-
-    public abstract String getName();
 }
