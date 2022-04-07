@@ -101,19 +101,48 @@ public class AddressController {
     }
 
     @PostMapping("/profile/address/add")
-    public String saveAddress(@Valid Address address, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
+    public String saveAddress(Address address, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
                               RedirectAttributes redirectAttributes, Model model) {
         Integer id = loggedUser.getId();
 
         try {
             User user = userService.getUserByID(id);
+            if (address.getLastName().matches(".*\\d+.*")) {
+                errors.rejectValue("lastName", "address", "Họ không được chứa số!");
+            }
+            if (address.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                errors.rejectValue("lastName", "address", "Họ không được chứa ký tự đặc biệt!");
+            }
+            if (address.getFirstName().matches(".*\\d+.*")) {
+                errors.rejectValue("firstName", "address", "Tên không được chứa số!");
+            }
+            if (address.getFirstName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                errors.rejectValue("firstName", "address", "Tên không được chứa ký tự đặc biệt!");
+            }
+            if (address.getLastName().length() > 100) {
+                errors.rejectValue("lastName", "address", "Họ không được dài quá 100 ký tự!");
+            }
+            if (address.getFirstName().length() > 50) {
+                errors.rejectValue("firstName", "address", "Tên không được dài quá 100 ký tự!");
+            }
+            if (address.getEmail().length() > 100) {
+                errors.rejectValue("email", "address", "Email không được dài quá 100 ký tự!");
+            }
+            if (!address.getPhone().matches("\\d{10,}")) {
+                errors.rejectValue("phone", "address", "Số điện thoại không hợp lệ!");
+            }
+            if(address.getSpecificAddress().length() > 200) {
+                errors.rejectValue("lastName", "address", "Địa chỉ cụ thể không được dài quá 200 ký tự!");
+            }
             if(errors.hasErrors()) {
                 List<Province> listProvinces = addressService.getListProvinces();
+                List<District> listDistricts = addressService.getListDistrict();
+                List<Ward> listWards = addressService.getListWard();
 
-                Address addressNew = new Address();
-
+                model.addAttribute("listDistricts", listDistricts);
+                model.addAttribute("listWards", listWards);
                 model.addAttribute("listProvinces", listProvinces);
-                model.addAttribute("address", addressNew);
+
                 model.addAttribute("user", user);
                 return "profile-user/edit-address";
             }
@@ -209,23 +238,52 @@ public class AddressController {
     }
 
     @PostMapping("/profile/address/edit/{id}")
-    public String saveEditAddress(@Valid Address address, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
+    public String saveEditAddress(Address address, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
                                   RedirectAttributes redirectAttributes, Model model, @PathVariable("id") Integer addressId) {
         Integer id = loggedUser.getId();
 
         try {
             User user = userService.getUserByID(id);
             Address addressExist = addressService.getAddress(addressId, id);
-
+            if (address.getLastName().matches(".*\\d+.*")) {
+                errors.rejectValue("lastName", "address", "Họ không được chứa số!");
+            }
+            if (address.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                errors.rejectValue("lastName", "address", "Họ không được chứa ký tự đặc biệt!");
+            }
+            if (address.getFirstName().matches(".*\\d+.*")) {
+                errors.rejectValue("firstName", "address", "Tên không được chứa số!");
+            }
+            if (address.getFirstName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                errors.rejectValue("firstName", "address", "Tên không được chứa ký tự đặc biệt!");
+            }
+            if (address.getLastName().length() > 100) {
+                errors.rejectValue("lastName", "address", "Họ không được dài quá 100 ký tự!");
+            }
+            if (address.getFirstName().length() > 50) {
+                errors.rejectValue("firstName", "address", "Tên không được dài quá 100 ký tự!");
+            }
+            if (address.getEmail().length() > 100) {
+                errors.rejectValue("email", "address", "Email không được dài quá 100 ký tự!");
+            }
+            if (!address.getPhone().matches("\\d{10,}")) {
+                errors.rejectValue("phone", "address", "Số điện thoại không hợp lệ!");
+            }
+            if(address.getSpecificAddress().length() > 200) {
+                errors.rejectValue("lastName", "address", "Địa chỉ cụ thể không được dài quá 200 ký tự!");
+            }
             if(errors.hasErrors()) {
                 List<Province> listProvinces = addressService.getListProvinces();
-
+                List<District> listDistricts = addressService.getListDistrict();
+                List<Ward> listWards = addressService.getListWard();
                 model.addAttribute("listProvinces", listProvinces);
-                model.addAttribute("address", addressExist);
+                model.addAttribute("listDistricts", listDistricts);
+                model.addAttribute("listWards", listWards);
                 model.addAttribute("user", user);
                 return "profile-user/edit-address";
             }
             else {
+                System.out.println("aaaa");
                 address.setUser(addressExist.getUser());
                 address.setDefault(addressExist.isDefault());
                 addressService.save(address);

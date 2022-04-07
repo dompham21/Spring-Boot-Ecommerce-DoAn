@@ -338,7 +338,88 @@ body::-webkit-resizer { background-color: #666;}
     font-size: 18px;
 }
 
+.swiper-brand {
+    width: 100%;
+    height: 100%;
+}
 
+.brand-slide {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    padding: 0.5rem 0;
+    background-color: white;
+    outline: none;
+    min-width: 120px;
+}
+.brand-slide:hover {
+    background-color: rgb(236, 240, 244);
+}
+
+.category-slide {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    padding: 0.5rem 0.25rem 0.5rem 0.5rem;
+    background-color: white;
+    outline: none;
+    min-width: 120px;
+}
+
+.category-text {
+    color: black;
+    font-size: 14px;
+    font-weight: 700;
+    flex: 1 1;
+    margin-left: 8px;
+}
+
+.category-slide:hover {
+    background-color: rgb(236, 240, 244);
+}
+
+.category-slide img {
+    width: 52px;
+    height: 52px;
+}
+.brand-slide img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+}
+.list-brand {
+    width: 100%;
+    padding: 30px 70px;
+}
+
+.list-brand-carousel {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.swiper-button-next.btn-next-brand, .swiper-button-prev.btn-prev-brand {
+    right: 0;
+    top: 12px;
+}
+
+.swiper-button-prev.btn-prev-brand::after, .swiper-button-next.btn-next-brand::after {
+    font-size: 18px;
+    color: white;
+}
+
+.swiper-button-prev.btn-prev-brand {
+    right: 45px;
+    left: unset;
+}
+
+.swiper-wrapper-brand {
+    margin-top: 30px;
+}
 
 @keyframes slideInLeft {
     0% {

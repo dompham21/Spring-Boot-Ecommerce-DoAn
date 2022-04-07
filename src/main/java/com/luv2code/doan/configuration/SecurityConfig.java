@@ -1,6 +1,7 @@
 package com.luv2code.doan.configuration;
 
 
+import com.luv2code.doan.principal.CustomLoginFilter;
 import com.luv2code.doan.principal.CustomUserDetailService;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -12,11 +13,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableAutoConfiguration
@@ -43,10 +51,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/**","/webjars/**", "/images/**",
                     "/signup/**", "/verify/**","/auth/**","/checkout/**",
                     "/login/**", "/logout/**","/assets/**", "/css/**","/product/**","/brand/**","/","/js/**" ,
-                    "/cart/**", "/search/**").permitAll()
+                    "/cart/**", "/search/**", "/forgot-password/**").permitAll()
             .anyRequest().authenticated()
 
             .and()
+                .addFilterBefore(getCustomLoginFilter(), CustomLoginFilter.class)
             .formLogin()
                 .loginPage("/login")
                 .usernameParameter("email")
@@ -84,6 +93,18 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("static/**");
+    }
+
+    private CustomLoginFilter getCustomLoginFilter() throws Exception {
+        CustomLoginFilter filter = new CustomLoginFilter("/login", "POST");
+        filter.setAuthenticationManager(authenticationManager());
+        filter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException {
+                httpServletResponse.sendRedirect("login?error");
+            }
+        });
+        return filter;
     }
 
 }

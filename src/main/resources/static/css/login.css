@@ -21,12 +21,15 @@
 
 .auth-form-wrapper-logo {
     width: 100%;
+}
 
-
+.form-valid-feedback {
+    color: #f92121;
+    font-size: 15px;
 }
 .auth-form-wrapper-logo > img {
     object-fit: cover;
-    height: 130px;
+    height: 72px;
 }
 .auth-form-desc {
     font-size: 16px;

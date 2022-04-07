@@ -75,12 +75,13 @@ public class UserService {
 
     public void sendVerificationEmail(User user, String siteUrl)
                 throws UnsupportedEncodingException, MessagingException {
-       String subject = "Please verify your registration";
-       String senderName = "iMusic Team";
+       String subject = "Vui lòng xác thực tài khoản";
+       String senderName = "Shopwise Team";
        String verifyUrl = siteUrl + "/verify?code=" + user.getVerificationCode();
 
        Map<String, Object> model = new HashMap<String, Object>();
        model.put("verifyUrl", verifyUrl);
+       model.put("name", user.getFirstName() + " " + user.getLastName());
        Context context = new Context();
        context.setVariables(model);
 
@@ -95,6 +96,26 @@ public class UserService {
        helper.setText(html, true);
        emailSender.send(message);
 
+    }
+
+    public void sendEmailPassword(String newPass, User user) throws UnsupportedEncodingException, MessagingException {
+        String subject = "Shopwise - Mật khẩu mới cho tài khoản";
+        String senderName = "Shopwise Team";
+        Map<String, Object> model = new HashMap<String, Object>();
+        Context context = new Context();
+        model.put("newPass", newPass);
+        model.put("name", user.getFirstName() + " " + user.getLastName());
+
+        context.setVariables(model);
+        String html = templateEngine.process("email/new-pass", context);
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom(senderEmail, senderName);
+        helper.setTo(user.getEmail());
+        helper.setSubject(subject);
+        helper.setText(html, true);
+        emailSender.send(message);
     }
 
     public boolean verify(String verificationCode) {

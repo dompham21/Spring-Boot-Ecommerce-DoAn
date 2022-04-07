@@ -30,11 +30,9 @@ public class Review  {
     @Column(name="date")
     private Date date;
 
-    @NotBlank(message = "Bình luận không được bỏ trống!")
     @Column(name="comment", length = 300, nullable = false)
     private String comment;
 
-    @NotNull(message = "Vote không được bỏ trống!")
     @Column(name="vote")
     private Integer vote;
 

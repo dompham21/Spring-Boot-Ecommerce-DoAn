@@ -12,22 +12,30 @@
 	<form class="auth-form needs-validation" th:action="@{/signup}" th:object="${user}" method="post">
 		<input type="hidden" th:field="*{id}" />
 		<div class="auth-form-wrapper-logo mb-4 pt-4 d-flex justify-content-center align-items-center">
-			<img src="https://res.cloudinary.com/dmriwkfll/image/upload/v1636703629/13a79d6ca66b4a1bb1d05c9337e6536b_3_xfkc8t.png"/>
+			<img th:src="@{/images/logo-white.png}"/>
 		</div>
-		<p class="auth-form-desc text-center mb-5">Sign up and start managing your candidates!</p>
-		<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
-		<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
-		<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
-		<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"  class="form-valid-feedback"></span>
-		<div class="mb-4 d-flex justify-content-center align-items-center">
-			<input type="text" class="form-control auth-input auth-input-group" style="margin-right: 5px"  placeholder="Họ" th:field="*{firstName}" required>
-			<input type="text" class="form-control auth-input auth-input-group"  placeholder="Tên" th:field="*{lastName}" required>
+		<p class="auth-form-desc text-center mb-5">Đăng ký và mua hàng tại Shopwise!</p>
+		<div class="mb-4 d-flex flex-column">
+			<div class="d-flex justify-content-center align-items-center">
+				<input type="text" class="form-control auth-input auth-input-group" style="margin-right: 5px"  placeholder="Họ" th:field="*{firstName}" required>
+				<input type="text" class="form-control auth-input auth-input-group"  placeholder="Tên" th:field="*{lastName}" required>
+			</div>
+			<div class="d-flex flex-column">
+				<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
+				<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
+			</div>
 		</div>
-		<div class="mb-4 d-flex justify-content-center align-items-center">
+		<div class="mb-4 d-flex flex-column">
 			<input type="email" class="form-control auth-input"  placeholder="Email" th:field="*{email}" required>
+			<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
 		</div>
-		<div class="mb-5 d-flex justify-content-center align-items-center">
+		<div class="mb-4 d-flex flex-column">
+			<input type="text" class="form-control auth-input"  placeholder="Phone number" th:field="*{phone}" required>
+			<span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
+		</div>
+		<div class="mb-5 d-flex flex-column">
 			<input type="password" class="form-control auth-input" placeholder="Password" th:field="*{password}" required>
+			<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"  class="form-valid-feedback"></span>
 		</div>
 
 		<button type="submit" class="btn btn-danger auth-btn">Signup</button>
@@ -42,11 +50,7 @@
 <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
 <script type="text/javascript" >
-	$(document).ready(function() {
-		$("#buttonCancel").on("click", function() {
-			window.location = "/signup"
-		});
-	})
+
 </script>
 
 </body>

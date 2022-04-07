@@ -35,10 +35,12 @@
                                         <div style="width: 100%">
                                             <label class="form-label" for="ho">Họ người nhận</label>
                                             <input type="text" class="form-control checkout-input" name="firstName" id="ho" placeholder="Họ" required>
+                                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div style="width: 100%">
                                             <label class="form-label" for="ten">Tên người nhận</label>
                                             <input type="text" class="form-control checkout-input" name="lastName" id="ten" placeholder="Tên" required>
+                                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
                                         </div>
 
                                     </div>
@@ -46,10 +48,13 @@
                                         <div style="width: 100%">
                                             <label class="form-label" for="email">Email</label>
                                             <input type="email" class="form-control checkout-input" name="email" id="email" placeholder="Email" required>
+                                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
+
                                         </div>
                                         <div style="width: 100%">
                                             <label class="form-label" for="phone">Số điện thoại</label>
                                             <input type="text" class="form-control checkout-input" name="phone" id="phone" placeholder="Số điện thoại" required>
+                                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -80,6 +85,7 @@
                                         </div>
                                         <div style="width: 100%">
                                             <input type="text" class="form-control checkout-input" id="specificAddress" name="specificAddress" placeholder="Số nhà, ngõ, tên đường..." required/>
+                                            <span th:if="${#fields.hasErrors('specificAddress')}" th:errors="*{specificAddress}"  class="form-valid-feedback"></span>
                                         </div>
                                     </div>
                                 </div>

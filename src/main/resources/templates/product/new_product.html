@@ -27,27 +27,22 @@
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-8">
                                     <form th:action="${product.id != null} ? @{'/admin/product/edit/' + ${product.id}} : @{/admin/product/add}" th:object="${product}"  method="post" id="form-product" enctype="multipart/form-data">
-                                        <div class="mb-4">
-                                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"  class="form-valid-feedback"></span>
-                                        </div>
+
                                         <input type="hidden" th:field="*{id}" />
                                         <div class="mb-4">
                                             <label class="form-label" for="name">Name</label>
                                             <input type="text" class="form-control" id="name" th:field="*{name}"  required/>
+                                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
                                             <label class="form-label" for="description">Description</label>
                                             <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
+                                            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
                                             <label class="form-label" for="shortDescription">Sort Description</label>
                                             <textarea class="form-control" id="shortDescription"  th:field="*{shortDescription}"  rows="4" required></textarea>
+                                            <span th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4 d-flex flex-column justify-content-center">
                                             <label class="form-label" for="category">Category</label>
@@ -67,7 +62,7 @@
                                                 <option value="3">Three</option>
                                             </select>
                                         </div>
-                                        <div class="row mb-4">
+                                        <div class="mb-4">
                                             <div class="col-md-6">
                                                 <label class="form-label" for="price">Price</label>
                                                 <div class="input-group">
@@ -75,14 +70,16 @@
                                                     <span class="input-group-text">VNĐ</span>
                                                 </div>
                                             </div>
+                                            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"  class="form-valid-feedback"></span>
                                         </div>
-                                        <div class="row mb-4">
+                                        <div class="mb-4">
                                             <div class="col-md-6">
                                                 <label class="form-label" for="inStock">In Stock</label>
                                                 <input type="text" class="form-control" id="inStock" th:field="*{inStock}" required  value="0">
                                             </div>
+                                            <span th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"  class="form-valid-feedback"></span>
                                         </div>
-                                        <div class="row mb-4">
+                                        <div class="mb-4">
                                             <div class="col-md-6">
                                                 <label class="form-label" for="discount">Discount</label>
                                                 <div class="input-group">
@@ -90,8 +87,9 @@
                                                     <span class="input-group-text">%</span>
                                                 </div>
                                             </div>
+                                            <span th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"  class="form-valid-feedback"></span>
                                         </div>
-                                        <div class="row mb-4" style="padding:0 15px">
+                                        <div class=" mb-4" style="padding:0 15px">
                                             <div class="upload-zone d-flex justify-content-center align-items-center">
                                                 <input type="file" name="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${product.id != null} ? 'false' : 'true'"/>
                                                 <input type="text" id="image" th:field="*{image}" readonly style="display: none; opacity: 0"/>
@@ -101,6 +99,7 @@
                                                     <div class="upload-zone-desc">Click browse thorough your machine</div>
                                                 </div>
                                             </div>
+                                            <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
                                             <div class="d-flex flex-column justify-content-center">

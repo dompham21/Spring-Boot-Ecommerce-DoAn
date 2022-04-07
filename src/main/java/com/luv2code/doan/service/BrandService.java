@@ -24,7 +24,7 @@ public class BrandService {
 
     public List<Brand> getAllBrand()
     {
-        return (List<Brand>) brandRepository.findAll();
+        return brandRepository.findAll();
     }
 
     public Brand getBrandByName(String name) {
@@ -47,5 +47,7 @@ public class BrandService {
     public Brand saveBrand(Brand brand) {
         return brandRepository.save(brand);
     }
+
+
 
 }

@@ -59,7 +59,7 @@ public class CheckoutController {
                 estimatedTotal += item.getSubtotal();
 
             }
-
+            model.addAttribute("address", new Address());
             log.info(estimatedTotal + "");
             model.addAttribute("listDistricts", listDistricts);
             model.addAttribute("listWards", listWards);
@@ -73,7 +73,7 @@ public class CheckoutController {
 
 
     @PostMapping("/checkout")
-    public String placeOrder(@Valid Address address, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
+    public String placeOrder(Address address, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
                              RedirectAttributes redirectAttributes,
                              @RequestParam("radio-tab") String radioTab,
                              @RequestParam(name = "radio-address", required = false)  Integer existAddressId, Model model) {
@@ -85,6 +85,33 @@ public class CheckoutController {
                 getAddress = addressService.getAddress(existAddressId, id);
             }
             else if(radioTab.equals("new-address")) {
+                if (address.getLastName().matches(".*\\d+.*")) {
+                    errors.rejectValue("lastName", "address", "Họ không được chứa số!");
+                }
+                if (address.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                    errors.rejectValue("lastName", "address", "Họ không được chứa ký tự đặc biệt!");
+                }
+                if (address.getFirstName().matches(".*\\d+.*")) {
+                    errors.rejectValue("firstName", "address", "Tên không được chứa số!");
+                }
+                if (address.getFirstName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                    errors.rejectValue("firstName", "address", "Tên không được chứa ký tự đặc biệt!");
+                }
+                if (address.getLastName().length() > 100) {
+                    errors.rejectValue("lastName", "address", "Họ không được dài quá 100 ký tự!");
+                }
+                if (address.getFirstName().length() > 50) {
+                    errors.rejectValue("firstName", "address", "Tên không được dài quá 100 ký tự!");
+                }
+                if (address.getEmail().length() > 100) {
+                    errors.rejectValue("email", "address", "Email không được dài quá 100 ký tự!");
+                }
+                if (!address.getPhone().matches("\\d{10,}")) {
+                    errors.rejectValue("phone", "address", "Số điện thoại không hợp lệ!");
+                }
+                if(address.getSpecificAddress().length() > 200) {
+                    errors.rejectValue("lastName", "address", "Địa chỉ cụ thể không được dài quá 200 ký tự!");
+                }
                 if(errors.hasErrors()) {
                     List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
                     List<Province> listProvinces = addressService.getListProvinces();

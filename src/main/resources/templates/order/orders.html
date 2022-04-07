@@ -89,11 +89,15 @@
                                         [[${order.status.name}]]
                                     </td>
                                     <td class="text-center fs-sm">
-                                        <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/order/edit/' + ${order.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
-                                            <i class="fas fa-pencil-alt"></i>                                                </a>
-                                        <a class="btn btn-sm btn-alt-danger" th:id="'link-delete-' + ${order.id}" th:onclick="'showConfirmDelete(event,' + ${order.id} + ')'" entity="order" th:href="@{'/admin/order/delete/' + ${order.id}}"  data-toggle="tooltip" data-placement="top" title="Delete">
-                                            <i class="fa fa-fw fa-times text-danger"></i>
-                                        </a>
+                                        <th:block th:unless="${order.status.id == 4 || order.status.id == 5}">
+                                            <a class="btn btn-sm btn-outline-success" th:href="@{'/admin/order/accept?id=' + ${order.id} + '&statusId=' + ${order.status.id}}"  data-toggle="tooltip" data-placement="top" title="Accept">
+                                                <i class="fas fa-check-circle"></i>
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-danger" th:href="@{'/admin/order/deny/id=' + ${order.id} + '&statusId=' + ${order.status.id}}"  data-toggle="tooltip" data-placement="top" title="Deny">
+                                                <i class="fas fa-times-circle"></i>
+                                            </a>
+                                        </th:block>
+
                                     </td>
                                 </tr>
 

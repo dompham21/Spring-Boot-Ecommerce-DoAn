@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Poster - Shopwise Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/list.css}"/>
+</head>
+<body>
+<div id="page-container" class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div th:replace="fragments/sidebar_fragment :: sidebar('poster', 'poster_all')"></div>
+        <div class="d-flex flex-column wrapper">
+            <div th:replace="fragments/header_fragment :: header"></div>
+            <div class="content">
+                <div class="d-flex justify-content-between align-items-center mt-3 mb-5">
+                    <a href="/admin/poster/add">
+                        <button class="btn btn-primary d-flex align-items-center">
+                            <i class="fas fa-plus" style="margin-right: 0.5rem"></i>
+                            <span>Thêm áp phích trái</span>
+                        </button>
+                    </a>
+
+                </div>
+                <div class="d-flex align-items-start" style="gap: 20px">
+                    <section  style="width: 60%" class="list-table">
+                        <div class="list-table-content">
+                            <div class="table-responsive">
+                                <div style="font-size: 20px; font-weight: 700; margin-bottom: 20px; text-align: center">Quản Lý Áp Phích Trái</div>
+                                <table class="table table-borderless table-striped table-vcenter">
+                                    <thead>
+                                    <tr>
+                                        <th class="d-none d-sm-table-cell text-center">ID</th>
+                                        <th class="d-none d-sm-table-cell text-center">Hình ảnh</th>
+                                        <th class="d-none d-sm-table-cell text-center">Title</th>
+                                        <th>Status</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="poster : ${listPostersLeft}">
+                                        <td class="text-center fs-sm">
+                                            <a>
+                                                <strong>[[${poster.id}]]</strong>
+                                            </a>
+                                        </td>
+                                        <td class="d-none d-md-table-cell fs-sm">
+                                            <img th:src="${poster.image}" style="width: 200px; object-fit: cover"/>
+                                        </td>
+                                        <td class="d-none d-sm-table-cell text-center fs-s" style="width: 150px">
+                                            [[${poster.title}]]
+                                        </td>
+                                        <td>
+                                            <span th:if="${poster.isActive == true}" class="badge bg-success">Available</span>
+                                            <span th:if="${poster.isActive == false}"  class="badge bg-danger">Banned</span>
+                                        </td>
+                                        <td class="text-center fs-sm">
+                                            <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/poster/left/edit/' + ${poster.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="fas fa-pencil-alt"></i>                                                </a>
+                                            <a class="btn btn-sm btn-alt-danger" th:id="'link-delete-' + ${poster.id}" th:onclick="'showConfirmDelete(event,' + ${poster.id} + ')'" entity="poster" th:href="@{'/admin/poster/delete/' + ${poster.id}}"  data-toggle="tooltip" data-placement="top" title="Delete">
+                                                <i class="fa fa-fw fa-times text-danger"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="empty d-flex flex-column align-items-center" th:if="${#lists.isEmpty(listPostersLeft)}">
+                                    <div class="empty-image d-flex justify-content-center align-items-center" style="margin-bottom: 10px">
+                                        <img th:src="@{/images/empty-icon.svg}" style="height: 200px"/>
+                                    </div>
+                                    <a href="/admin/poster/add">
+                                        <button class="btn btn-primary d-flex align-items-center">
+                                            <span>Create Now</span>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section  style="width: 40%" class="list-table">
+                        <div class="list-table-content">
+                            <div class="table-responsive">
+                                <div style="font-size: 20px; font-weight: 700; margin-bottom: 20px; text-align: center">Quản Lý Áp Phích Phải</div>
+                                <table class="table table-borderless table-striped table-vcenter">
+                                    <thead>
+                                    <tr>
+                                        <th class="d-none d-sm-table-cell text-center">ID</th>
+                                        <th class="d-none d-sm-table-cell text-center">Hình ảnh</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="poster : ${listPostersRight}">
+                                        <td class="text-center fs-sm">
+                                            <a>
+                                                <strong>[[${poster.id}]]</strong>
+                                            </a>
+                                        </td>
+                                        <td class="d-none d-md-table-cell fs-sm">
+                                            <img th:src="${poster.image}" style="width: 150px; height: 150px; object-fit: cover"/>
+                                        </td>
+                                        <td class="text-center fs-sm">
+                                            <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/poster/right/edit/' + ${poster.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
+                                                <i class="fas fa-pencil-alt"></i>                                                </a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}" ></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            Swal.fire({
+                title: '',
+                text: messageSuccess,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            })
+        }
+
+        if(messageError ) {
+            Swal.fire({
+                title: '',
+                text: messageError,
+                icon: 'error'
+            })
+        }
+
+
+
+
+    })
+</script>
+</body>
+
+
+</html>

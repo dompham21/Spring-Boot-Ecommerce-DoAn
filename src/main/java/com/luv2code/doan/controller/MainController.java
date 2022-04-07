@@ -2,15 +2,9 @@ package com.luv2code.doan.controller;
 
 
 
-import com.luv2code.doan.entity.Address;
-import com.luv2code.doan.entity.Cart;
-import com.luv2code.doan.entity.Product;
-import com.luv2code.doan.entity.Province;
+import com.luv2code.doan.entity.*;
 import com.luv2code.doan.principal.UserPrincipal;
-import com.luv2code.doan.service.AddressService;
-import com.luv2code.doan.service.CartService;
-import com.luv2code.doan.service.ProductService;
-import com.luv2code.doan.service.StorageService;
+import com.luv2code.doan.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +41,20 @@ public class MainController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private BrandService brandService;
 
-    @GetMapping("/admin")
-    public String adminDashboard(Model model) {
-        return "admin";
-    }
+    @Autowired
+    private PosterService posterService;
+
 
     @GetMapping("/")
     public String index(Model model, @AuthenticationPrincipal UserPrincipal loggedUser) {
         Page<Product> page = productService.listLatestProduct();
+
+        List<Brand> listBrands = brandService.getAllBrand();
+        List<Poster> listPostersLeft = posterService.listPosterLeft();
+        List<Poster> listPostersRight = posterService.listPosterRight();
 
         List<Product> listLatestProducts = page.getContent();
         if(loggedUser != null) {
@@ -73,8 +72,10 @@ public class MainController {
             model.addAttribute("listCarts", listCarts);
             model.addAttribute("estimatedTotal", estimatedTotal);
         }
+        model.addAttribute("listPostersLeft", listPostersLeft);
+        model.addAttribute("listPostersRight", listPostersRight);
         model.addAttribute("listLatestProducts", listLatestProducts);
-
+        model.addAttribute("listBrands", listBrands);
         return "index";
     }
 

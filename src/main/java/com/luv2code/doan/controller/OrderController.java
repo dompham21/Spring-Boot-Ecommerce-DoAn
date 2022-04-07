@@ -153,23 +153,15 @@ public class OrderController {
                                      RedirectAttributes redirectAttributes) {
         Integer id = loggedUser.getId();
         try {
-            log.info("Start profile order!!!!");
             User user = userService.getUserByID(id);
-            log.info(user.toString());
-            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
-            double estimatedTotal = 0;
 
-            for (Cart item : listCarts) {
-                estimatedTotal += item.getSubtotal();
-
-            }
 
             if(status == null) {
                 status = "ALL";
             }
 
 
-            Page<Order> page = orderService.listForUserByPage(user, pageNum, keyword, startDate, endDate, status);
+            Page<Order> page = orderService.listByPage(pageNum, keyword, startDate, endDate, status);
             List<Order> listOrders = page.getContent();
 
 
@@ -180,9 +172,6 @@ public class OrderController {
             }
             List<OrderStatus> orderStatusList = orderStatusService.listOrderStatus();
 
-            log.info("user has add to model");
-            model.addAttribute("listCarts", listCarts);
-            model.addAttribute("estimatedTotal", estimatedTotal);
             model.addAttribute("orderStatusList", orderStatusList);
             model.addAttribute("user", user);
             model.addAttribute("totalPages", page.getTotalPages());
@@ -204,6 +193,32 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/admin/order/accept")
+    public String acceptOrder(@RequestParam("id") Integer id, @RequestParam("statusId") Integer statusId) throws OrderNotFoundException {
+
+        orderService.acceptOrder(id, statusId);
+        return "redirect:/admin/order";
+    }
+
+    @GetMapping("/admin/order/deny")
+    public String denyOrder(@RequestParam("id") Integer id, @RequestParam("statusId") Integer statusId) throws OrderNotFoundException {
+
+        orderService.denyOrder(id, statusId);
+//        orderDetailService.updateSoldQuantityByOrderDetail(orderService.getOrderDetail(id));
+        return "redirect:/admin/order";
+    }
+
+    @GetMapping("/profile/order/requestCancel")
+    public String requestCancel(@RequestParam("id") Integer id) throws OrderNotFoundException {
+        orderService.requestCancel(id);
+        return "redirect:/profile/order/info";
+    }
+
+    @GetMapping("/profile/order/cancelRequest")
+    public String cancelRequest(@RequestParam("id") Integer id) throws OrderNotFoundException {
+        orderService.cancelRequest(id);
+        return "redirect:/profile/order/info";
+    }
 
 
 }
