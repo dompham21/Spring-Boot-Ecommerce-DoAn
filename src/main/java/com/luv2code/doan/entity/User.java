@@ -20,7 +20,6 @@ public class User {
     @Column(name="email", unique = true, length = 100, nullable = false)
     private String email;
 
-
     @Column(name="password", nullable = false, length = 100)
     private String password;
 
@@ -32,7 +31,6 @@ public class User {
 
     @Column(name="avatar", length = 300)
     private String avatar;
-
 
     @Column(name="phone", length = 20)
     private String phone;

@@ -25,7 +25,7 @@
                     </th:block>
                 </div>
             </div>
-            <div class="profile-title" th:text="${isEdit ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}"></div>
+            <div class="profile-title" th:text="${address.id != null ? 'Chỉnh sửa địa chỉ' : 'Thêm địa chỉ mới'}"></div>
         </div>
         <div class="profile-content d-flex">
             <div class="profile-tab d-flex flex-column">
@@ -56,14 +56,8 @@
             </div>
             <div class="profile-content-body">
                 <div id="form-profile-address" class="profile-tab-item">
-                    <form th:action="${isEdit} ? @{'/profile/address/edit/' + ${address.id}} : @{'/profile/address/add'}"  th:object="${address}" method="post" id="form-profile-address-edit">
-                        <div class="mb-4">
-                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
-                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
-                            <span th:if="${#fields.hasErrors('specificAddress')}" th:errors="*{specificAddress}"  class="form-valid-feedback"></span>
-                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
-                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
-                        </div>
+                    <form th:action="${address.id != null} ? @{'/profile/address/edit/' + ${address.id}} : @{'/profile/address/add'}"  th:object="${address}" method="post" id="form-profile-address-edit">
+
                         <input type="hidden" th:field="*{id}" />
                         <div>
                             <div class="profile-title">Thông tin người nhận hàng</div>
@@ -72,10 +66,12 @@
                                     <div style="width: 100%">
                                         <label class="form-label" for="ho">Họ người nhận</label>
                                         <input type="text" class="form-control profile-address-input" th:field="*{firstName}" id="ho" placeholder="Họ" required>
+                                        <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
                                     </div>
                                     <div style="width: 100%">
                                         <label class="form-label" for="ten">Tên người nhận</label>
                                         <input type="text" class="form-control profile-address-input" th:field="*{lastName}" id="ten" placeholder="Tên" required>
+                                        <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
                                     </div>
 
                                 </div>
@@ -83,10 +79,12 @@
                                     <div style="width: 100%">
                                         <label class="form-label" for="email">Email</label>
                                         <input type="email" class="form-control profile-address-input" th:field="*{email}" id="email" placeholder="Email" required>
+                                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
                                     </div>
                                     <div style="width: 100%">
                                         <label class="form-label" for="phone">Số điện thoại</label>
                                         <input type="text" class="form-control profile-address-input" th:field="*{phone}" id="phone" placeholder="Số điện thoại" required>
+                                        <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
                                     </div>
                                 </div>
                             </div>
@@ -131,6 +129,7 @@
                                     </div>
                                     <div style="width: 100%">
                                         <input type="text" class="form-control profile-address-input" th:field="*{specificAddress}" id="number-home" placeholder="Số nhà, ngõ, tên đường..." required/>
+                                        <span th:if="${#fields.hasErrors('specificAddress')}" th:errors="*{specificAddress}"  class="form-valid-feedback"></span>
                                     </div>
                                 </div>
                             </div>

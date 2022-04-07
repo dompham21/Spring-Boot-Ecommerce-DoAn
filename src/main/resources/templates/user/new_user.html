@@ -19,41 +19,38 @@
 
                     <section class="form-container">
                         <div class="form-container-header d-flex align-items-center justify-content-between">
-                            <h1 class="title" th:text="${isEdit} ? 'Sua Thong Tin Người Dùng': 'Thêm Người Dùng Mới'"></h1>
+                            <h1 class="title" th:text="${user.id != null} ? 'Sua Thong Tin Người Dùng': 'Thêm Người Dùng Mới'"></h1>
                         </div>
                         <div class="form-container-content">
                             <div class="row justify-content-center">
                                 <div class="col-md-10 col-lg-8">
-                                    <form th:action="${isEdit} ? @{'/admin/user/edit/' + ${user.id}} : @{/admin/user/add}" th:object="${user}" method="post" id="form-user">
-                                        <div class="mb-4">
-                                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
-                                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"  class="form-valid-feedback"></span>
-
-                                        </div>
+                                    <form th:action="${user.id != null} ? @{'/admin/user/edit/' + ${user.id}} : @{/admin/user/add}" th:object="${user}" method="post" id="form-user">
                                         <input type="hidden" th:field="*{id}" />
                                         <div class="mb-4">
                                             <label class="form-label" for="firstName">First Name</label>
                                             <input type="text" class="form-control" id="firstName" th:field="*{firstName}"  required/>
+                                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
                                             <label class="form-label" for="lastName">Last Name</label>
                                             <input type="text" class="form-control" id="lastName" th:field="*{lastName}"  required/>
+                                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
                                             <label class="form-label" for="email">Email</label>
                                             <input type="email" class="form-control" id="email" th:field="*{email}"  required/>
+                                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
                                             <label class="form-label" for="phone">Phone Number</label>
                                             <input type="text" class="form-control" id="phone" th:field="*{phone}"  required/>
+                                            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"  class="form-valid-feedback"></span>
                                         </div>
                                         <th:block th:if="${user.id == null}">
                                             <div class="mb-4">
                                                 <label class="form-label" for="password">Password</label>
                                                 <input type="password" class="form-control" required id="password" th:field="*{password}" />
+                                                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"  class="form-valid-feedback"></span>
                                             </div>
                                         </th:block>
                                         <div class="mb-4 d-flex flex-column justify-content-center">

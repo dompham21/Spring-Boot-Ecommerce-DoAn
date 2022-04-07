@@ -176,3 +176,21 @@
 .input-search-order {
     width: 350px;
 }
+
+
+.btn.btn-outline-success > i {
+    color: #28a745;
+}
+
+
+.btn.btn-outline-success:hover > i {
+    color: white;
+}
+
+.btn.btn-outline-danger > i {
+    color: #dc3545;
+}
+
+.btn.btn-outline-danger:hover > i {
+    color: white;
+}

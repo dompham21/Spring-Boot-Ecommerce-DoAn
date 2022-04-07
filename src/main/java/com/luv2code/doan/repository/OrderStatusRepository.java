@@ -11,4 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface OrderStatusRepository extends JpaRepository<OrderStatus, Integer> {
     @Query("SELECT os FROM OrderStatus os where  os.id = :id")
     public OrderStatus getOrderStatusById(int id);
+
+
+
 }

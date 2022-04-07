@@ -14,9 +14,6 @@
         <li class="nav-item">
             <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab">Shipping</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" id="track-tab" data-toggle="tab" href="#track" role="tab">Track</a>
-        </li>
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active p-3" id="overview" role="tabpanel">
@@ -52,7 +49,7 @@
                 <div class="form-group row align-items-center">
                     <label class="col-sm-2 col-form-label">Trạng thái:</label>
                     <div class="col-sm-10">
-                        <span>[[${order.status}]]</span>
+                        <span>[[${order.status.name}]]</span>
                     </div>
                 </div>
                 <div class="form-group row align-items-center">
@@ -61,6 +58,21 @@
                         <div th:replace="fragments :: format_time(${order.date})"></div>
                     </div>
                 </div>
+                <th:block th:if="${order.status.id == 1}">
+                    <div class="form-group row align-items-center">
+                        <div class="col">
+                            <a  th:href="'/profile/order/requestCancel?id=' + ${order.id}" class="btn btn-danger">Yêu cầu huỷ đơn</a>
+                        </div>
+
+                    </div>
+                </th:block>
+                <th:block th:if="${order.status.id == 2}">
+                    <div class="form-group row align-items-center">
+                        <div class="col">
+                            <a th:href="'/profile/order/cancelRequest?id=' + ${order.id}" class="btn btn-danger">Huỷ yêu cầu đơn</a>
+                        </div>
+                    </div>
+                </th:block>
             </form>
         </div>
         <div class="tab-pane fade p-3" id="products" role="tabpanel">

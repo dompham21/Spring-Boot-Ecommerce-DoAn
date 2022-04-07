@@ -83,7 +83,7 @@ function showErrorLoginPage() {
 
     Swal.fire({
         title: '',
-        content: wrapper,
+        html: wrapper,
         icon: 'error'
     })
 

@@ -84,28 +84,19 @@
     </div>
     <div class="detail-tabs">
         <div class="detail-tabs-header d-flex justify-content-center">
-            <button class="detail-tabs-button tab-active" onclick="openTabs(event,'tab-description')">Description</button>
-            <button class="detail-tabs-button" onclick="openTabs(event,'tab-review')">Reviews</button>
+            <button class="detail-tabs-button tab-description tab-active" onclick="openTabs('tab-description')">Description</button>
+            <button class="detail-tabs-button tab-review" onclick="openTabs('tab-review')">Reviews</button>
         </div>
         <div id="tab-description" class="tab-item">
-            <p>Curabitur egestas malesuada volutpat. Nunc vel vestibulum odio, ac pellentesque lacus. Pellentesque dapibus nunc nec est imperdiet, a malesuada sem rutrum. Sed quam odio, porta a finibus quis, sagittis aliquet leo. Nunc ornare metus urna, eu luctus velit placerat ut. Cras at porttitor lectus. Ut dapibus aliquam nibh, in imperdiet libero tincidunt sit amet. Morbi sodales fermentum nibh nec facilisis. Morbi pharetra varius velit, eget varius libero finibus quis. Quisque auctor varius lectus, lacinia rhoncus velit posuere vel. Cras condimentum tincidunt urna, sed vehicula ipsum dapibus et. Pellentesque pharetra ultrices varius. Sed viverra nec purus ut ornare.</p>
-            <ul class="tabs-description-list">
-                <li><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path></svg>Aenean auctor sem ac ex efficitur</li>
-                <li><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path></svg>Non mattis odio bibendum</li>
-                <li><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path></svg>Sed vitae enim at tortor finibus</li>
-                <li><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path></svg>Integer facilisis eleifend vehicula</li>
-                <li><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M912 190h-69.9c-9.8 0-19.1 4.5-25.1 12.2L404.7 724.5 207 474a32 32 0 0 0-25.1-12.2H112c-6.7 0-10.4 7.7-6.3 12.9l273.9 347c12.8 16.2 37.4 16.2 50.3 0l488.4-618.9c4.1-5.1.4-12.8-6.3-12.8z"></path></svg>In hac habitasse platea dictumst</li>
-            </ul>
-            <p>Sed molestie orci sem, at semper est molestie ac. Suspendisse cursus feugiat erat, eu posuere massa. Nullam posuere nibh non eros lobortis tempus. Maecenas dignissim elementum massa, vel accumsan urna elementum in. Suspendisse at dui euismod, rhoncus eros non, imperdiet ipsum. Vestibulum vehicula vel turpis et vestibulum. Ut porta et ex maximus malesuada.</p>
+            <div th:utext="${product.description}">
+
+            </div>
         </div>
 
         <div id="tab-review" class="tab-item" style="display:none">
             <div class="tab-review-wrapper d-flex justify-content-between">
                 <div class="tab-review-comment">
                     <ul class="tab-review-comment-list">
-<!--                        <th:block th:if="${#lists.isEmpty(listReviews)}">-->
-<!--                            <div>Hien tai chua co danh gia nao!</div>-->
-<!--                        </th:block>-->
                         <th:block th:each="review : ${listReviews}">
                             <li class="tab-review-comment-item d-flex">
                                 <div class="tab-review-comment-avatar">
@@ -126,41 +117,72 @@
                                         </ul>
                                     </div>
                                     <div class="tab-review-comment-text" th:text="${review.comment}"></div>
-                                    <div class="tab-review-comment-date" th:text="${#dates.format(review.date, 'dd/MM/yyyy')}" ></div>
+                                    <div class="d-flex align-items-center" style="gap: 20px">
+                                        <div class="tab-review-comment-date" th:text="${#dates.format(review.date, 'dd/MM/yyyy')}" ></div>
+                                        <div class="d-flex align-items-center" style="gap: 10px">
+                                            <a  style="font-size: 12px; cursor: pointer; text-decoration: underline"
+                                                th:href="@{'/product/review/edit/' + ${product.id} + '/' + ${review.id}}"
+                                                data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="Edit">
+                                                Sửa
+                                            </a>
+                                            <a  style="font-size: 12px; cursor: pointer; text-decoration: underline"
+                                                th:id="'link-delete-' + ${review.id}"
+                                                th:onclick="'showConfirmDelete(event,' + ${review.id} + ')'"
+                                                entity="review" th:href="@{'/product/review/delete/' + ${product.id} + '/' + ${review.id}}"
+                                                data-toggle="tooltip"
+                                                data-placement="top"
+                                                title="Delete">
+                                                Xoá
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </th:block>
+                        <th:block th:if="${listReviews == null || listReviews.empty}">
+                            <div style="margin-left: 80px; margin-bottom: 20px; font-size: 18px;font-weight: 700">Hiện tại sản phẩm chưa có đánh giá nào!</div>
+                        </th:block>
                     </ul>
-                    <div class="tab-review-comment-write d-flex">
-                        <div class="tab-review-comment-avatar">
-                            <div class="reviewer-avatar">
-                                <img th:src="@{/images/money.png}"/>
-                            </div>
-                        </div>
-                        <div class="tab-review-comment-main">
-                            <form th:action="@{'/product/review'}" th:object="${review}" method="post" id="form-review">
-                                <input type="hidden" name="productId" th:value="${product.id}" />
-                                <input type="hidden" name="id" th:field="*{id}" />
-                                <div class="d-flex tab-review-comment-stars">
-                                    <div class="rating">
-                                        <input type="radio" name="vote" th:field="*{vote}" value="5" id="rating-5">
-                                        <label for="rating-5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="vote" th:field="*{vote}" value="4" id="rating-4">
-                                        <label for="rating-4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="vote" th:field="*{vote}" value="3" id="rating-3">
-                                        <label for="rating-3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="vote" th:field="*{vote}" value="2" id="rating-2">
-                                        <label for="rating-2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="vote" th:field="*{vote}" value="1" id="rating-1">
-                                        <label for="rating-1"><i class="fas fa-star"></i></label>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <th:block th:if="${isUserBuyProduct != null && isUserBuyProduct == true}">
+                            <div class="tab-review-comment-write d-flex">
+                                <div class="tab-review-comment-avatar">
+                                    <div class="reviewer-avatar">
+                                        <img th:src="@{/images/money.png}"/>
                                     </div>
                                 </div>
+                                <div class="tab-review-comment-main">
+                                        <form th:action="@{'/product/review'}" th:object="${review}" method="post" id="form-review">
+                                            <input type="hidden" name="productId" th:value="${product.id}" />
+                                            <input type="hidden" name="id" th:field="*{id}" />
+                                            <div class="d-flex flex-column tab-review-comment-stars">
+                                                <div class="rating">
+                                                    <input type="radio" name="vote" th:field="*{vote}" value="5" id="rating-5" required>
+                                                    <label for="rating-5"><i class="fas fa-star"></i></label>
+                                                    <input type="radio" name="vote" th:field="*{vote}" value="4" id="rating-4">
+                                                    <label for="rating-4"><i class="fas fa-star"></i></label>
+                                                    <input type="radio" name="vote" th:field="*{vote}" value="3" id="rating-3">
+                                                    <label for="rating-3"><i class="fas fa-star"></i></label>
+                                                    <input type="radio" name="vote" th:field="*{vote}" value="2" id="rating-2">
+                                                    <label for="rating-2"><i class="fas fa-star"></i></label>
+                                                    <input type="radio" name="vote" th:field="*{vote}" value="1" id="rating-1">
+                                                    <label for="rating-1"><i class="fas fa-star"></i></label>
+                                                </div>
+                                                <span style="margin-left: 0 !important;" th:if="${#fields.hasErrors('vote')}" th:errors="*{vote}"  class="form-valid-feedback"></span>
+                                            </div>
+                                            <textarea class="form-control" id="review-comment" th:field="*{comment}" rows="4" placeholder="Viết đánh giá sản phẩm..." required></textarea>
+                                            <span style="margin-left: 0 !important;" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"  class="form-valid-feedback"></span>
 
-                                <textarea class="form-control" id="review-comment" th:field="*{comment}" rows="4" placeholder="Viết đánh giá sản phẩm..." required></textarea>
-                                <button class="btn-submit-review" type="submit">Gửi</button>
-                            </form>
-                        </div>
-                    </div>
+                                            <button class="btn-submit-review" type="submit">Gửi</button>
+                                        </form>
+
+                                </div>
+                            </div>
+                        </th:block>
+                    </th:block>
+
                 </div>
                 <div class="tab-review-result">
                     <div class="tab-review-result-ovg d-flex align-items-center">
@@ -182,7 +204,7 @@
                                 </th:block>
 
                             </ul>
-                            <div><span th:text="${totalItems}"></span> nhan xet</div>
+                            <div><span th:text="${totalItems}"></span> đánh giá</div>
                         </div>
                     </div>
                     <div class="tab-review-process d-flex align-items-center">
@@ -239,7 +261,12 @@
         $('.detail-zoom-img').magnify();
         let messageError = [[${messageError}]];
         let messageSuccess = [[${messageSuccess}]];
+        let isReview = [[${isReview}]]
+        let isUserBuyProduct = [[${isUserBuyProduct}]]
 
+        if(isReview != null && isReview == true) {
+            openTabs('tab-review');
+        }
         if(messageSuccess) {
             Swal.fire({
                 title: '',
@@ -260,7 +287,7 @@
 
 </script>
 <script>
-    function openTabs(evt,tabName) {
+    function openTabs(tabName) {
         let i;
         let tabItem;
         let x = document.getElementsByClassName("tab-item");
@@ -272,7 +299,7 @@
             tabItem[i].className = tabItem[i].className.replace(" tab-active", "");
         }
         document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " tab-active";
+        $("."+ tabName).addClass(" tab-active")
     }
 </script>
 </body>

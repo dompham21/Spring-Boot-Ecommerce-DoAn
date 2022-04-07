@@ -8,10 +8,7 @@ import com.luv2code.doan.entity.Review;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.exceptions.StorageUploadFileException;
 import com.luv2code.doan.principal.UserPrincipal;
-import com.luv2code.doan.service.CartService;
-import com.luv2code.doan.service.ProductService;
-import com.luv2code.doan.service.ReviewService;
-import com.luv2code.doan.service.StorageService;
+import com.luv2code.doan.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,9 @@ public class ProductController {
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private OrderService orderService;
 
 
 
@@ -113,7 +113,7 @@ public class ProductController {
             errors.rejectValue("name", "product", "Vui lòng nhập tên sản phẩm !");
         }
         if(productService.getProductByName(product.getName()) != null) {
-            errors.rejectValue("name", "product", "Ten san pham khong duoc trung!");
+            errors.rejectValue("name", "product", "Tên sản phẩm không được trùng!");
         }
         if(product.getPrice() == null) {
             errors.rejectValue("price", "product", "Vui lòng nhập đơn giá !");
@@ -151,7 +151,7 @@ public class ProductController {
 
         else {
               String url = storageService.upload(file);
-
+              System.out.println(url);
               product.setSoldQuantity(0);
               product.setRegistrationDate(new Date());
               product.setImage(url);
@@ -203,7 +203,7 @@ public class ProductController {
             Product productCheckUnique = productService.getProductByName(product.getName());
 
             if ( productCheckUnique != null && !productCheckUnique.getId().equals(existProduct.getId())) {
-                errors.rejectValue("name", "product", "Ten san pham khong duoc trung!");
+                errors.rejectValue("name", "product", "Tên sản phẩm không được trùng!");
             }
             if(product.getName().trim().length() == 0) {
                 errors.rejectValue("name", "product", "Vui lòng nhập tên sản phẩm !");
@@ -277,6 +277,9 @@ public class ProductController {
             if(loggedUser != null) {
                 List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
                 log.info(listCarts.isEmpty() + "");
+                boolean isUserBuyProduct = orderService.isUserHasBuyProduct(loggedUser.getId(), id);
+
+
 
                 double estimatedTotal = 0;
 
@@ -286,11 +289,15 @@ public class ProductController {
                 }
 
                 log.info(estimatedTotal + "");
+                model.addAttribute("isUserBuyProduct", isUserBuyProduct);
+
                 model.addAttribute("listCarts", listCarts);
                 model.addAttribute("estimatedTotal", estimatedTotal);
             }
-
-            Review review = new Review();
+            if (!model.containsAttribute("review")) {
+                Review review = new Review();
+                model.addAttribute("review", review);
+            }
             int pageNum = 1;
             long startCount = (pageNum - 1) * reviewService.REVIEW_PER_PAGE + 1;
             long endCount = startCount +  reviewService.REVIEW_PER_PAGE - 1;
@@ -320,7 +327,7 @@ public class ProductController {
 
 
             model.addAttribute("product", product);
-            model.addAttribute("review", review);
+
             model.addAttribute("listReviews", listReviews);
             model.addAttribute("startCount", startCount);
             model.addAttribute("endCount", endCount);

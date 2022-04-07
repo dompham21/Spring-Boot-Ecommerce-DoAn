@@ -15,60 +15,33 @@
     <div th:replace="fragments/navbar_fragment :: navbar"></div>
     <div class="main-content">
         <div class="gallery d-flex align-items-start justify-content-center">
-            <div class="swiper">
+            <div class="swiper swiper-gallery">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="gallery-item position-relative">
-                            <img th:src="@{/images/banner1.jpg}" />
-                            <div class="gallery-item-content">
-                                <p class="gallery-item-title">Google Technology</p>
-                                <div class="gallery-item-wrapper d-flex">
-                                    <div class="gallery-item-divine"></div>
-                                    <p class="gallery-item-subtitle">LATEST BEST DEVICE</p>
+                    <th:block th:if="${listPostersLeft}" th:each="poster : ${listPostersLeft}">
+                        <div class="swiper-slide">
+                            <div class="gallery-item position-relative">
+                                <img th:src="${poster.image}" />
+                                <div class="gallery-item-content">
+                                    <p class="gallery-item-title" style="text-transform: capitalize" th:text="${poster.title}"></p>
+                                    <div class="gallery-item-wrapper d-flex">
+                                        <div class="gallery-item-divine"></div>
+                                        <p class="gallery-item-subtitle" style="text-transform: uppercase" th:text="${poster.subTitle}"></p>
+                                    </div>
+                                    <p class="gallery-item-description" th:text="${poster.description}"></p>
+                                    <button class="gallery-item-btn">Explore</button>
                                 </div>
-                                <p class="gallery-item-description">The brand comes from the google home collection 2020</p>
-                                <button class="gallery-item-btn">Explore</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="gallery-item position-relative">
-                            <img th:src="@{/images/banner2.jpg}" />
-                            <div class="gallery-item-content">
-                                <p class="gallery-item-title">Google Mouse</p>
-                                <div class="gallery-item-wrapper d-flex">
-                                    <div class="gallery-item-divine"></div>
-                                    <p class="gallery-item-subtitle">NEW SMART DEVICE</p>
-                                </div>
-                                <p class="gallery-item-description">The brand comes from the google home collection 2020</p>
-                                <button class="gallery-item-btn">Explore</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="gallery-item position-relative">
-                            <img th:src="@{/images/banner3.jpg}" />
-                            <div class="gallery-item-content">
-                                <p class="gallery-item-title">Google Smart TV</p>
-                                <div class="gallery-item-wrapper d-flex">
-                                    <div class="gallery-item-divine"></div>
-                                    <p class="gallery-item-subtitle">NEW SMART QLED TV</p>
-                                </div>
-                                <p class="gallery-item-description">The brand comes from the google home collection 2020</p>
-                                <button class="gallery-item-btn">Explore</button>
-                            </div>
-                        </div>
-                    </div>
+                    </th:block>
                 </div>
                 <div class="swiper-pagination"></div>
             </div>
             <div class="sub-gallery d-flex flex-column">
-                <div>
-                    <img th:src="@{images/subbanner1.jpg}"/>
-                </div>
-                <div>
-                    <img th:src="@{images/subbanner2.jpg}"/>
-                </div>
+                <th:block th:if="${listPostersRight}" th:each="poster : ${listPostersRight}">
+                    <div>
+                        <img th:src="${poster.image}"/>
+                    </div>
+                </th:block>
             </div>
 
         </div>
@@ -94,7 +67,103 @@
                 <div class="section-policy-description">Đổi hàng thoải mái trong 30 ngày</div>
             </div>
         </div>
+        <section class="list-brand">
+            <div class="list-product-wrapper">
+                <div class="list-product-title d-flex flex-column justify-content-center position-relative">
+                    <h3>Danh mục sản phẩm</h3>
+                </div>
+                <div class="list-brand-carousel">
+                    <div class="swiper-brand swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper swiper-wrapper-brand">
+                            <!-- Slides -->
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                                <div class="category-text">Laptop</div>
+                            </div>
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/dell.png}"/>
+                            </div>
 
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/msi.png}"/>
+                            </div>
+
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/razer.png}"/>
+                            </div>
+
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide category-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                        </div>
+                        <!-- If we need navigation buttons -->
+                        <div class="swiper-button-prev btn-prev-brand"></div>
+                        <div class="swiper-button-next btn-next-brand"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="list-brand">
+            <div class="list-product-wrapper">
+                <div class="list-product-title d-flex flex-column justify-content-center position-relative">
+                    <h3>Thương hiệu nổi bật</h3>
+                </div>
+                <div class="list-brand-carousel">
+                    <div class="swiper-brand swiper">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper swiper-wrapper-brand">
+                            <!-- Slides -->
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/dell.png}"/>
+                            </div>
+
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/msi.png}"/>
+                            </div>
+
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/razer.png}"/>
+                            </div>
+
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                            <div class="swiper-slide brand-slide">
+                                <img th:src="@{/images/mac.png}"/>
+                            </div>
+                        </div>
+                        <!-- If we need navigation buttons -->
+                        <div class="swiper-button-prev btn-prev-brand"></div>
+                        <div class="swiper-button-next btn-next-brand"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <div th:replace="fragments/listProducts_fragment::listProduct('SẢN PHẨM MỚI NHẤT', ${listLatestProducts})"></div>
     </div>
     <div th:replace="fragments/footer_fragment :: footer"></div>
@@ -131,7 +200,7 @@
     })
 </script>
 <script>
-    const swiper = new Swiper('.swiper', {
+    const swiper1 = new Swiper('.swiper-gallery', {
         loop: true,
         speed: 1200,
         slidesPerView: 1,
@@ -144,6 +213,16 @@
             disableOnInteraction: false,
         }
 
+    });
+    const swiper2 = new Swiper('.swiper-brand', {
+        slidesPerGroup:8,
+        slidesPerView:8,
+        spaceBetween:30,
+        allowTouchMove:false,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
     });
 
     function detectClick(){

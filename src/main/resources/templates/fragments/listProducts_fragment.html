@@ -14,14 +14,6 @@
                                 <div class="card-container position-relative">
                                     <img class="card-container-img" th:src="${product.image}">
                                 </div>
-                                <div class="card-action position-absolute d-flex justify-content-center align-items-center">
-                                    <div type="button" class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Wishlist">
-                                        <i class="far fa-heart"></i>
-                                    </div>
-                                    <div class="card-action-item d-flex justify-content-center align-items-center position-relative" aria-label="Add To Cart">
-                                        <i class="fas fa-cart-arrow-down"></i>
-                                    </div>
-                                </div>
                             </div>
                             <div class="card-content d-flex flex-column">
                                 <a th:href="@{'/product/detail/' + ${product.id}}">

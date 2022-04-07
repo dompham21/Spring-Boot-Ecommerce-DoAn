@@ -14,6 +14,21 @@
       "name": "cloudinary.api_secret",
       "type": "java.lang.String",
       "description": "Description for cloudinary.api_secret."
+    },
+    {
+      "name": "recaptcha.url",
+      "type": "java.lang.String",
+      "description": "Description for recaptcha.url."
+    },
+    {
+      "name": "recaptcha.site_key",
+      "type": "java.lang.String",
+      "description": "Description for recaptcha.site_key."
+    },
+    {
+      "name": "recapthcha.secret_key",
+      "type": "java.lang.String",
+      "description": "Description for recapthcha.secret_key."
     }
   ]
 }

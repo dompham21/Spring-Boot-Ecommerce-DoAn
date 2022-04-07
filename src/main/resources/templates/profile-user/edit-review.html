@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="fragments :: page_head('Home - Shopwise Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/detail_product.css}"/>
+
+</head>
+<body>
+<div th:replace="fragments/navbar_fragment :: navbar"></div>
+<div class="main-content">
+    <div class="profile-main">
+        <div class="profile-header d-flex align-items-center">
+            <div class="profile-author d-flex align-items-center">
+                <div class="profile-author-img"><img th:src="@{/images/car.png}"/></div>
+                <div class="profile-author-content d-flex flex-column flex-wrap">
+                    <div class="profile-author-name" style="text-transform: capitalize" th:text="${user.firstName + ' ' + user.lastName}"></div>
+                    <th:block th:if="${user.phone}">
+                        <div class="profile-author-phone" th:text="${user.phone}"></div>
+                    </th:block>
+                    <th:block th:unless="${user.phone}">
+                        <div class="profile-author-phone">Chưa cập nhật</div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="profile-title" >
+                Đánh giá sản phẩm:
+                <span style="font-weight: 700" th:text="${' ' + product.name}"></span>
+            </div>
+        </div>
+        <div class="profile-content d-flex">
+            <div class="profile-tab d-flex flex-column">
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <span>Thông tin tài khoản</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/change-password">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <span>Đổi mật khẩu</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/order/info">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="far fa-clipboard"></i>
+                    </div>
+                    <span>Danh sách đơn hàng</span>
+                </a>
+                <a class="profile-tabs-button d-flex align-items-center" href="/profile/address">
+                    <div class="profile-icon-wrapper d-flex align-items-center justify-content-center">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <span>Địa chỉ của tôi</span>
+                </a>
+            </div>
+            <div class="profile-content-body">
+                <div id="form-change-user-info" class="profile-tab-item">
+                    <form th:action="@{'/product/review/edit/'+${product.id} + '/' + ${review.id}}" th:object="${review}" method="post" id="form-review">
+                        <input type="hidden" th:field="*{id}"/>
+                        <div class="d-flex align-items-center user-info-field">
+                            <div class="font-weight-bold user-info-title">Vote</div>
+                            <div class="user-info-item">
+                                <div class="d-flex flex-column tab-review-comment-stars">
+                                    <div class="rating">
+                                        <input type="radio" name="vote" th:field="*{vote}" value="5" id="rating-5" required>
+                                        <label for="rating-5"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="4" id="rating-4">
+                                        <label for="rating-4"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="3" id="rating-3">
+                                        <label for="rating-3"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="2" id="rating-2">
+                                        <label for="rating-2"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="vote" th:field="*{vote}" value="1" id="rating-1">
+                                        <label for="rating-1"><i class="fas fa-star"></i></label>
+                                    </div>
+                                    <span style="margin-left: 0 !important;" th:if="${#fields.hasErrors('vote')}" th:errors="*{vote}"  class="form-valid-feedback"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex user-info-field" style="height: unset">
+                            <div class="font-weight-bold user-info-title">Bình luận</div>
+                            <div class="user-info-item">
+                                <textarea class="form-control" id="review-comment" th:field="*{comment}" rows="4" placeholder="Viết đánh giá sản phẩm..." required></textarea>
+                                <span style="margin-left: 0 !important;" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"  class="form-valid-feedback"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center user-info-field mt-5">
+                            <div class="font-weight-bold user-info-title"></div>
+                            <div class="user-info-item">
+                                <button class="profile-form-btn" type="submit">Cập nhật</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer_fragment :: footer"></div>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        let messageError = [[${messageError}]];
+        let messageSuccess = [[${messageSuccess}]];
+
+        if(messageSuccess) {
+            Swal.fire({
+                title: '',
+                text: messageSuccess,
+                icon: 'success',
+                confirmButtonColor: '#3085d6'
+            })
+        }
+        if(messageError ) {
+            Swal.fire({
+                title: '',
+                text: messageError,
+                icon: 'error',
+            })
+        }
+    })
+</script>
+
+</body>
+
+</html>

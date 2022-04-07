@@ -48,10 +48,6 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product) {
-//        DecimalFormat decimalFormat = new DecimalFormat("0.#");
-//        product.setPrice(Double.valueOf(decimalFormat.format(product.getPrice())));
-
-
         return productRepository.save(product);
     }
 

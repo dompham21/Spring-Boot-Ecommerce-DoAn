@@ -93,7 +93,7 @@ public class ProfileController {
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile(@Valid User user, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
+    public String editProfile(User user, BindingResult errors, @AuthenticationPrincipal UserPrincipal loggedUser,
                               RedirectAttributes redirectAttributes) {
         Integer idLoggedUser = loggedUser.getId();
         if(!idLoggedUser.equals(user.getId())) {
@@ -102,12 +102,33 @@ public class ProfileController {
         }
         try {
             User existUser = userService.getUserByID(user.getId());
+            if (user.getLastName().matches(".*\\d+.*")) {
+                errors.rejectValue("lastName", "user", "Họ không được chứa số!");
+            }
+            if (user.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                errors.rejectValue("lastName", "user", "Họ không được chứa ký tự đặc biệt!");
+            }
+            if (user.getFirstName().matches(".*\\d+.*")) {
+                errors.rejectValue("firstName", "user", "Tên không được chứa số!");
+            }
+            if (user.getFirstName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+                errors.rejectValue("firstName", "user", "Tên không được chứa ký tự đặc biệt!");
+            }
+            if (user.getLastName().length() > 100) {
+                errors.rejectValue("lastName", "user", "Họ không được dài quá 100 ký tự!");
+            }
+            if (user.getFirstName().length() > 50) {
+                errors.rejectValue("firstName", "user", "Tên không được dài quá 100 ký tự!");
+            }
+            if (!user.getPhone().matches("\\d{10,}")) {
+                errors.rejectValue("phone", "user", "Số điện thoại không hợp lệ!");
+            }
+            if ((userService.getUserByPhone(user.getPhone()) != null) && !user.getPhone().equals(existUser.getPhone())) {
+                errors.rejectValue("phone", "user", "Số điện thoại đã được sử dụng!");
+            }
             if (errors.hasErrors()) {
-                log.info(errors.toString());
-                log.info("has error");
                 return "profile-user/edit-profile";
             } else{
-                log.info("working");
                 existUser.setFirstName(user.getFirstName());
                 existUser.setLastName(user.getLastName());
                 existUser.setPhone(user.getPhone());
@@ -167,9 +188,7 @@ public class ProfileController {
                 errors.rejectValue("confirmPass", "password", "Mật khẩu xác nhận không đúng!");
             }
             if(errors.hasErrors()) {
-                log.info(errors.toString());
                 model.addAttribute("user", user);
-
                 return "profile-user/change-password";
             }
             else {

@@ -16,27 +16,18 @@ public class Address {
     @Column(name="id")
     private Integer id;
 
-    @NotBlank(message = "Địa chỉ cụ thể không được bỏ trống!")
-    @Size(min = 1, max = 200, message = "Địa chỉ cụ thể không được dài quá 200 ký tự!")
     @Column(name="specific_address")
     private String specificAddress;
 
-    @NotBlank(message = "Họ không được bỏ trống!")
-    @Size(min = 1, max = 50, message = "Họ không được dài quá 50 ký tự!")
     @Column(name="first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Size(min = 1, max = 100, message = "Tên không được dài quá 50 ký tự!")
-    @NotBlank(message = "Tên không được bỏ trống!")
     @Column(name="last_name", nullable = false, length = 100)
     private String lastName;
 
-    @NotBlank(message = "Email không được bỏ trống!")
-    @Email(message = "Email không hợp lệ!")
     @Column(name="email", length = 100, nullable = false)
     private String email;
 
-    @NotBlank(message = "SDT không được bỏ trống!")
     @Column(name="phone", length = 20)
     private String phone;
 
