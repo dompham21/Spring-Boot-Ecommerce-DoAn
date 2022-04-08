@@ -59,7 +59,6 @@ public class CheckoutController {
                 estimatedTotal += item.getSubtotal();
 
             }
-            model.addAttribute("address", new Address());
             log.info(estimatedTotal + "");
             model.addAttribute("listDistricts", listDistricts);
             model.addAttribute("listWards", listWards);
@@ -67,6 +66,9 @@ public class CheckoutController {
             model.addAttribute("estimatedTotal", estimatedTotal);
             model.addAttribute("listProvinces", listProvinces);
             model.addAttribute("listAddresses", listAddresses);
+            if (!model.containsAttribute("address")) {
+                model.addAttribute("address", new Address());
+            }
         }
         return "checkout/place-order";
     }
@@ -113,22 +115,9 @@ public class CheckoutController {
                     errors.rejectValue("lastName", "address", "Địa chỉ cụ thể không được dài quá 200 ký tự!");
                 }
                 if(errors.hasErrors()) {
-                    List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
-                    List<Province> listProvinces = addressService.getListProvinces();
-                    List<Address> listAddresses = addressService.getListAddressByUserId(loggedUser.getId());
-
-                    double estimatedTotal = 0;
-
-                    for (Cart item : listCarts) {
-                        estimatedTotal += item.getSubtotal();
-                    }
-
-                    log.info(estimatedTotal + "");
-                    model.addAttribute("listCarts", listCarts);
-                    model.addAttribute("estimatedTotal", estimatedTotal);
-                    model.addAttribute("listProvinces", listProvinces);
-                    model.addAttribute("listAddresses", listAddresses);
-                    return "checkout/place-order";
+                    redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.address", errors);
+                    redirectAttributes.addFlashAttribute("address", address);
+                    return "redirect:/checkout";
                 }
                 else {
                     address.setUser(user);

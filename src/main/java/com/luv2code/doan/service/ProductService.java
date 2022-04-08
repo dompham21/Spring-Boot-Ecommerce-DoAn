@@ -22,6 +22,8 @@ import java.util.NoSuchElementException;
 public class ProductService {
     private final Logger log = LoggerFactory.getLogger(ProductService.class);
     public static final int PRODUCT_PER_PAGE = 9;
+    public static final int PRODUCT_SEARCH_PER_PAGE = 8;
+
 
 
 
@@ -83,7 +85,12 @@ public class ProductService {
         return productRepository.findLatestProduct(pageable);
     }
 
-    public Page<Product> listSearchProduct(String keyword, Integer pageNum, String radioPrice, String radioSort) {
+    public Page<Product> listBestSellProduct() {
+        Pageable pageable = PageRequest.of(0,10);
+        return productRepository.findBestSellProduct(pageable);
+    }
+
+    public Page<Product> listSearchProduct(String keyword, Integer pageNum, String radioPrice, String radioSort, String radioCategory, String radioBrand) {
         double minPrice = 0;
         double maxPrice = 0;
         Pageable pageable = null;
@@ -120,18 +127,18 @@ public class ProductService {
         if(radioSort != null ) {
             Sort sort = Sort.by("price");
             sort = radioSort.equals("asc") ? sort.ascending() : sort.descending();
-            pageable = PageRequest.of(pageNum - 1, 16, sort);
+            pageable = PageRequest.of(pageNum - 1, PRODUCT_SEARCH_PER_PAGE, sort);
         }
         else {
-            pageable = PageRequest.of(pageNum - 1, 16);
+            pageable = PageRequest.of(pageNum - 1, PRODUCT_SEARCH_PER_PAGE);
         }
 
         if (keyword != null && !keyword.isEmpty()) {
             log.info("Search with keyword!");
-            return productRepository.searchWithKeywordFilterProduct(keyword, minPrice, maxPrice, pageable);
+            return productRepository.searchWithKeywordFilterProduct(keyword, minPrice, maxPrice, radioCategory, radioBrand, pageable);
         }
 
-        return productRepository.searchFilterProduct(minPrice, maxPrice, pageable);
+        return productRepository.searchFilterProduct(minPrice, maxPrice, radioCategory, radioBrand, pageable);
 
     }
 }

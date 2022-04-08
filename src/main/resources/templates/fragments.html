@@ -163,6 +163,13 @@
        th:href="@{${url} + '/page/' + ${pageNum} + ${keyword != null ? '?keyword=' + keyword : ''} + ${startDate != null ? '&startDate=' + #dates.format(startDate, 'dd-MM-yyyy') : ''} + ${endDate != null ? '&endDate=' + #dates.format(endDate, 'dd-MM-yyyy') : ''}}">[[${label}]]</a>
     <!-- USER PAGE LINK END -->
 
+    <!-- SEARCH PAGE LINK -->
+    <a th:fragment="page_link_search(pageNum, label)"
+       class="page-link"
+       th:href="@{'/search/page/' + ${pageNum} + ${keywordSearch != null ? '?keywordSearch=' + keywordSearch : ''} + ${radioCategory != null ? '&radio-category=' + radioCategory : ''} + ${radioBrand != null ? '&radio-brand=' + radioBrand : ''}
+       + ${radioPrice != null ? '&radio-price=' + radioPrice : ''} + ${radioSort != null ? '&radio-sort=' + radioSort : ''}}">[[${label}]]</a>
+    <!-- SEARCH PAGE LINK END -->
+
     <!-- USER PAGINATION -->
     <div th:fragment="pagination_user(entityName, url)" th:remove="tag">
         <div class="text-center m-1" th:if="${totalItems > 0}">
@@ -200,6 +207,42 @@
     </div>
     <!-- USER PAGINATION END -->
 
+    <!-- SEARCH PAGINATION -->
+    <div th:fragment="pagination_search()" th:remove="tag">
+        <div class="text-center m-1" th:if="${totalPages > 1}">
+            <span>Hiển thị sản phẩm từ [[${startCount}]] đến [[${endCount}]]</span>
+        </div>
+        <div class="text-center m-1" th:unless="${totalItems > 0}">
+            <span>Không sản phẩm nào được tìm thấy</span>
+        </div>
+
+        <div th:if="${totalPages > 1}">
+            <nav>
+                <ul class="pagination justify-content-center flex-wrap">
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="fragments :: page_link_search(1, 'Trang đầu')"></a>
+                    </li>
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="fragments :: page_link_search(${currentPage - 1}, 'Trước')"></a>
+                    </li>
+
+                    <li th:class="${currentPage != i ? 'page-item': 'page-item active'}"
+                        th:each="i : ${#numbers.sequence(1, totalPages)}">
+                        <a th:replace="fragments :: page_link_search(${i}, ${i})"></a>
+                    </li>
+
+                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="fragments :: page_link_search(${currentPage + 1}, 'Sau')"></a>
+                    </li>
+
+                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                        <a th:replace="fragments :: page_link_search(${totalPages}, 'Trang cuối')"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- USER PAGINATION END -->
 
     <!-- SEARCH FORM -->
     <div th:fragment="search_form(entityName)">

@@ -87,6 +87,8 @@ public class UserPrincipal implements UserDetails {
         return Objects.hash(user.getId());
     }
 
+    public String getFirstName() {return this.user.getFirstName();}
+
     public String getFullname() {
         return this.user.getFirstName() + " " + this.user.getLastName();
     }

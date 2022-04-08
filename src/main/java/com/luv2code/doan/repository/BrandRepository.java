@@ -17,4 +17,11 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
     @Query("Select p from Brand p WHERE p.name = :name")
     public Brand getBrandByName(String name);
 
+    @Query(value = "select id, description, logo, name From (select brand_id, sum(sold_quantity) AS sell FROM products \n" +
+            "group by brand_id\n" +
+            "having sum(sold_quantity)\n" +
+            "order by sell desc limit 0,2)\n" +
+            "as listBrand inner join brands as bd on listBrand.brand_id = bd.id", nativeQuery = true)
+    public List<Brand> getTop5BrandBestSell();
+
 }

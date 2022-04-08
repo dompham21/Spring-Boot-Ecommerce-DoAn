@@ -77,37 +77,12 @@
                         <!-- Additional required wrapper -->
                         <div class="swiper-wrapper swiper-wrapper-brand">
                             <!-- Slides -->
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                                <div class="category-text">Laptop</div>
-                            </div>
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/dell.png}"/>
-                            </div>
-
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/msi.png}"/>
-                            </div>
-
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/razer.png}"/>
-                            </div>
-
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide category-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
+                            <th:block  th:each="cate : ${listCategories}">
+                                <div class="swiper-slide category-slide">
+                                    <img th:src="${cate.image}"/>
+                                    <div class="category-text" style="text-transform: capitalize" th:text="${cate.name}"></div>
+                                </div>
+                            </th:block>
                         </div>
                         <!-- If we need navigation buttons -->
                         <div class="swiper-button-prev btn-prev-brand"></div>
@@ -126,36 +101,11 @@
                         <!-- Additional required wrapper -->
                         <div class="swiper-wrapper swiper-wrapper-brand">
                             <!-- Slides -->
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/dell.png}"/>
-                            </div>
-
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/msi.png}"/>
-                            </div>
-
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/razer.png}"/>
-                            </div>
-
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
-                            <div class="swiper-slide brand-slide">
-                                <img th:src="@{/images/mac.png}"/>
-                            </div>
+                            <th:block  th:each="brand : ${listBrands}">
+                                <div class="swiper-slide brand-slide">
+                                    <img th:src="${brand.logo}"/>
+                                </div>
+                            </th:block>
                         </div>
                         <!-- If we need navigation buttons -->
                         <div class="swiper-button-prev btn-prev-brand"></div>
@@ -165,6 +115,8 @@
             </div>
         </section>
         <div th:replace="fragments/listProducts_fragment::listProduct('SẢN PHẨM MỚI NHẤT', ${listLatestProducts})"></div>
+        <div th:replace="fragments/listProducts_fragment::listProduct('BÁN CHẠY NHẤT', ${listBestSellProducts})"></div>
+
     </div>
     <div th:replace="fragments/footer_fragment :: footer"></div>
 
@@ -193,8 +145,6 @@
                 icon: 'error',
             })
         }
-
-
 
 
     })

@@ -170,6 +170,7 @@ public class PosterController {
                     poster.setImage(url);
                 }
 
+                poster.setIsActive(true);
                 poster.setType(posterExists.getType());
 
                 posterService.savePoster(poster);

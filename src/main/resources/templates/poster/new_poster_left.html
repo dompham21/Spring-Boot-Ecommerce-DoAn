@@ -43,7 +43,7 @@
                                         <textarea class="form-control" id="description" th:field="*{description}" rows="4" required></textarea>
                                         <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
                                     </div>
-                                    <div class=" mb-4" style="padding:0 15px">
+                                    <div class=" mb-4" style="padding:0px">
                                         <div class="upload-zone d-flex justify-content-center align-items-center">
                                             <input type="file" name="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${poster.id != null} ? 'false' : 'true'"/>
                                             <input type="text" id="image" th:field="*{image}" readonly style="display: none; opacity: 0"/>

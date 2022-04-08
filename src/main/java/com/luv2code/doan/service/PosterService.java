@@ -29,6 +29,15 @@ public class PosterService {
         return posterRepository.listPosterLeft();
     }
 
+    public List<Poster> listPosterRightUser() {
+        return posterRepository.listPosterRightUser();
+    }
+
+    public List<Poster> listPosterLeftUser() {
+        return posterRepository.listPosterLeftUser();
+    }
+
+
     public Poster getPosterByIdAndType(Integer id, String type) throws PosterNotFoundException {
         try {
             return posterRepository.getPosterByIdAndType(id, type);

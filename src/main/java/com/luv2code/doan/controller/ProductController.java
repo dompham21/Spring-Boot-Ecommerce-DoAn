@@ -2,9 +2,7 @@ package com.luv2code.doan.controller;
 
 
 import com.amazonaws.services.dynamodbv2.xspec.S;
-import com.luv2code.doan.entity.Cart;
-import com.luv2code.doan.entity.Product;
-import com.luv2code.doan.entity.Review;
+import com.luv2code.doan.entity.*;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.exceptions.StorageUploadFileException;
 import com.luv2code.doan.principal.UserPrincipal;
@@ -48,13 +46,26 @@ public class ProductController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private BrandService brandService;
+
+    @Autowired
+    private CategoryService categoryService;
+
 
 
     @GetMapping("/admin/product/add")
     public String addProduct(Model model) {
+        List<Brand> listBrands = brandService.getAllBrand();
+        List<Category> listCategories = categoryService.findAllCategory();
+
         Product product = new Product();
         product.setIsActive(true);
-        model.addAttribute("product", product);
+        model.addAttribute("listBrands", listBrands);
+        model.addAttribute("listCategories", listCategories);
+        if (!model.containsAttribute("product")) {
+            model.addAttribute("product", product);
+        }
 
         return "product/new_product";
     }
@@ -66,21 +77,19 @@ public class ProductController {
 
     @GetMapping("/admin/product/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") Integer pageNum, Model model,
-                             @RequestParam(required = false) String keyword,
-                             @RequestParam(required = false) String sortField,
+                             @RequestParam(defaultValue = "") String keyword,
+                             @RequestParam(defaultValue = "id") String sortField,
                              @RequestParam(required = false) String sortDir) {
 
-        if(sortField != null) {
-            model.addAttribute("sortField", sortField);
-        }
+        model.addAttribute("sortField", sortField);
+
         if(sortDir == null) sortDir = "asc";
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
 
-        if(keyword != null) {
-            model.addAttribute("keyword", keyword);
-        }
+        model.addAttribute("keyword", keyword);
+
 
         Page<Product> page = productService.listByPage(pageNum, keyword, sortField, sortDir);
         List<Product> listProducts = page.getContent();
@@ -145,8 +154,9 @@ public class ProductController {
         }
 
         if(errors.hasErrors()) {
-            log.info("has errors");
-            return "product/new_product";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.product", errors);
+            redirectAttributes.addFlashAttribute("product", product);
+            return "redirect:/admin/product/add";
         }
 
         else {
@@ -181,10 +191,14 @@ public class ProductController {
     @GetMapping("/admin/product/edit/{id}")
     public String editProduct(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model) {
         try {
-            Product product = productService.getProductById(id);
-
-
-            model.addAttribute("product", product);
+            List<Brand> listBrands = brandService.getAllBrand();
+            List<Category> listCategories = categoryService.findAllCategory();
+            model.addAttribute("listBrands", listBrands);
+            model.addAttribute("listCategories", listCategories);
+            if (!model.containsAttribute("product")) {
+                Product product = productService.getProductById(id);
+                model.addAttribute("product", product);
+            }
             return "product/new_product";
         }
         catch (ProductNotFoundException e) {
@@ -237,8 +251,9 @@ public class ProductController {
                 errors.rejectValue("image", "product", "Image không được bỏ trống!");
             }
             if (errors.hasErrors()) {
-                log.info("has errors");
-                return "product/new_product";
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.product", errors);
+                redirectAttributes.addFlashAttribute("product", product);
+                return "redirect:/admin/product/edit/" + id;
             } else {
                 if(!existProduct.getImage().equals(product.getImage())) {
                     String url = storageService.upload(file);

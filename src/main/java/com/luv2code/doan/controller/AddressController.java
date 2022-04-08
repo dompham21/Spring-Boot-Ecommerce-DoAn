@@ -82,15 +82,18 @@ public class AddressController {
             List<District> listDistricts = addressService.getListDistrict();
             List<Ward> listWards = addressService.getListWard();
 
-            Address address = new Address();
 
 
             model.addAttribute("listDistricts", listDistricts);
             model.addAttribute("listWards", listWards);
             model.addAttribute("listProvinces", listProvinces);
-            model.addAttribute("address", address);
             model.addAttribute("user", user);
             model.addAttribute("isEdit", false);
+
+            if (!model.containsAttribute("address")) {
+                Address address = new Address();
+                model.addAttribute("address", address);
+            }
 
             return "profile-user/edit-address";
         }
@@ -135,16 +138,11 @@ public class AddressController {
                 errors.rejectValue("lastName", "address", "Địa chỉ cụ thể không được dài quá 200 ký tự!");
             }
             if(errors.hasErrors()) {
-                List<Province> listProvinces = addressService.getListProvinces();
-                List<District> listDistricts = addressService.getListDistrict();
-                List<Ward> listWards = addressService.getListWard();
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.address", errors);
+                redirectAttributes.addFlashAttribute("address", address);
 
-                model.addAttribute("listDistricts", listDistricts);
-                model.addAttribute("listWards", listWards);
-                model.addAttribute("listProvinces", listProvinces);
+                return "redirect:/profile/address/add";
 
-                model.addAttribute("user", user);
-                return "profile-user/edit-address";
             }
             else {
                 address.setUser(user);
@@ -210,7 +208,6 @@ public class AddressController {
             List<Province> listProvinces = addressService.getListProvinces();
             List<District> listDistricts = addressService.getListDistrict();
             List<Ward> listWards = addressService.getListWard();
-            Address address = addressService.getAddress(addressId, id);
             List<Cart> listCarts = cartService.findCartByUser(id);
 
             double estimatedTotal = 0;
@@ -226,9 +223,13 @@ public class AddressController {
             model.addAttribute("listDistricts", listDistricts);
             model.addAttribute("listWards", listWards);
             model.addAttribute("listProvinces", listProvinces);
-            model.addAttribute("address", address);
             model.addAttribute("user", user);
             model.addAttribute("isEdit", true);
+
+            if (!model.containsAttribute("address")) {
+                Address address = addressService.getAddress(addressId, id);
+                model.addAttribute("address", address);
+            }
             return "profile-user/edit-address";
         }
         catch (UserNotFoundException | AddressNotFoundException e) {
@@ -273,14 +274,9 @@ public class AddressController {
                 errors.rejectValue("lastName", "address", "Địa chỉ cụ thể không được dài quá 200 ký tự!");
             }
             if(errors.hasErrors()) {
-                List<Province> listProvinces = addressService.getListProvinces();
-                List<District> listDistricts = addressService.getListDistrict();
-                List<Ward> listWards = addressService.getListWard();
-                model.addAttribute("listProvinces", listProvinces);
-                model.addAttribute("listDistricts", listDistricts);
-                model.addAttribute("listWards", listWards);
-                model.addAttribute("user", user);
-                return "profile-user/edit-address";
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.address", errors);
+                redirectAttributes.addFlashAttribute("address", address);
+                return "redirect:/profile/address/edit/" + id;
             }
             else {
                 System.out.println("aaaa");

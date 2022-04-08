@@ -126,6 +126,9 @@
                             <a href="/profile/info" class="user-menu-item d-flex align-items-center"><i class="far fa-user"></i><span>Thông tin tài khoản</span></a>
                             <a href="/profile/order/info" class="user-menu-item d-flex align-items-center"><i class="far fa-clipboard"></i><span>Danh sách đơn hàng</span></a>
                             <a href="/profile/address" class="user-menu-item d-flex align-items-center"><i class="fas fa-map-marked-alt"></i><span>Địa chỉ của tôi</span></a>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                <a href="/admin" class="user-menu-item d-flex align-items-center"><i class="fas fa-user-cog"></i><span>Quản lý trang web</span></a>
+                            </th:block>
                             <a href="/logout" class="user-menu-item d-flex align-items-center"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a>
                         </div>
                     </div>
