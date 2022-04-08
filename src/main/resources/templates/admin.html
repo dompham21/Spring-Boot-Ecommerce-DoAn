@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head th:replace="fragments :: page_head('Login - Music Website', 'none')" />
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
@@ -15,7 +15,7 @@
             <div th:replace="fragments/header_fragment :: header"></div>
             <div class="content">
                 <h1 class="title">Dashboard</h1>
-                <h2 class="sub-title">Welcome <span style="color: #4c78dd;">Dom</span>, everything looks great.</h2>
+                <h2 class="sub-title">Welcome <span style="color: #4c78dd;text-transform: capitalize" th:text="${#authentication.getPrincipal().getFirstName()}"></span>, everything looks great.</h2>
                 <section class="statistical row">
                     <div class="col statistical-item d-flex justify-content-between align-items-center">
                         <div class="d-flex flex-column justify-content-center">

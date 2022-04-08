@@ -36,27 +36,27 @@ public class MainController {
     private CartService cartService;
 
     @Autowired
-    private AddressService addressService;
-
-    @Autowired
-    private StorageService storageService;
-
-    @Autowired
     private BrandService brandService;
 
     @Autowired
     private PosterService posterService;
 
+    @Autowired
+    private CategoryService categoryService;
+
 
     @GetMapping("/")
     public String index(Model model, @AuthenticationPrincipal UserPrincipal loggedUser) {
         Page<Product> page = productService.listLatestProduct();
+        Page<Product> pageBestSell = productService.listBestSellProduct();
 
         List<Brand> listBrands = brandService.getAllBrand();
-        List<Poster> listPostersLeft = posterService.listPosterLeft();
-        List<Poster> listPostersRight = posterService.listPosterRight();
+        List<Category> listCategories = categoryService.findAllCategory();
+        List<Poster> listPostersLeft = posterService.listPosterLeftUser();
+        List<Poster> listPostersRight = posterService.listPosterRightUser();
 
         List<Product> listLatestProducts = page.getContent();
+        List<Product> listBestSellProducts = pageBestSell.getContent();
         if(loggedUser != null) {
             List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
             log.info(listCarts.isEmpty() + "");
@@ -75,45 +75,30 @@ public class MainController {
         model.addAttribute("listPostersLeft", listPostersLeft);
         model.addAttribute("listPostersRight", listPostersRight);
         model.addAttribute("listLatestProducts", listLatestProducts);
+        model.addAttribute("listBestSellProducts", listBestSellProducts);
         model.addAttribute("listBrands", listBrands);
+        model.addAttribute("listCategories", listCategories);
+
         return "index";
     }
 
     @GetMapping("/search")
     public String searchPage(Model model, @AuthenticationPrincipal UserPrincipal loggedUser) {
-
-        Page<Product> page = productService.listLatestProduct();
-
-        List<Product> listProducts = page.getContent();
-        if(loggedUser != null) {
-            List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
-            log.info(listCarts.isEmpty() + "");
-
-            double estimatedTotal = 0;
-
-            for (Cart item : listCarts) {
-                estimatedTotal += item.getSubtotal();
-
-            }
-
-            log.info(estimatedTotal + "");
-            model.addAttribute("listCarts", listCarts);
-            model.addAttribute("estimatedTotal", estimatedTotal);
-        }
-        model.addAttribute("listProducts", listProducts);
-        return "search";
+        return searchFilterPage(1, "", "all", "all", "all", null, loggedUser, model);
     }
 
     @GetMapping("/search/page/{pageNum}")
     public String searchFilterPage(@PathVariable(name = "pageNum") Integer pageNum,
                                    @RequestParam(name = "keywordSearch", defaultValue = "") String keywordSearch,
-                                   @RequestParam(name = "radio-category", required = false) String radioCategory,
-                                   @RequestParam(name = "radio-brand", required = false) String radioBrand,
-                                   @RequestParam(name = "radio-price", required = false) String radioPrice,
+                                   @RequestParam(name = "radio-category", defaultValue = "all") String radioCategory,
+                                   @RequestParam(name = "radio-brand", defaultValue = "all") String radioBrand,
+                                   @RequestParam(name = "radio-price", defaultValue = "all") String radioPrice,
                                    @RequestParam(name = "radio-sort", required = false) String radioSort,
                                    @AuthenticationPrincipal UserPrincipal loggedUser, Model model) {
 
-        Page<Product> page = productService.listSearchProduct(keywordSearch, pageNum, radioPrice, radioSort);
+        System.out.println(radioBrand);
+        System.out.println(radioCategory);
+        Page<Product> page = productService.listSearchProduct(keywordSearch, pageNum, radioPrice, radioSort, radioCategory, radioBrand);
         List<Product> listProducts = page.getContent();
         if(loggedUser != null) {
             List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
@@ -130,8 +115,27 @@ public class MainController {
             model.addAttribute("listCarts", listCarts);
             model.addAttribute("estimatedTotal", estimatedTotal);
         }
+        List<Category> listCategories = categoryService.getTop5CategoryBestSell();
+        List<Brand> listBrands = brandService.getTop5BrandBestSell();
+        long startCount = (pageNum - 1) * productService.PRODUCT_SEARCH_PER_PAGE + 1;
+        long endCount = startCount +  productService.PRODUCT_SEARCH_PER_PAGE - 1;
+
+        if(endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+
+
+        model.addAttribute("listBrands", listBrands);
+        model.addAttribute("listCategories", listCategories);
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("currentPage", pageNum);
 
         model.addAttribute("keywordSearch", keywordSearch);
+        model.addAttribute("radioCategory", radioCategory);
+        model.addAttribute("radioBrand", radioBrand);
         model.addAttribute("radioSort", radioSort);
         model.addAttribute("radioPrice", radioPrice);
         model.addAttribute("listProducts", listProducts);
@@ -140,17 +144,5 @@ public class MainController {
         return "search";
     }
 
-
-
-    @GetMapping("/api/test")
-    public String test() {
-        return "test";
-    }
-
-    @PostMapping("/api/test")
-    public String postTest(@RequestParam("file") MultipartFile file) throws IOException {
-        storageService.upload(file);
-        return "test";
-    }
 
 }

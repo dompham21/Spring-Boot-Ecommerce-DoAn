@@ -34,9 +34,9 @@
                 </div>
             </div>
             <div class="detail-summary-brand d-flex align-items-center">
-                <h2 class="brand-title">Brand:</h2>
+                <h2 class="brand-title">Thương hiệu:</h2>
                 <div class="brand-item">
-                    <img th:src="@{/images/brand.png}"/>
+                    <img th:src="${product.brands.logo}"/>
                 </div>
             </div>
             <div class="detail-summary-short-desc" th:text="${product.shortDescription}"></div>
@@ -77,7 +77,7 @@
             </div>
             <div class="detail-summary-meta d-flex flex-column">
                 <div class="detail-summary-meta-categories">
-                    Categories: <span class="meta-data">Headphones, Technologies</span>
+                    Danh mục: <span class="meta-data" th:text="${product.categories.name}"></span>
                 </div>
             </div>
         </div>

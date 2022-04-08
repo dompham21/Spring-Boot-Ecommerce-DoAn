@@ -48,6 +48,8 @@ public class BrandService {
         return brandRepository.save(brand);
     }
 
-
+    public List<Brand> getTop5BrandBestSell(){
+        return brandRepository.getTop5BrandBestSell();
+    }
 
 }

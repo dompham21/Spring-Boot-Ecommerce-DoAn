@@ -1,10 +1,7 @@
 package com.luv2code.doan.controller;
 
 import com.luv2code.doan.bean.ChangePassword;
-import com.luv2code.doan.entity.Address;
-import com.luv2code.doan.entity.Cart;
-import com.luv2code.doan.entity.Province;
-import com.luv2code.doan.entity.User;
+import com.luv2code.doan.entity.*;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.principal.UserPrincipal;
 import com.luv2code.doan.service.CartService;
@@ -72,7 +69,6 @@ public class ProfileController {
                               RedirectAttributes redirectAttributes) {
         Integer id = loggedUser.getId();
         try {
-            User user = userService.getUserByID(id);
             List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
 
             double estimatedTotal = 0;
@@ -83,7 +79,10 @@ public class ProfileController {
 
             model.addAttribute("listCarts", listCarts);
             model.addAttribute("estimatedTotal", estimatedTotal);
-            model.addAttribute("user", user);
+            if (!model.containsAttribute("user")) {
+                User user = userService.getUserByID(id);
+                model.addAttribute("user", user);
+            }
             return "profile-user/edit-profile";
         }
         catch (UserNotFoundException e) {
@@ -127,7 +126,9 @@ public class ProfileController {
                 errors.rejectValue("phone", "user", "Số điện thoại đã được sử dụng!");
             }
             if (errors.hasErrors()) {
-                return "profile-user/edit-profile";
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", errors);
+                redirectAttributes.addFlashAttribute("user", user);
+                return "redirect:/profile/edit";
             } else{
                 existUser.setFirstName(user.getFirstName());
                 existUser.setLastName(user.getLastName());

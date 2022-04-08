@@ -45,25 +45,23 @@
                                             <span th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4 d-flex flex-column justify-content-center">
-                                            <label class="form-label" for="category">Category</label>
-                                            <select class="custom-select" required id="category" name="category">
-                                                <option value="">Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                            <label class="form-label" for="categories">Category</label>
+                                            <select class="custom-select" required id="categories" th:field="*{categories}">
+                                                <th:block th:each="cate : ${listCategories}">
+                                                    <option th:value="${cate.id}" th:text="${cate.name}"></option>
+                                                </th:block>
                                             </select>
                                         </div>
                                         <div class="mb-4 d-flex flex-column justify-content-center">
-                                            <label class="form-label" for="brand">Brand</label>
-                                            <select class="custom-select" required id="brand" name="brand">
-                                                <option value="">Open this select menu</option>
-                                                <option value="1">One</option>
-                                                <option value="2">Two</option>
-                                                <option value="3">Three</option>
+                                            <label class="form-label" for="brands">Brand</label>
+                                            <select class="custom-select" required id="brands" th:field="*{brands}">
+                                                <th:block th:each="brand : ${listBrands}">
+                                                    <option th:value="${brand.id}" th:text="${brand.name}"></option>
+                                                </th:block>
                                             </select>
                                         </div>
                                         <div class="mb-4">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="padding: 0px">
                                                 <label class="form-label" for="price">Price</label>
                                                 <div class="input-group">
                                                     <input type="text"  class="form-control" id="price" th:field="*{price}" required  value="0">
@@ -73,14 +71,14 @@
                                             <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="padding: 0px">
                                                 <label class="form-label" for="inStock">In Stock</label>
                                                 <input type="text" class="form-control" id="inStock" th:field="*{inStock}" required  value="0">
                                             </div>
                                             <span th:if="${#fields.hasErrors('inStock')}" th:errors="*{inStock}"  class="form-valid-feedback"></span>
                                         </div>
                                         <div class="mb-4">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" style="padding: 0px">
                                                 <label class="form-label" for="discount">Discount</label>
                                                 <div class="input-group">
                                                     <input type="number" min="0" max="100" class="form-control input-number-discount" id="discount" th:field="*{discount}" >
@@ -89,7 +87,7 @@
                                             </div>
                                             <span th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"  class="form-valid-feedback"></span>
                                         </div>
-                                        <div class=" mb-4" style="padding:0 15px">
+                                        <div class=" mb-4" style="padding:0">
                                             <div class="upload-zone d-flex justify-content-center align-items-center">
                                                 <input type="file" name="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${product.id != null} ? 'false' : 'true'"/>
                                                 <input type="text" id="image" th:field="*{image}" readonly style="display: none; opacity: 0"/>

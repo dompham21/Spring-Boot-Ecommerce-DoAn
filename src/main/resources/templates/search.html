@@ -24,70 +24,38 @@
                                     <input type="hidden" th:value="${keywordSearch}" name="keywordSearch">
                                 </th:block>
                                 <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-category" checked="checked" value="all" id="radio-0" >
+                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-category" th:checked="${radioCategory=='all' ? 'checked' : 'false'}" value="all" id="radio-0" >
                                     <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="radio-0">
                                         <span>Tất cả</span>
                                     </label>
                                 </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-category" value="electronics" id="radio-1" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="radio-1">
-                                        <span>Electronics</span>
-                                    </label>
-                                </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-category" value="sports equipments" id="radio-2" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="radio-2">
-                                        <span>Sports Equipments</span>
-                                    </label>
-                                </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-category" value="appliances" id="radio-3" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="radio-3">
-                                        <span>Appliances</span>
-                                    </label>
-                                </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-category" value="software solutions" id="radio-4" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="radio-4">
-                                        <span>Software Solutions</span>
-                                    </label>
-                                </div>
+                                <th:block th:each="cat : ${listCategories}">
+                                    <div class="custom-control">
+                                        <input type="radio" class="custom-control-input custom-control-input-radio" th:checked="${radioCategory == #strings.toString(cat.id) ? 'checked' : 'false'}" name="radio-category" th:value="${cat.id}" th:id="${'rad-cat-' + cat.id}" >
+                                        <label class="d-flex align-items-center custom-control-label-radio custom-control-label" th:for="${'rad-cat-' + cat.id}">
+                                            <span th:text="${cat.name}"></span>
+                                        </label>
+                                    </div>
+                                </th:block>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-group-title font-weight-bold">Thương hiệu</div>
                             <div class="radio-list d-flex flex-column" style="gap: 0.75rem">
                                 <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" checked="checked" value="all" id="brand-0" >
+                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" th:checked="${radioBrand=='all' ? 'checked' : 'false'}" value="all" id="brand-0" >
                                     <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="brand-0">
                                         <span>Tất cả</span>
                                     </label>
                                 </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" value="mac" id="brand-1" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="brand-1">
-                                        <span>Mac</span>
-                                    </label>
-                                </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" value="Sports Equipments" id="brand-2" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="brand-2">
-                                        <span>Sports Equipments</span>
-                                    </label>
-                                </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" value="Appliances" id="brand-3" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="brand-3">
-                                        <span>Appliances</span>
-                                    </label>
-                                </div>
-                                <div class="custom-control">
-                                    <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" value="Software Solutions" id="brand-4" >
-                                    <label class="d-flex align-items-center custom-control-label-radio custom-control-label" for="brand-4">
-                                        <span>Software Solutions</span>
-                                    </label>
-                                </div>
+                                <th:block th:each="brand : ${listBrands}">
+                                    <div class="custom-control">
+                                        <input type="radio" class="custom-control-input custom-control-input-radio" name="radio-brand" th:checked="${radioBrand == #strings.toString(brand.id) ? 'checked' : 'false'}" th:value="${brand.id}" th:id="${'rad-bra-' + brand.id}" >
+                                        <label class="d-flex align-items-center custom-control-label-radio custom-control-label" th:for="${'rad-bra-' + brand.id}">
+                                            <span th:text="${brand.name}"></span>
+                                        </label>
+                                    </div>
+                                </th:block>
                             </div>
                         </div>
                         <div class="form-group">
@@ -150,6 +118,7 @@
             </div>
             <div class="search-content-body">
                 <div th:replace="fragments/listProducts_fragment::listProduct('Kết quả tìm kiếm', ${listProducts})"></div>
+                <div th:replace="fragments :: pagination_search()"></div>
             </div>
         </div>
     </div>

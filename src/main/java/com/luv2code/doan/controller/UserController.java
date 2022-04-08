@@ -2,6 +2,7 @@ package com.luv2code.doan.controller;
 
 
 import com.luv2code.doan.entity.Product;
+import com.luv2code.doan.entity.Review;
 import com.luv2code.doan.entity.Role;
 import com.luv2code.doan.entity.User;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
@@ -45,21 +46,19 @@ public class UserController {
 
     @GetMapping("/admin/user/page/{pageNum}")
     public String adminPageUser(@PathVariable(name = "pageNum") Integer pageNum, Model model,
-                             @RequestParam(required = false) String keyword,
-                             @RequestParam(required = false) String sortField,
+                             @RequestParam(defaultValue = "") String keyword,
+                             @RequestParam(defaultValue = "id") String sortField,
                              @RequestParam(required = false) String sortDir) {
 
-        if(sortField != null) {
-            model.addAttribute("sortField", sortField);
-        }
+        model.addAttribute("sortField", sortField);
+
         if(sortDir == null) sortDir = "asc";
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
 
-        if(keyword != null) {
-            model.addAttribute("keyword", keyword);
-        }
+        model.addAttribute("keyword", keyword);
+
 
         Page<User> page = userService.listByPage(pageNum, keyword, sortField, sortDir);
         List<User> listUsers = page.getContent();
@@ -90,7 +89,9 @@ public class UserController {
         user.setIsActive(true);
         List<Role> listRoles = userService.listRoles();
 
-        model.addAttribute("user", user);
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", user);
+        }
         model.addAttribute("listRoles", listRoles);
 
         return "user/new_user";
@@ -130,7 +131,9 @@ public class UserController {
             errors.rejectValue("phone", "user", "Số điện thoại đã được sử dụng!");
         }
         if(errors.hasErrors()) {
-            return "user/new_user";
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", errors);
+            redirectAttributes.addFlashAttribute("user", user);
+            return "redirect:/admin/user/add";
         }
         else {
             String encodePassword = passwordEncoder.encode(user.getPassword());
@@ -158,12 +161,15 @@ public class UserController {
     @GetMapping("/admin/user/edit/{id}")
     public String editUser(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes, Model model) {
         try {
-            User user = userService.getUserByID(id);
-            System.out.println(user.getRoles().size());
             List<Role> listRoles = userService.listRoles();
             model.addAttribute("listRoles", listRoles);
-            model.addAttribute("user", user);
             model.addAttribute("isEdit", true);
+
+
+            if (!model.containsAttribute("user")) {
+                User user = userService.getUserByID(id);
+                model.addAttribute("user", user);
+            }
             return "user/new_user";
         }
         catch ( UserNotFoundException e) {
@@ -215,8 +221,9 @@ public class UserController {
 
 
             if (errors.hasErrors()) {
-                System.out.println("has errors");
-                return "user/new_user";
+                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.user", errors);
+                redirectAttributes.addFlashAttribute("user", user);
+                return "redirect:/admin/user/edit/" + id;
             } else {
                 user.setPassword(existUser.getPassword());
                 user.setRegistrationDate(existUser.getRegistrationDate());

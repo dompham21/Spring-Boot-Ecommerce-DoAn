@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
 
@@ -23,5 +25,13 @@ public class CategoryService {
         Pageable pageable = PageRequest.of(pageNum - 1, CATEGORY_PER_PAGE);
 
         return categoryRepository.findAll(pageable);
+    }
+
+    public List<Category> findAllCategory() {
+        return categoryRepository.findAll();
+    }
+
+    public List<Category> getTop5CategoryBestSell(){
+        return  categoryRepository.top5CategoryBestSell();
     }
 }

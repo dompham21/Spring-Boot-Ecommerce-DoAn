@@ -96,3 +96,20 @@
 .search-content-body .list-product-carousel {
     grid-template-columns: repeat(4, 1fr);
 }
+
+
+.page-link {
+    background-color: #3e4347;
+    color: white;
+    border-color: white;
+}
+
+.page-item.disabled .page-link {
+    background: #394148;
+    color: #747474;
+}
+
+.page-item.active .page-link {
+    border-color: white;
+    background-color: #1d1c2c;
+}

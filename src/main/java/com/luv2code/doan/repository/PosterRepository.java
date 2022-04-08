@@ -12,8 +12,14 @@ public interface PosterRepository extends JpaRepository<Poster, Integer> {
     @Query("SELECT p FROM Poster p WHERE p.type = 'right'")
     public List<Poster> listPosterRight();
 
+    @Query("SELECT p FROM Poster p WHERE p.type = 'right' AND p.isActive <> FALSE")
+    public List<Poster> listPosterRightUser();
+
     @Query("SELECT p FROM Poster p WHERE p.type = 'left'")
     public List<Poster> listPosterLeft();
+
+    @Query("SELECT p FROM Poster p WHERE p.type = 'left' AND p.isActive <> FALSE")
+    public List<Poster> listPosterLeftUser();
 
     @Query("SELECT p FROM Poster p WHERE p.type = :type AND p.id = :id")
     public Poster getPosterByIdAndType(Integer id, String type);
