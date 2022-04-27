@@ -145,8 +145,8 @@ public class ProductController {
         if(product.getInStock() == null) {
             errors.rejectValue("inStock", "product", "In stock không được bỏ trống!");
         }
-        else if(product.getInStock() <= 0) {
-            errors.rejectValue("inStock", "product", "Số lượng phải nhiều hơn 0 !");
+        else if(product.getInStock() < 0) {
+            errors.rejectValue("inStock", "product", "Số lượng phải nhiều hơn hoac bang 0 !");
         }
 
         if(product.getImage() == null) {
@@ -243,8 +243,8 @@ public class ProductController {
             if(product.getInStock() == null) {
                 errors.rejectValue("inStock", "product", "In stock không được bỏ trống!");
             }
-            else if(product.getInStock() <= 0) {
-                errors.rejectValue("inStock", "product", "Số lượng phải nhiều hơn 0 !");
+            else if(product.getInStock() < 0) {
+                errors.rejectValue("inStock", "product", "Số lượng phải nhiều hơn hoac bang 0 !");
             }
 
             if(product.getImage() == null) {

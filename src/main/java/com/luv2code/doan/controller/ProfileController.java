@@ -135,7 +135,7 @@ public class ProfileController {
                 existUser.setPhone(user.getPhone());
                 log.info(existUser.toString());
                 userService.saveEditUser(existUser);
-                redirectAttributes.addFlashAttribute("messageSuccess", "The user has been edited successfully.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Người dùng đã được chỉnh sửa thành công.");
                 return "redirect:/profile/edit";
             }
         }
@@ -198,7 +198,7 @@ public class ProfileController {
 
                 user.setPassword(encodePassword);
                 userService.saveEditUser(user);
-                redirectAttributes.addFlashAttribute("messageSuccess", "The user has been edited successfully.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Người dùng đã được chỉnh sửa thành công.");
                 return "redirect:/profile/change-password";
             }
 

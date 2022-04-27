@@ -21,9 +21,6 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @Column(name="is_active", nullable = false)
-    private Boolean isActive;
-
     @OneToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     private Collection<Product> products;
 
@@ -57,14 +54,6 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean active) {
-        isActive = active;
     }
 
     public Collection<Product> getProducts() {

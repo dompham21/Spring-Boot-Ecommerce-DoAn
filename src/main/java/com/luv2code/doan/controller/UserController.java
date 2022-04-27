@@ -1,10 +1,7 @@
 package com.luv2code.doan.controller;
 
 
-import com.luv2code.doan.entity.Product;
-import com.luv2code.doan.entity.Review;
-import com.luv2code.doan.entity.Role;
-import com.luv2code.doan.entity.User;
+import com.luv2code.doan.entity.*;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.exceptions.StorageUploadFileException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
@@ -103,7 +100,7 @@ public class UserController {
         if (user.getLastName().matches(".*\\d+.*")) {
             errors.rejectValue("lastName", "user", "Họ không được chứa số!");
         }
-        if (user.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+        if (user.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*") ) {
             errors.rejectValue("lastName", "user", "Họ không được chứa ký tự đặc biệt!");
         }
         if (user.getFirstName().matches(".*\\d+.*")) {
@@ -185,14 +182,13 @@ public class UserController {
 
         try {
             User existUser = userService.getUserByID(id);
-
-            if (user.getLastName().matches(".*\\d+.*")) {
+            if ((user.getLastName().matches(".*\\d+.*"))) {
                 errors.rejectValue("lastName", "user", "Họ không được chứa số!");
             }
-            if (user.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {
+            if (user.getLastName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*") ) {
                 errors.rejectValue("lastName", "user", "Họ không được chứa ký tự đặc biệt!");
             }
-            if (user.getFirstName().matches(".*\\d+.*")) {
+            if (user.getFirstName().matches(".*\\d+.*") ) {
                 errors.rejectValue("firstName", "user", "Tên không được chứa số!");
             }
             if (user.getFirstName().matches(".*[:;/{}*<>=()!.#$@_+,?-]+.*")) {

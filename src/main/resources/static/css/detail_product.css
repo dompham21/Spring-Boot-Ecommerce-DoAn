@@ -313,8 +313,12 @@
     color: rgba(244, 244, 245, 0.9);
 }
 
-#tab-description, #tab-review {
+#tab-review {
     padding: 30px 0;
+}
+
+#tab-description {
+    padding: 30px 30px;
 }
 
 .tab-active {
@@ -534,6 +538,11 @@
     height: 1px;
     transform: translate(-16px, 21px);
 
+}
+
+#tab-description h2, #tab-description p, #tab-description span, #tab-description h1, #tab-description h3,
+#tab-description h4, #tab-description h6, #tab-description h1, #tab-description a, #tab-description div, #tab-description li{
+    color: white !important;
 }
 
 

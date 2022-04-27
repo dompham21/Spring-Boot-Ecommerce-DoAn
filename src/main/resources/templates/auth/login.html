@@ -12,26 +12,36 @@
 	<div class="container-fluid auth-container d-flex justify-content-center align-items-center">
 
 		<form class="auth-form needs-validation" th:action="@{/login}" method="post">
-
+			<div class="d-flex align-items-center justify-content-center pt-4">
+				<div class="d-flex align-items-center" style="margin-right: 5px">
+					<img style="width: 30px; height: 30px; margin-right: 5px" th:src="@{/images/logo-uk.png}"/>
+					<a href="?language=en">English</a>
+				</div>
+				|
+				<div class="d-flex align-items-center" style="margin-left: 5px">
+					<img style="width: 30px; height: 30px; margin-right: 5px" th:src="@{/images/logo-vn.png}"/>
+					<a href="?language=vi">Vietnamese</a>
+				</div>
+			</div>
 			<div class="auth-form-wrapper-logo mb-4 pt-4 d-flex justify-content-center align-items-center">
 				<img th:src="@{/images/logo-white.png}"/>
 			</div>
-			<p class="auth-form-desc text-center mb-5">Đăng nhập và mua hàng tại Shopwise!</p>
+			<p class="auth-form-desc text-center mb-5" th:text="#{login.welcome}"></p>
 			<div th:if="${param.error}">
-				<p class="text-danger text-center">Sai tài khoản hoặc mật khẩu vui lòng thử lại</p>
+				<p class="text-danger text-center" th:text="#{login.error.pass}"></p>
 			</div>
 
 			<div th:if="${param.logout}">
-				<p class="text-warning text-center">Bạn đã đăng xuất thành công!</p>
+				<p class="text-warning text-center" th:text="#{login.logout}"></p>
 			</div>
 			<div class="mb-4 d-flex justify-content-center align-items-center">
 				<input type="email" name="email"  class="form-control auth-input"  placeholder="Email" id="email" required>
 			</div>
 			<div class="mb-3 d-flex justify-content-center align-items-center">
-				<input type="password" name="password" class="form-control auth-input" placeholder="Password" id="password" required>
+				<input type="password" name="password" class="form-control auth-input" th:placeholder="#{login.pass}" id="password" required>
 			</div>
 			<div th:if="${param.errorRcaptcha}" style="max-width: 400px;">
-				<p class="text-danger" style="margin-bottom: 5px; font-size: 15px">Bạn chưa tích vào Recaptcha hoặc Google Recaptcha xác định bạn là bot</p>
+				<p class="text-danger" style="margin-bottom: 5px; font-size: 15px" th:text="#{login.recaptcha}"></p>
 			</div>
 			<div  style="margin-bottom: 10px" class="g-recaptcha" data-sitekey="6LeauFIfAAAAAPVqTMvUvYw3itfkhcn4BXfaGtN4"></div>
 
@@ -39,18 +49,21 @@
 			<div class="mb-3 d-flex align-items-center justify-content-between">
 				<div class="d-flex align-items-center">
 					<input class="form-check-input auth-check-input" type="checkbox" name="remember-me" id="remember-me">
-					<label class="form-check-label auth-check-label" for="remember-me">
-						Remember me
+					<label class="form-check-label auth-check-label" for="remember-me" th:text="#{login.remember}">
+
 					</label>
 				</div>
 				<div>
-					<a style="color: #20DF7F;text-decoration: none; font-size: 14px" href="/forgot-password">Bạn quên mật khẩu?</a>
+					<a style="color: #20DF7F;text-decoration: none; font-size: 14px" href="/forgot-password" th:text="#{login.forgot}"></a>
 				</div>
 
 			</div>
-			<button type="submit" class="btn btn-danger auth-btn">Login</button>
+			<button type="submit" class="btn btn-danger auth-btn" th:text="#{login.btn}"></button>
+			<div class="mt-3 d-flex align-items-center">
+				<p th:text="#{login.account}" style="margin-right: 5px"></p>
+				<p><a style="color: #20DF7F;text-decoration: none" href="/signup" th:text="#{login.signup}"></a></p>
+			</div>
 
-			<p class="mt-3">Bạn chưa có tài khoản? <span><a style="color: #20DF7F;text-decoration: none" href="/signup">Sign up</a></span></p>
 		</form>
 		<div th:replace="fragments :: toast"></div>
 		<div class="auth-footer">

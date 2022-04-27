@@ -19,7 +19,7 @@ public interface ReportRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT count(u.id) FROM User u WHERE u.registrationDate = :date")
     public long countUserByDate(Date date);
 
-    @Query("SELECT COALESCE(sum(o.totalPrice),0) FROM Order o WHERE o.date = :date")
+    @Query("SELECT COALESCE(sum(o.totalPrice),0) FROM Order o WHERE o.date = :date AND o.status.id = 4")
     public double totalEarnByDate(Date date);
 
     @Query(value = "SELECT count(*)\n" +
@@ -35,7 +35,7 @@ public interface ReportRepository extends JpaRepository<Order, Integer> {
     @Query(value ="SELECT count(*) FROM review WHERE  YEARWEEK(`date`, 1) = YEARWEEK(CURDATE(), 1)", nativeQuery = true)
     public long countReviewByWeek();
 
-    @Query(value = "SELECT COALESCE(sum(total_price),0) FROM orders WHERE  YEARWEEK(`date`, 1) = YEARWEEK(CURDATE(), 1) ", nativeQuery = true)
+    @Query(value = "SELECT COALESCE(sum(total_price),0) FROM orders WHERE  YEARWEEK(`date`, 1) = YEARWEEK(CURDATE(), 1) AND status_id = 4", nativeQuery = true)
     public long totalOrderByWeek();
 
 }

@@ -24,4 +24,10 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
             "as listBrand inner join brands as bd on listBrand.brand_id = bd.id", nativeQuery = true)
     public List<Brand> getTop5BrandBestSell();
 
+    @Query("SELECT COUNT(p.id) from Brand p WHERE p.id = :id")
+    public Long countById(Integer id);
+
+    @Query("SELECT p FROM Brand p WHERE p.name LIKE %:keyword% "
+            + "OR p.description LIKE %:keyword% ")
+    public Page<Brand> findAll(String keyword, Pageable pageable);
 }

@@ -41,7 +41,7 @@
                                             <th class="d-none d-sm-table-cell text-center">Sold Quantity</th>
                                             <th class="d-none d-sm-table-cell text-end">Price</th>
                                             <th>Status</th>
-                                            <th class="text-center">Action</th>
+                                            <th class="text-center" style="width: 100px">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -67,11 +67,11 @@
                                                 <div th:replace="fragments :: format_currency(${product.price})"><strong>₫</strong></div>
                                             </td>
                                             <td>
-                                                <span th:if="${product.isActive == true}" class="badge bg-success">Available</span>
+                                                <span th:if="${product.isActive == true && product.inStock != 0}" class="badge bg-success">Available</span>
                                                 <span th:if="${product.isActive == false}"  class="badge bg-danger">Banned</span>
                                                 <span th:if="${product.inStock == 0 && product.isActive == true}" class="badge bg-warning">Out of Stock</span>
                                             </td>
-                                            <td class="text-center fs-sm">
+                                            <td class="text-center fs-sm" style="width: 100px">
                                                 <a class="btn btn-sm btn-alt-secondary" th:href="@{'/admin/product/edit/' + ${product.id}}"  data-toggle="tooltip" data-placement="top" title="Edit">
                                                     <i class="fas fa-pencil-alt"></i>                                                </a>
                                                 <a class="btn btn-sm btn-alt-danger" th:id="'link-delete-' + ${product.id}" th:onclick="'showConfirmDelete(event,' + ${product.id} + ')'" entity="product" th:href="@{'/admin/product/delete/' + ${product.id}}"  data-toggle="tooltip" data-placement="top" title="Delete">

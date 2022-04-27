@@ -204,7 +204,6 @@ public class OrderController {
     public String denyOrder(@RequestParam("id") Integer id, @RequestParam("statusId") Integer statusId) throws OrderNotFoundException {
 
         orderService.denyOrder(id, statusId);
-//        orderDetailService.updateSoldQuantityByOrderDetail(orderService.getOrderDetail(id));
         return "redirect:/admin/order";
     }
 

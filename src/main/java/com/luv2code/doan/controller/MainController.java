@@ -49,14 +49,6 @@ public class MainController {
     public String index(Model model, @AuthenticationPrincipal UserPrincipal loggedUser) {
         Page<Product> page = productService.listLatestProduct();
         Page<Product> pageBestSell = productService.listBestSellProduct();
-
-        List<Brand> listBrands = brandService.getAllBrand();
-        List<Category> listCategories = categoryService.findAllCategory();
-        List<Poster> listPostersLeft = posterService.listPosterLeftUser();
-        List<Poster> listPostersRight = posterService.listPosterRightUser();
-
-        List<Product> listLatestProducts = page.getContent();
-        List<Product> listBestSellProducts = pageBestSell.getContent();
         if(loggedUser != null) {
             List<Cart> listCarts = cartService.findCartByUser(loggedUser.getId());
             log.info(listCarts.isEmpty() + "");
@@ -72,6 +64,14 @@ public class MainController {
             model.addAttribute("listCarts", listCarts);
             model.addAttribute("estimatedTotal", estimatedTotal);
         }
+        List<Brand> listBrands = brandService.getAllBrand();
+        List<Category> listCategories = categoryService.findAllCategory();
+        List<Poster> listPostersLeft = posterService.listPosterLeftUser();
+        List<Poster> listPostersRight = posterService.listPosterRightUser();
+
+        List<Product> listLatestProducts = page.getContent();
+        List<Product> listBestSellProducts = pageBestSell.getContent();
+
         model.addAttribute("listPostersLeft", listPostersLeft);
         model.addAttribute("listPostersRight", listPostersRight);
         model.addAttribute("listLatestProducts", listLatestProducts);

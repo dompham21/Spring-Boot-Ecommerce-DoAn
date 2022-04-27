@@ -3,6 +3,7 @@ package com.luv2code.doan.configuration;
 
 import com.luv2code.doan.principal.CustomLoginFilter;
 import com.luv2code.doan.principal.CustomUserDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +18,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -37,6 +35,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
         return new CustomUserDetailService();
     }
 
+
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -46,14 +46,13 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .and().csrf().disable().authorizeRequests()
-//            .antMatchers("/admin/**").hasAuthority("Admin")
-                .antMatchers( "/profile/**").hasAnyAuthority("ROLE_USER")
+            .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers( "/profile/**", "/checkout/**", "/cart/**").hasAnyAuthority("ROLE_USER")
             .antMatchers("/api/**","/webjars/**", "/images/**",
-                    "/signup/**", "/verify/**","/auth/**","/checkout/**",
-                    "/login/**", "/logout/**","/assets/**", "/css/**","/product/**","/brand/**","/","/js/**" ,
-                    "/cart/**", "/search/**", "/forgot-password/**").permitAll()
+                    "/signup/**", "/verify/**","/auth/**",
+                    "/login/**", "/logout/**","/assets/**", "/css/**","/product/**","/brand/**","/","/js/**"
+                    ,"/search/**", "/forgot-password/**").permitAll()
             .anyRequest().authenticated()
-
             .and()
                 .addFilterBefore(getCustomLoginFilter(), CustomLoginFilter.class)
             .formLogin()

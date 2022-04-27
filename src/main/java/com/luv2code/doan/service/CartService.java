@@ -3,6 +3,7 @@ package com.luv2code.doan.service;
 import com.luv2code.doan.entity.Cart;
 import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.User;
+import com.luv2code.doan.exceptions.CartMoreThanProductInStock;
 import com.luv2code.doan.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,13 @@ public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    public Integer addProductToCart(Product product, User user, Integer quantity) {
+    public Integer addProductToCart(Product product, User user, Integer quantity) throws CartMoreThanProductInStock {
         Integer updatedQuantity = quantity;
         Cart cartItem = cartRepository.findByUserIdAndProductId(user.getId(), product.getId());
         if(cartItem != null) {
+            if(cartItem.getQuantity() >= product.getInStock()) {
+                throw new CartMoreThanProductInStock("");
+            }
             updatedQuantity = cartItem.getQuantity() + quantity;
         }
         else {

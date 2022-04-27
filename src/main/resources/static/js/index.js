@@ -27,7 +27,7 @@ function formatNumber(event, input) {
 
 /** double to price */
 function formatPrice(inputPrice) {
-    return parseFloat(inputPrice).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+    return parseFloat(inputPrice).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}).replaceAll(",", ".");
 }
 
 
@@ -79,7 +79,7 @@ function handleInputNumber(evt) {
 
 function showErrorLoginPage() {
     const wrapper = document.createElement('div');
-    wrapper.innerHTML = "<div><div>You must login to add this product to cart.</div><div>Go to <a style='color: #4c78dd; font-weight: 700' href='/login'>Login Page</a></div></div>"
+    wrapper.innerHTML = "<div><div>Bạn phải đăng nhập để thêm sản phẩm này vào giỏ hàng.</div><div>Đi đến <a style='color: #4c78dd; font-weight: 700' href='/login'>Trang Đăng Nhập</a></div></div>"
 
     Swal.fire({
         title: '',
@@ -104,14 +104,14 @@ function showConfirmDelete(event, entityId ) {
 
 
     Swal.fire({
-        title: "Are you sure you want to delete this "
+        title: "Bạn có chắc chắn muốn xóa "
             + entityName + " ID " + entityId + "?",
-        text: "You won't be able to revert this!",
+        text: "Bạn sẽ không thể hoàn tác điều này!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: `<a href= ${url}>Yes, delete it!</a>`,
+        confirmButtonText: `<a href=${url} style="padding: 0.625em 1.1em;">Yes, delete it!</a>`,
     })
 }
 
@@ -119,13 +119,13 @@ function btnDeleteCartItem(event,productId) {
     event.preventDefault();
     let url = '/cart/delete/' + productId
     Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'Bạn có chắc chắn không?',
+        text: "Bạn sẽ không thể hoàn tác điều này!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: `<a href= ${url}>Yes, delete it!</a>`,
+        confirmButtonText: `<a href=${url} style="padding: 0.625em 1.1em;">Yes, delete it!</a>`,
     })
 }
 
