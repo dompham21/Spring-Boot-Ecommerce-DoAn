@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Category - Music Website', 'none')" />
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/add_form.css}"/>
+</head>
+<body>
+<div id="page-container" class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div th:replace="${category.id != null} ? ~{fragments/sidebar_fragment :: sidebar('category','category_all')} : ~{fragments/sidebar_fragment :: sidebar('category','category_new')}"></div>
+
+        <div class="d-flex flex-column wrapper">
+            <div th:replace="fragments/header_fragment :: header"></div>
+            <div class="content">
+
+                <section class="form-container">
+                    <div class="form-container-header d-flex align-items-center justify-content-between">
+                        <h1 class="title" th:text="${category.id != null} ? 'Sửa Thông Tin Thể Loại': 'Thêm Thể Loại Mới'"></h1>
+                    </div>
+                    <div class="form-container-content">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 col-lg-8">
+                                <form th:action="${category.id != null} ? @{'/admin/category/edit/' + ${category.id}} : @{/admin/category/add}" th:object="${category}"  method="post" id="form-category" enctype="multipart/form-data">
+                                    <input type="hidden" th:field="*{id}" />
+                                    <div class="mb-4">
+                                        <label class="form-label" for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" th:field="*{name}"  required/>
+                                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"  class="form-valid-feedback"></span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="description">Description</label>
+                                        <textarea class="form-control" id="description" th:field="*{description}" rows="2" required></textarea>
+                                        <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"  class="form-valid-feedback"></span>
+                                    </div>
+                                    <div class="mb-4" style="padding:0px">
+                                        <div class="upload-zone d-flex justify-content-center align-items-center">
+                                            <input type="file" name="file" accept="image/png, image/jpg, image/jpeg" onchange="loadFile(event)" class="upload-zone-input" id="input-image" multiple="false" th:required="${category.id != null} ? 'false' : 'true'"/>
+                                            <input type="text" id="image" th:field="*{image}" readonly style="display: none; opacity: 0"/>
+                                            <img id="image-output"/>
+                                            <div class="upload-zone-content">
+                                                <div class="upload-zone-title">Select file</div>
+                                                <div class="upload-zone-desc">Click browse thorough your machine</div>
+                                            </div>
+                                        </div>
+                                        <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"  class="form-valid-feedback"></span>
+                                    </div>
+                                    <div class="mb-4 d-flex align-items-center justify-content-end">
+                                        <button type="submit" class="btn btn-danger auth-btn">Luu lai</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}" ></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script><script type="text/javascript" th:src="@{/js/index.js}" ></script>
+
+<script>
+    $(document).ready(function() {
+
+        if($("#image").val() != '' && $("#image").val() != null) {
+            let image_output = document.getElementById('image-output');
+            $('#image-output').css('display', 'block')
+            image_output.src = $("#image").val();
+            $('.upload-zone-content').css('display', 'none');
+        }
+
+    })
+
+</script>
+
+<script>
+
+</script>
+</body>
+
+</html>

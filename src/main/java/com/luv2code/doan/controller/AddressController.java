@@ -155,7 +155,7 @@ public class AddressController {
                     address.setDefault(true);
                 }
                 addressService.save(address);
-                redirectAttributes.addFlashAttribute("messageSuccess", "The address has been saved successfully.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Địa chỉ đã được lưu thành công.");
                 return "redirect:/profile/address";
             }
         }
@@ -173,7 +173,7 @@ public class AddressController {
         try {
             User user = userService.getUserByID(id);
             addressService.setDefaultAddress(addressId, id);
-            redirectAttributes.addFlashAttribute("messageSuccess", "The address has been set as default.");
+            redirectAttributes.addFlashAttribute("messageSuccess", "Địa chỉ đã được đặt làm mặc định.");
             return "redirect:/profile/address";
         }
         catch (UserNotFoundException e) {
@@ -190,7 +190,7 @@ public class AddressController {
         try {
             User user = userService.getUserByID(id);
             addressService.delete(addressId, id);
-            redirectAttributes.addFlashAttribute("messageSuccess", "The address has been deleted.");
+            redirectAttributes.addFlashAttribute("messageSuccess", "Địa chỉ đã bị xóa.");
             return "redirect:/profile/address";
         }
         catch (UserNotFoundException e) {
@@ -283,7 +283,7 @@ public class AddressController {
                 address.setUser(addressExist.getUser());
                 address.setDefault(addressExist.isDefault());
                 addressService.save(address);
-                redirectAttributes.addFlashAttribute("messageSuccess", "The address has been saved successfully.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Địa chỉ đã được lưu thành công.");
                 return "redirect:/profile/address";
             }
         }

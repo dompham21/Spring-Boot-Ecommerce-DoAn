@@ -3,6 +3,7 @@ package com.luv2code.doan.controller;
 
 import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.User;
+import com.luv2code.doan.exceptions.CartMoreThanProductInStock;
 import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.principal.UserPrincipal;
@@ -45,20 +46,26 @@ public class CartController {
                 return "redirect:/login";
             }
 
-
             User user = userService.getUserByID(loggedUser.getId());
             Product product = productService.getProductById(productId);
+
+
             Integer updatedQuantity = cartService.addProductToCart(product, user, quantity);
-            redirectAttributes.addFlashAttribute("messageSuccess",  updatedQuantity + " item(s) of this product were added to your shopping cart.");
+            redirectAttributes.addFlashAttribute("messageSuccess",  updatedQuantity + " sản phẩm này đã được thêm vào giỏ hàng của bạn.");
             return "redirect:" + referer;
         }
         catch (UserNotFoundException e) {
             return "redirect:/login";
         }
         catch (ProductNotFoundException ex) {
-            redirectAttributes.addFlashAttribute("messageError",  "Can't add this product. Product not found.");
+            redirectAttributes.addFlashAttribute("messageError",  "Không thể thêm sản phẩm này. Sản phẩm không tìm thấy.");
             return "redirect:" + referer;
         }
+        catch (CartMoreThanProductInStock exx) {
+            redirectAttributes.addFlashAttribute("messageError",  "Không thể thêm sản phẩm này. Sản phẩm đã hết hàng.");
+            return "redirect:" + referer;
+        }
+
     }
 
     @GetMapping("/cart/update/{productId}/{quantity}")
@@ -77,15 +84,15 @@ public class CartController {
             Product product = productService.getProductById(productId);
 
             if(quantity > product.getInStock()) {
-                redirectAttributes.addFlashAttribute("messageError", "Can't change quantity this product. Quantity can't more than " + product.getInStock() );
+                redirectAttributes.addFlashAttribute("messageError", "Không thể thay đổi số lượng sản phẩm này. Số lượng không thể nhiều hơn " + product.getInStock() );
                 return "redirect:" + referer;
             }
             else if(quantity <= 0 ) {
-                redirectAttributes.addFlashAttribute("messageError", "Can't change quantity this product. Quantity can't less than or equal to 0" );
+                redirectAttributes.addFlashAttribute("messageError", "Không thể thay đổi số lượng sản phẩm này. Số lượng không được nhỏ hơn hoặc bằng 0" );
                 return "redirect:" + referer;
             }
             cartService.updatedQuantity(product, user, quantity);
-            redirectAttributes.addFlashAttribute("messageSuccess",  "Item(s) of this product were updated to your shopping cart");
+            redirectAttributes.addFlashAttribute("messageSuccess",  "Sản phẩm này đã được cập nhật vào giỏ hàng của bạn");
 
             return "redirect:" + referer;
 
@@ -94,7 +101,7 @@ public class CartController {
             return "redirect:/login";
         }
         catch (ProductNotFoundException ex) {
-            redirectAttributes.addFlashAttribute("messageError",  "Can't add this product. Product not found.");
+            redirectAttributes.addFlashAttribute("messageError",  "Không thể thêm sản phẩm này. Sản phẩm không tìm thấy.");
             return "redirect:" + referer;
         }
 
@@ -115,7 +122,7 @@ public class CartController {
             Product product = productService.getProductById(productId);
 
             cartService.deleteCartItem(user.getId(), product.getId());
-            redirectAttributes.addFlashAttribute("messageSuccess",  "This product were delete from your shopping caart");
+            redirectAttributes.addFlashAttribute("messageSuccess",  "Sản phẩm này đã bị xóa khỏi giỏ hàng của bạn.");
 
             return "redirect:" + referer;
 
@@ -125,7 +132,7 @@ public class CartController {
                 return "redirect:/login";
         }
         catch (ProductNotFoundException ex) {
-                redirectAttributes.addFlashAttribute("messageError",  "Can't add this product. Product not found.");
+                redirectAttributes.addFlashAttribute("messageError",  "Không thể xóa sản phẩm này. Sản phẩm không tìm thấy.");
                 return "redirect:" + referer;
         }
 

@@ -75,7 +75,7 @@ public class ReviewController {
 
                 log.info(review.toString());
                 redirectAttributes.addFlashAttribute("isReview", true);
-                redirectAttributes.addFlashAttribute("messageSuccess", "The comment has been added successfully.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Đánh giá đã được thêm thành công.");
                 return "redirect:/product/detail/" + productId;
             }
 
@@ -91,7 +91,7 @@ public class ReviewController {
         try {
             reviewService.deleteReview(id);
             redirectAttributes.addFlashAttribute("isReview", true);
-            redirectAttributes.addFlashAttribute("messageSuccess", "The review ID " + id + " has been deleted successfully");
+            redirectAttributes.addFlashAttribute("messageSuccess", "Đánh giá ID " + id + " đã được xóa thành công");
         }
         catch (ReviewNotFoundException ex) {
             redirectAttributes.addFlashAttribute("messageError", ex.getMessage());
@@ -159,7 +159,7 @@ public class ReviewController {
                 review.setProduct(existReview.getProduct());
                 reviewService.saveReview(review);
                 redirectAttributes.addFlashAttribute("isReview", true);
-                redirectAttributes.addFlashAttribute("messageSuccess", "The review has been edited successfully.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Đánh giá đã được chỉnh sửa thành công.");
                 return "redirect:/product/detail/" + productId;
             }
         } catch (ReviewNotFoundException e) {

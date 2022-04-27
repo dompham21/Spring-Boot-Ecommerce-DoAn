@@ -20,7 +20,7 @@ public class User {
     @Column(name="email", unique = true, length = 100, nullable = false)
     private String email;
 
-    @Column(name="password", nullable = false, length = 100)
+    @Column(name="password", length = 100)
     private String password;
 
     @Column(name="first_name", nullable = false, length = 50)
@@ -29,8 +29,6 @@ public class User {
     @Column(name="last_name", nullable = false, length = 100)
     private String lastName;
 
-    @Column(name="avatar", length = 300)
-    private String avatar;
 
     @Column(name="phone", length = 20)
     private String phone;
@@ -104,13 +102,6 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
 
     public String getEmail() {
         return email;
@@ -195,6 +186,9 @@ public class User {
     public void setCarts(Collection<Cart> carts) {
         this.carts = carts;
     }
+
+
+
 
     @Override
     public String toString() {

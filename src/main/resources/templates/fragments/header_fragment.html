@@ -7,14 +7,14 @@
             <div class="topbar-item d-flex align-items-center dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                 <span>Hi,</span>
                 <span class="header-name" style="text-transform: capitalize" th:text="${#authentication.getPrincipal().getFirstName()}">Dom</span>
-                <span>
-                    <img alt="avatar" src="https://picsum.photos/200/300" class="avatar"/>
+                <span style="padding-bottom: 10px">
+                    <img alt="avatar" src="https://res.cloudinary.com/dmriwkfll/image/upload/v1650937333/user_tz4efy.png" class="avatar"/>
                 </span>
             </div>
             <ul class="dropdown-menu dropdown-menu-profile" aria-labelledby="dropdownMenuButton">
                 <li class="dropdown-item d-flex justify-content-center align-items-center flex-column">
                     <img alt="avatar" src="https://picsum.photos/200/300" class="avatar-thumb"/>
-                    <p class="dropdown-item-name mt-2 text-center" style="text-transform: capitalize" th:text="${#authentication.getPrincipal().getFullname()}"></p>
+                    <p class="dropdown-item-name mt-2 text-center" style="text-transform: capitalize" th:text="${#authentication.getPrincipal().getFullName()}"></p>
                 </li>
                 <div class="dropdown-divider"></div>
                 <li><a class="dropdown-item" href="/profile/info/">Profile</a></li>

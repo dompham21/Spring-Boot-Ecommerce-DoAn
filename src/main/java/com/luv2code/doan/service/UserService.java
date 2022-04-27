@@ -1,9 +1,7 @@
 package com.luv2code.doan.service;
 
-import com.luv2code.doan.entity.Product;
 import com.luv2code.doan.entity.Role;
 import com.luv2code.doan.entity.User;
-import com.luv2code.doan.exceptions.ProductNotFoundException;
 import com.luv2code.doan.exceptions.UserNotFoundException;
 import com.luv2code.doan.repository.RoleRepository;
 import com.luv2code.doan.repository.UserRepository;
@@ -184,4 +182,5 @@ public class UserService {
     public List<Role> listRoles() {
         return (List<Role>) roleRepository.findAll();
     }
+
 }

@@ -93,7 +93,7 @@
                                             <a class="btn btn-sm btn-outline-success" th:href="@{'/admin/order/accept?id=' + ${order.id} + '&statusId=' + ${order.status.id}}"  data-toggle="tooltip" data-placement="top" title="Accept">
                                                 <i class="fas fa-check-circle"></i>
                                             </a>
-                                            <a class="btn btn-sm btn-outline-danger" th:href="@{'/admin/order/deny/id=' + ${order.id} + '&statusId=' + ${order.status.id}}"  data-toggle="tooltip" data-placement="top" title="Deny">
+                                            <a class="btn btn-sm btn-outline-danger" th:href="@{'/admin/order/deny?id=' + ${order.id} + '&statusId=' + ${order.status.id}}"  data-toggle="tooltip" data-placement="top" title="Deny">
                                                 <i class="fas fa-times-circle"></i>
                                             </a>
                                         </th:block>

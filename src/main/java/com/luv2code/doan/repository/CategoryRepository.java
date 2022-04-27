@@ -17,8 +17,13 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
             + "OR p.description LIKE %:keyword% ")
     public Page<Category> findAll(String keyword, Pageable pageable);
 
+    @Query("SELECT COUNT(p.id) from Category p WHERE p.id = :id")
+    public Long countById(Integer id);
 
-    @Query(value = "select id, description, image, is_active, name From (select category_id, sum(sold_quantity) AS sell FROM products \n" +
+    @Query("Select c from Category c WHERE c.name = :name")
+    public Category getCategoryByName(String name);
+
+    @Query(value = "select id, description, image, name From (select category_id, sum(sold_quantity) AS sell FROM products \n" +
             "group by category_id\n" +
             "having sum(sold_quantity)\n" +
             "order by sell desc limit 0,5)\n" +

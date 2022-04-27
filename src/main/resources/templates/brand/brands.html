@@ -41,7 +41,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="brand : ${listBrand}">
+                                <tr th:each="brand : ${listBrands}">
                                     <td class="text-center fs-sm">
                                         <strong>[[${brand.id}]]</strong>
                                     </td>
@@ -65,7 +65,7 @@
 
                                 </tbody>
                             </table>
-                            <div class="empty d-flex flex-column align-items-center" th:if="${#lists.isEmpty(listBrand)}">
+                            <div class="empty d-flex flex-column align-items-center" th:if="${#lists.isEmpty(listBrands)}">
                                 <div class="empty-image d-flex justify-content-center align-items-center" style="margin-bottom: 10px">
                                     <img th:src="@{/images/empty-icon.svg}" style="height: 200px"/>
                                 </div>

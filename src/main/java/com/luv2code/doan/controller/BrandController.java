@@ -37,11 +37,47 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @GetMapping("admin/brand")
-    public String viewBrand(Model model) {
-        List<Brand> listBrand = brandService.getAllBrand();
+    @GetMapping("/admin/brand")
+    public String listFirstPage() {
+        return "redirect:/admin/brand/page/1";
+    }
 
-        model.addAttribute("listBrand", listBrand);
+    @GetMapping("/admin/brand/page/{pageNum}")
+    public String listByPage(@PathVariable(name = "pageNum") Integer pageNum, Model model,
+                             @RequestParam(defaultValue = "") String keyword,
+                             @RequestParam(defaultValue = "id") String sortField,
+                             @RequestParam(required = false) String sortDir) {
+
+        model.addAttribute("sortField", sortField);
+
+        if(sortDir == null) sortDir = "asc";
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
+
+        model.addAttribute("keyword", keyword);
+
+
+        Page<Brand> page = brandService.listByPage(pageNum, keyword, sortField, sortDir);
+        List<Brand> listBrands = page.getContent();
+        long startCount = (pageNum - 1) * brandService.BRAND_PER_PAGE + 1;
+        long endCount = startCount +  brandService.BRAND_PER_PAGE - 1;
+
+        if(endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+
+
+
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("currentPage", pageNum);
+
+        model.addAttribute("listBrands", listBrands);
+
+
         return "brand/brands";
     }
 
@@ -159,6 +195,18 @@ public class BrandController {
             redirectAttributes.addFlashAttribute("messageError", e.getMessage());
             return "redirect:/admin/brand";
         }
+    }
+
+    @GetMapping("/admin/brand/delete/{id}")
+    public String deleteBrand(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            brandService.deleteBrand(id);
+            redirectAttributes.addFlashAttribute("messageSuccess", "The brand ID " + id + " has been deleted successfully");
+        }
+        catch (BrandNotFoundException ex) {
+            redirectAttributes.addFlashAttribute("messageError", ex.getMessage());
+        }
+        return "redirect:/admin/brand/page/1";
     }
 
 }

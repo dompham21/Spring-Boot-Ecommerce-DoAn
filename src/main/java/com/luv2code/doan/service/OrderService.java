@@ -45,7 +45,7 @@ public class OrderService {
         double totalWithoutDiscount = 0.0;
         for (Cart cart : cartList) {
             Product product = cart.getProducts();
-            product.setSoldQuantity(cart.getQuantity());
+            product.setSoldQuantity(product.getSoldQuantity() + cart.getQuantity());
             product.setInStock(product.getInStock() - cart.getQuantity());
             OrderDetail orderDetail = new OrderDetail();
 
@@ -137,7 +137,8 @@ public class OrderService {
                     for(OrderDetail item : orderDetail)
                     {
                         Product product = item.getProduct();
-                        product.setSoldQuantity(product.getSoldQuantity() + item.getQuantity());
+                        product.setSoldQuantity(product.getSoldQuantity() - item.getQuantity());
+                        product.setInStock(product.getSoldQuantity() + item.getQuantity());
                         productRepository.save(product);
                     }
                     order.setStatus(orderStatusRepository.getOrderStatusById(5));
@@ -175,7 +176,8 @@ public class OrderService {
                     for(OrderDetail item : orderDetail)
                     {
                         Product product = item.getProduct();
-                        product.setSoldQuantity(product.getSoldQuantity() + item.getQuantity());
+                        product.setInStock(product.getInStock() + item.getQuantity());
+                        product.setSoldQuantity(product.getSoldQuantity() - item.getQuantity());
                         productRepository.save(product);
                     }
 

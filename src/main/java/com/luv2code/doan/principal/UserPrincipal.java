@@ -1,6 +1,5 @@
 package com.luv2code.doan.principal;
 
-import com.luv2code.doan.controller.MainController;
 import com.luv2code.doan.entity.Role;
 import com.luv2code.doan.entity.User;
 import org.slf4j.Logger;
@@ -8,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 
@@ -49,6 +49,10 @@ public class UserPrincipal implements UserDetails {
     }
 
 
+    public String getName() {
+        return this.user.getFirstName() + " " + this.user.getLastName();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -89,9 +93,10 @@ public class UserPrincipal implements UserDetails {
 
     public String getFirstName() {return this.user.getFirstName();}
 
-    public String getFullname() {
+    public String getFullName() {
         return this.user.getFirstName() + " " + this.user.getLastName();
     }
+
 
 
 }
