@@ -3,7 +3,6 @@ package com.luv2code.doan.configuration;
 
 import com.luv2code.doan.principal.CustomLoginFilter;
 import com.luv2code.doan.principal.CustomUserDetailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +53,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                     ,"/search/**", "/forgot-password/**").permitAll()
             .anyRequest().authenticated()
             .and()
-                .addFilterBefore(getCustomLoginFilter(), CustomLoginFilter.class)
+//                .addFilterBefore(getCustomLoginFilter(), CustomLoginFilter.class)
             .formLogin()
                 .loginPage("/login")
                 .usernameParameter("email")

@@ -136,7 +136,7 @@ public class ProfileController {
                 log.info(existUser.toString());
                 userService.saveEditUser(existUser);
                 redirectAttributes.addFlashAttribute("messageSuccess", "Người dùng đã được chỉnh sửa thành công.");
-                return "redirect:/profile/edit";
+                return "redirect:/profile/info";
             }
         }
         catch (UserNotFoundException e) {
@@ -198,7 +198,7 @@ public class ProfileController {
 
                 user.setPassword(encodePassword);
                 userService.saveEditUser(user);
-                redirectAttributes.addFlashAttribute("messageSuccess", "Người dùng đã được chỉnh sửa thành công.");
+                redirectAttributes.addFlashAttribute("messageSuccess", "Password đã được chỉnh sửa thành công.");
                 return "redirect:/profile/change-password";
             }
 

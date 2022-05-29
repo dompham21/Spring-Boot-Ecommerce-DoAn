@@ -122,24 +122,26 @@
                                     <div class="tab-review-comment-text" th:text="${review.comment}"></div>
                                     <div class="d-flex align-items-center" style="gap: 20px">
                                         <div class="tab-review-comment-date" th:text="${#dates.format(review.date, 'dd/MM/yyyy')}" ></div>
-                                        <div class="d-flex align-items-center" style="gap: 10px">
-                                            <a  style="font-size: 12px; cursor: pointer; text-decoration: underline"
-                                                th:href="@{'/product/review/edit/' + ${product.id} + '/' + ${review.id}}"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="Edit">
-                                                Sửa
-                                            </a>
-                                            <a  style="font-size: 12px; cursor: pointer; text-decoration: underline"
-                                                th:id="'link-delete-' + ${review.id}"
-                                                th:onclick="'showConfirmDelete(event,' + ${review.id} + ')'"
-                                                entity="review" th:href="@{'/product/review/delete/' + ${product.id} + '/' + ${review.id}}"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="Delete">
-                                                Xoá
-                                            </a>
-                                        </div>
+                                        <th:block sec:authorize="isAuthenticated()" >
+                                            <div class="d-flex align-items-center" style="gap: 10px">
+                                                <a  style="font-size: 12px; cursor: pointer; text-decoration: underline"
+                                                    th:href="@{'/product/review/edit/' + ${product.id} + '/' + ${review.id}}"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Edit">
+                                                    Sửa
+                                                </a>
+                                                <a  style="font-size: 12px; cursor: pointer; text-decoration: underline"
+                                                    th:id="'link-delete-' + ${review.id}"
+                                                    th:onclick="'showConfirmDelete(event,' + ${review.id} + ')'"
+                                                    entity="review" th:href="@{'/product/review/delete/' + ${product.id} + '/' + ${review.id}}"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Delete">
+                                                    Xoá
+                                                </a>
+                                            </div>
+                                        </th:block>
                                     </div>
                                 </div>
                             </li>
