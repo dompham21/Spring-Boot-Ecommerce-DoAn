@@ -23,6 +23,7 @@ public class Brand {
     @OneToMany(mappedBy = "brands", fetch = FetchType.LAZY)
     private Collection<Product> products;
 
+
     public Integer getId() {
         return id;
     }

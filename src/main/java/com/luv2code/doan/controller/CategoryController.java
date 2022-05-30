@@ -44,9 +44,9 @@ public class CategoryController {
 
     @GetMapping("/admin/category/page/{pageNum}")
     public String listByPage(@PathVariable(name = "pageNum") Integer pageNum, Model model,
-                             @RequestParam(defaultValue = "") String keyword,
-                             @RequestParam(defaultValue = "id") String sortField,
-                             @RequestParam(required = false) String sortDir) {
+    @RequestParam(defaultValue = "") String keyword,
+    @RequestParam(defaultValue = "id") String sortField,
+    @RequestParam(required = false) String sortDir) {
 
         model.addAttribute("sortField", sortField);
 
